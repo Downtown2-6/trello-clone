@@ -1,0 +1,23 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-color:gainsboro;
+}
+
+#header {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+nav {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.nav-link {
+  padding: 0 2em;
+  text-decoration: none;
+  color:darkslategrey;
+}
