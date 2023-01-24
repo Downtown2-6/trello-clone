@@ -1,14 +1,18 @@
 const Sequelize = require('sequelize');
 const db = require('./db');
 
-const Puppy = db.define('puppies', {
-  puppyName: {
+const List = db.define("list", {
+  listName: {
     type: Sequelize.STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
     },
   },
+  position: {
+    type: Sequelize.INTEGER,
+    allowNull: true,
+  },
 });
 
-module.exports = Puppy;
+module.exports = List;
