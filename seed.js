@@ -1,29 +1,67 @@
-'use strict'
+"use strict";
 
-const {db, models: {User} } = require('./server/db')
+const {
+  db,
+  models: { User, Board, List, Taskcard, UserTaskcard, UserBoard },
+} = require("./server/db");
 
 /**
  * seed - this function clears the database, updates tables to
  *      match the models, and populates the database.
  */
 async function seed() {
-  await db.sync({ force: true }) // clears db and matches models to tables
-  console.log('db synced!')
+  await db.sync({ force: true }); // clears db and matches models to tables
+  console.log("db synced!");
 
   // Creating Users
   const users = await Promise.all([
-    User.create({ username: 'cody', password: '123' }),
-    User.create({ username: 'murphy', password: '123' }),
-  ])
+    User.create({ email: "cody@gmail.com", password: "123" }),
+    User.create({ email: "murphy@gmail.com", password: "123" }),
+  ]);
 
-  console.log(`seeded ${users.length} users`)
-  console.log(`seeded successfully`)
+  // Creating Board
+  const boards = await Promise.all([
+    Board.create({ boardName: "This Board", creatorId: 1 }),
+    Board.create({ boardName: "That Board", creatorId: 2 }),
+  ]);
+
+  // Creating List
+  const list = await Promise.all([
+    List.create({ listName: "This List", position: 1 }),
+    List.create({ listName: "That List", position: 2 }),
+  ]);
+
+  // Creating Taskcard
+  const taskcard = await Promise.all([
+    Taskcard.create({ taskcardName: "First Task", position: 1 }),
+    Taskcard.create({ taskcardName: "Second Task", position: 2 }),
+    Taskcard.create({ taskcardName: "Third Task", position: 3 }),
+    Taskcard.create({ taskcardName: "Fourth Task", position: 4 }),
+  ]);
+
+  // Creating UserTaskcard
+  const userTaskcard = await Promise.all([
+    UserTaskcard.create({ userId: 1, taskcardId: 1 }),
+    UserTaskcard.create({ userId: 1, taskcardId: 2 }),
+    UserTaskcard.create({ userId: 2, taskcardId: 3 }),
+    UserTaskcard.create({ userId: 2, taskcardId: 4 }),
+  ]);
+
+  // Creating UserBoard
+  // privilege on UserBoard future proofs to add functionality, because user can be added to the board to only add privilege of certain types of things.
+  const userBoard = await Promise.all([
+    UserBoard.create({ userId: 1, boardId: 1, privilege: "ADMIN" }),
+    UserBoard.create({ userId: 2, boardId: 2, privilege: "ADMIN" }),
+  ]);
+
+  console.log(`seeded ${users.length} users`);
+  console.log(`seeded successfully`);
   return {
     users: {
       cody: users[0],
-      murphy: users[1]
-    }
-  }
+      murphy: users[1],
+    },
+  };
 }
 
 /*
@@ -32,16 +70,16 @@ async function seed() {
  The `seed` function is concerned only with modifying the database.
 */
 async function runSeed() {
-  console.log('seeding...')
+  console.log("seeding...");
   try {
-    await seed()
+    await seed();
   } catch (err) {
-    console.error(err)
-    process.exitCode = 1
+    console.error(err);
+    process.exitCode = 1;
   } finally {
-    console.log('closing db connection')
-    await db.close()
-    console.log('db connection closed')
+    console.log("closing db connection");
+    await db.close();
+    console.log("db connection closed");
   }
 }
 
@@ -51,8 +89,8 @@ async function runSeed() {
   any errors that might occur inside of `seed`.
 */
 if (module === require.main) {
-  runSeed()
+  runSeed();
 }
 
 // we export the seed function for testing purposes (see `./seed.spec.js`)
-module.exports = seed
+module.exports = seed;
