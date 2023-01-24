@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Routes, Route, useNavigate } from 'react-router-dom';
-import { me, logout } from '../auth';
+import { me, logout } from '../features/auth/authSlice';
 import Login from './Login';
 import Signup from './Signup';
 import Home from './Home';
@@ -47,14 +47,14 @@ const Main = () => {
             <Route to='/home' element={<Home />} />
           </Routes>
         ) : (
-          <Routes> 
+          <Routes>
             <Route path='/*' element={<Login />} />
             <Route path='/login' element={<Login />} />
             <Route path='/signup' element={<Signup />} />
           </Routes>
         )}
       </div>
-      
+
     </div>
   );
 };
