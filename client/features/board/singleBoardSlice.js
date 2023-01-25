@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const fetchBoard = createAsyncThunk(
   'fetchBoard',
-  async (id) => {
+  async () => {
     const response = await axios.get(`/api/boards/`)
     console.log(response.data)
     return response.data

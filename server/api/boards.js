@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const { models: { Board, List } } = require('../db');
+const TaskCard = require('../db/models/TaskCard');
 
 // GET /api/boards
 router.get('/', async (req, res, next) => {
@@ -24,6 +25,21 @@ router.get('/:boardId', async (req, res, next) => {
     next(err);
   }
 });
+
+router.get('/:boardId/:listId', async (req, res, next) => {
+  try{
+    console.log('88888 LIST/TASK ROUTE HIT 88888')
+    const list = await List.findByPk(req.params.listId, {
+      include: {
+        model: TaskCard
+      }
+    })
+    console.log(list)
+    res.status(200).json(list)
+  } catch (err) {
+    next(err)
+  }
+})
 
 // // matches POST requests to /api/kittens/
 // router.post('/', function (req, res, next) { /* etc */});
