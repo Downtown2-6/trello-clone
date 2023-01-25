@@ -5,10 +5,10 @@ import { fetchBoard } from "./singleBoardSlice";
 
 const Board = () => {
   // const lists = useSelector(selectLists);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchBoard())
+    dispatch(fetchBoard());
   }, []);
 
   const board = useSelector(state => state.board)
