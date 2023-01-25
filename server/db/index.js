@@ -2,18 +2,18 @@
 const Sequelize = require("sequelize");
 const db = require("./db");
 const User = require("./models/User");
-const Taskcard = require("./models/TaskCard");
+const TaskCard = require("./models/TaskCard");
 const List = require("./models/List");
 const Board = require("./models/Board");
 const UserBoard = require("./models/UserBoard");
-const UserTaskcard = require("./models/UserTaskcard");
+const UserTaskCard = require("./models/UserTaskCard");
 
 User.belongsToMany(Board, { through: UserBoard });
-User.belongsToMany(Taskcard, { through: UserTaskcard });
-Taskcard.belongsToMany(User, { through: UserTaskcard });
-Taskcard.belongsTo(List);
+User.belongsToMany(TaskCard, { through: UserTaskCard });
+List.hasMany(TaskCard);
+TaskCard.belongsTo(List);
+Board.hasMany(List);
 List.belongsTo(Board);
-List.hasOne(Board);
 
 module.exports = {
   db,
@@ -21,8 +21,8 @@ module.exports = {
     User,
     Board,
     List,
-    Taskcard,
-    UserTaskcard,
+    TaskCard,
+    UserTaskCard,
     UserBoard,
   },
 };

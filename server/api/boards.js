@@ -1,14 +1,27 @@
 const router = require('express').Router();
-const Board = require('../db/models/Board')
+const { models: { Board, List } } = require('../db');
 
-// matches GET requests to /api/kittens/
+// GET /api/boards
 router.get('/', async (req, res, next) => {
   try{
-    console.log('***** Boards backend route hit *****')
-    const boards = await Board.findAll()
-    res.status(200).json(boards)
+    const boards = await Board.findAll();
+    res.status(200).json(boards);
   } catch(err){
-    next(err)
+    next(err);
+  }
+});
+
+// GET /api/boards/:boardId
+router.get('/:boardId', async (req, res, next) => {
+  try {
+    const board = await Board.findByPk(req.params.boardId, {
+      include: {
+        model: List,
+      }
+    });
+    res.status(200).json(board);
+  } catch (err) {
+    next(err);
   }
 });
 
