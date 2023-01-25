@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import TaskCard from '../taskCard/TaskCard';
 
-const List = (props) => {
+const SingleList = (props) => {
   const taskCards = useSelector(selectTaskCards);
 
   return (
@@ -17,4 +17,4 @@ const List = (props) => {
   )
 }
 
-export default List;
+export default SingleList;
