@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import List from '../list/List';
+import SingleList from '../singleList/SingleList';
 import { fetchBoard } from "./singleBoardSlice";
 
 const Board = () => {
@@ -19,7 +19,7 @@ const Board = () => {
       <div className='board-lists-container'>
         {lists.map((list) => (
           <div key={`list#${list.id}`} className='list-container'>
-            <List list={list} />
+            <SingleList list={list} />
           </div>
         ))}
       </div> */}

@@ -5,7 +5,7 @@ import { me, logout } from '../features/auth/authSlice';
 import Login from './Login';
 import Signup from './Signup';
 import Home from './Home';
-import Board from '../features/board/Board';
+import SingleBoard from '../features/board/SingleBoard';
 
 const Main = () => {
   const isLoggedIn = useSelector((state) => !!state.auth.me.id); // !! lets you convert a non-Boolean value to Boolean
@@ -30,6 +30,7 @@ const Main = () => {
         {isLoggedIn ? (
           <div>
             {/* The navbar will show these links after user logs in */}
+            <Link to='/home'>Home</Link>
             <Link to='/board'>Board</Link>
             <button type='button' onClick={logoutAndRedirectHome}>Logout</button>
           </div>
@@ -44,8 +45,9 @@ const Main = () => {
       <div>
         {isLoggedIn ? (
           <Routes>
-            <Route path='/*' element={<Board />} />
-            <Route to='/board' element={<Board />} />
+            <Route path='/*' element={<Home />} />
+            <Route path='/home' element={<Home />} />
+            <Route path='/board' element={<SingleBoard />} />
           </Routes>
         ) : (
           <Routes>
