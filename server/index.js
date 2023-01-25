@@ -14,10 +14,10 @@ const init = async () => {
       console.log('db synced');
     }
     // start listening with our express server (and create a 'server' object representing our server)
-    app.listen(port, () => console.log(`listening on port ${port}`)) 
+    app.listen(port, () => console.log(`listening on port ${port}`))
   } catch (err) {
     console.log(err);
-  };
+  }
 };
 
 init();

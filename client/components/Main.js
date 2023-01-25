@@ -5,6 +5,7 @@ import { me, logout } from '../features/auth/authSlice';
 import Login from './Login';
 import Signup from './Signup';
 import Home from './Home';
+import Board from '../features/board/Board';
 
 const Main = () => {
   const isLoggedIn = useSelector((state) => !!state.auth.me.id); // !! lets you convert a non-Boolean value to Boolean
