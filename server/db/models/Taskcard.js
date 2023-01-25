@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const db = require("../db");
 
-const Taskcard = db.define("taskcard", {
+const TaskCard = db.define("taskcard", {
   taskcardName: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -19,4 +19,4 @@ const Taskcard = db.define("taskcard", {
   },
 });
 
-module.exports = Taskcard;
+module.exports = TaskCard;
