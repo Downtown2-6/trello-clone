@@ -2,7 +2,7 @@
 
 const {
   db,
-  models: { User, Board, List, Taskcard, UserTaskcard, UserBoard },
+  models: { User, Board, List, TaskCard, UserTaskCard, UserBoard },
 } = require("./server/db");
 
 /**
@@ -27,24 +27,24 @@ async function seed() {
 
   // Creating List
   const list = await Promise.all([
-    List.create({ listName: "This List", position: 1, boardId: 1 }),
-    List.create({ listName: "That List", position: 2, boardId: 1 }),
+    List.create({ listName: "This List", position: 1 }),
+    List.create({ listName: "That List", position: 2 }),
   ]);
 
-  // Creating Taskcard
+  // Creating TaskCard
   const taskcard = await Promise.all([
-    Taskcard.create({ taskcardName: "First Task", position: 1 }),
-    Taskcard.create({ taskcardName: "Second Task", position: 2 }),
-    Taskcard.create({ taskcardName: "Third Task", position: 3 }),
-    Taskcard.create({ taskcardName: "Fourth Task", position: 4 }),
+    TaskCard.create({ taskcardName: "First Task", position: 1 }),
+    TaskCard.create({ taskcardName: "Second Task", position: 2 }),
+    TaskCard.create({ taskcardName: "Third Task", position: 3 }),
+    TaskCard.create({ taskcardName: "Fourth Task", position: 4 }),
   ]);
 
-  // Creating UserTaskcard
-  const userTaskcard = await Promise.all([
-    UserTaskcard.create({ userId: 1, taskcardId: 1 }),
-    UserTaskcard.create({ userId: 1, taskcardId: 2 }),
-    UserTaskcard.create({ userId: 2, taskcardId: 3 }),
-    UserTaskcard.create({ userId: 2, taskcardId: 4 }),
+  // Creating UserTaskCard
+  const userTaskCard = await Promise.all([
+    UserTaskCard.create({ userId: 1, taskcardId: 1 }),
+    UserTaskCard.create({ userId: 1, taskcardId: 2 }),
+    UserTaskCard.create({ userId: 2, taskcardId: 3 }),
+    UserTaskCard.create({ userId: 2, taskcardId: 4 }),
   ]);
 
   // Creating UserBoard
