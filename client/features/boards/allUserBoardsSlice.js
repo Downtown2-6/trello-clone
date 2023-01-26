@@ -11,15 +11,11 @@ export const fetchAllUserBoards = createAsyncThunk(
   }
 );
 
-export const addUserBoard = createAsyncThunk(
+export const createUserBoard = createAsyncThunk(
   "userBoard/add",
-  async (userboard) => {
-    console.log("this is userboard in the add thunk", userboard);
-    const { userId, boardName } = userboard;
-    const { data } = await axios.post("http://localhost:3000/api/products", {
-      userId,
-      boardName,
-    });
+  async (parameter) => {
+    console.log("this is userboard in the add thunk", parameter);
+    const { data } = await axios.post("http://localhost:3000/api/boards", parameter);
     return data;
   }
 );
@@ -32,7 +28,7 @@ export const allUserBoardsSlice = createSlice({
     builder.addCase(fetchAllUserBoards.fulfilled, (state, action) => {
       return action.payload;
     });
-    builder.addCase(addUserBoard.fulfilled, (state, action) => {
+    builder.addCase(createUserBoard.fulfilled, (state, action) => {
       return action.payload;
     });
   },
