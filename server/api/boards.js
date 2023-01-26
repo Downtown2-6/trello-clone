@@ -12,8 +12,8 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-// GET lists by their boardId
-router.get('/:boardId', async (req, res, next) => {
+// GET /api/boards/:userId/:boardId
+router.get('/:userId/:boardId', async (req, res, next) => {
   try {
     const board = await Board.findByPk(req.params.boardId, {
       include: {
@@ -25,8 +25,9 @@ router.get('/:boardId', async (req, res, next) => {
     next(err);
   }
 });
-// GET tasks by their listId
-router.get('/:boardId/:listId', async (req, res, next) => {
+
+// GET /api/boards/:userId/:boardId/:listId
+router.get('/:userId/:boardId/:listId', async (req, res, next) => {
   try{
     console.log('88888 LIST/TASK ROUTE HIT 88888')
     const list = await List.findByPk(req.params.listId, {
@@ -40,14 +41,5 @@ router.get('/:boardId/:listId', async (req, res, next) => {
     next(err)
   }
 })
-
-// // matches POST requests to /api/kittens/
-// router.post('/', function (req, res, next) { /* etc */});
-
-// // matches PUT requests to /api/kittens/:kittenId
-// router.put('/:kittenId', function (req, res, next) { /* etc */});
-
-// // matches DELETE requests to /api/kittens/:kittenId
-// router.delete('/:kittenId', function (req, res, next) { /* etc */});
 
 module.exports = router;
