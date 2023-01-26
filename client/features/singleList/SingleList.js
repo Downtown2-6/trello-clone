@@ -4,21 +4,16 @@ import TaskCards from '../taskCards/TaskCards';
 import { fetchTaskCards, selectTaskCards } from "../taskCards/taskCardsSlice";
 
 const SingleList = (props) => {
-  const dispatch = useDispatch()
-  const listId = props.list.id
-  const taskCards = useSelector(selectTaskCards);
 
-  useEffect(() => {
-    dispatch(fetchTaskCards({listId}))
-
-  }, [dispatch])
+  const list = props.list
+  console.log(list)
 
 
   return (
     <div>
-      <h4>{props.list.listName}</h4>
+      <h4>{list.listName}</h4>
       <div className='list-taskCards-container'>
-        {taskCards && taskCards.length ? taskCards.map((taskCard) => (
+        {list.taskcards && list.taskcards.length ? list.taskcards.map((taskCard) => (
           <div key={`taskCard#${taskCard.id}`} className='taskCard'>
             {/* // <TaskCards taskCard={taskCard} /> */}
             <p> TEST TASK CARD </p>
