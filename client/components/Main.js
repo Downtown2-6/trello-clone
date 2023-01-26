@@ -6,6 +6,7 @@ import Login from './Login';
 import Signup from './Signup';
 import Home from './Home';
 import SingleBoard from '../features/board/SingleBoard';
+import Navbar from '../features/navBar/NavBar';
 
 const Main = () => {
   const isLoggedIn = useSelector((state) => !!state.auth.me.id); // !! lets you convert a non-Boolean value to Boolean
@@ -26,6 +27,7 @@ const Main = () => {
       <div id='header'>
         <h1>Trell-O</h1>
       </div>
+      <Navbar />
       <nav>
         {isLoggedIn ? (
           <div>

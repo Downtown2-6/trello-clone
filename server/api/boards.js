@@ -15,6 +15,7 @@ router.get('/', async (req, res, next) => {
 
 router.get('/user', async (req, res, next) => {
   try {
+    console.log("This is inside of the api route for boards/user")
     const theUserId = 1
     const boards = await userBoards.findAll({
       where: {userId : theUserId},
@@ -25,6 +26,17 @@ router.get('/user', async (req, res, next) => {
     next(error)
   }
 });
+
+router.post("/", async (req, res, next) => {
+  try {
+    console.log("This is post to Board", req.body)
+    res.status(201).send(await Board.create(req.body));
+  } catch (error) {
+    next(error);
+  }
+});
+
+
 
 // // matches POST requests to /api/kittens/
 // router.post('/', function (req, res, next) { /* etc */});

@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { models: { User } } = require('../db');
+const { models: { User, Board } } = require('../db');
 
 // matches GET requests to /api/users/
 router.get('/', async (req, res, next) => {
@@ -14,5 +14,6 @@ router.get('/', async (req, res, next) => {
     next(err);
   }
 });
+
 
 module.exports = router;
