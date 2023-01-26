@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const TaskCard = (props) => {
+const TaskCards = (props) => {
   return (
     <Link>
       <p>{props.taskCard.taskcardName}</p>
@@ -9,4 +9,4 @@ const TaskCard = (props) => {
   )
 }
 
-export default TaskCard;
+export default TaskCards;
