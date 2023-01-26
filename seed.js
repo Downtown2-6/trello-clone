@@ -15,8 +15,8 @@ async function seed() {
 
   // Creating Users
   const users = await Promise.all([
-    User.create({ email: "cody@gmail.com", password: "123" }),
-    User.create({ email: "murphy@gmail.com", password: "123" }),
+    User.create({ firstName: 'Cody', lastName: 'Code', email: "cody@gmail.com", password: "123" }),
+    User.create({ firstName: 'Murphy', lastName: 'Murph', email: "murphy@gmail.com", password: "123" }),
   ]);
 
   // Creating Board
@@ -27,8 +27,8 @@ async function seed() {
 
   // Creating List
   const list = await Promise.all([
-    List.create({ listName: "This List", position: 1 }),
-    List.create({ listName: "That List", position: 2 }),
+    List.create({ listName: "This List", position: 1, boardId: 1 }),
+    List.create({ listName: "That List", position: 2, boardId: 1 }),
   ]);
 
   // Creating TaskCard
