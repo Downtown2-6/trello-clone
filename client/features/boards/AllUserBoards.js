@@ -18,11 +18,12 @@ const UserBoards = () => {
     <div>
       <h4>Your Boards</h4>
       <div>
-        {allUserBoards.map(({board}, index) => {
+        {console.log(allUserBoards)}
+        { allUserBoards.length >0 ? allUserBoards.map(({board}, index) => {
           console.log("Board name", board.boardName)
           //will need to fix navigate when we have more than one board
-          return <div key={index} onClick={() => navigate(`/board`)}>{board.boardName}</div>; 
-        })}
+          return <div key={index} onClick={() => navigate(`/board`)}>{board.boardName}</div>;
+        }): null}
       </div>
       <div onClick={() => navigate(`/newBoard`)}>Add a Board</div>
     </div>
