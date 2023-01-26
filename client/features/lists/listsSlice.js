@@ -3,25 +3,27 @@ import axios from "axios";
 
 export const fetchLists = createAsyncThunk(
   'fetchLists',
-  async (id) => {
-    const response = await axios.get(`/api/boards/:boardId`)
-    console.log(response.data)
-    return response.data
+  async ({userId, boardId}) => {
+    try {
+      const {data} = await axios.get(`/api/boards/${userId}/${boardId}`);
+      return data.lists;
+    } catch (err) {
+      next(err);
+    };
   }
-)
+);
 
 const listsSlice = createSlice({
-  name: 'board',
-  initialState: {
-    lists: [],
-  },
+  name: 'lists',
+  initialState: [],
   reducers: {},
-  extraReducers: {
-    [fetchBoard.fulfilled]: (state, action) => {
-      const board = action.payload
-      state.board = board
-    },
+  extraReducers: (builder) => {
+    builder.addCase(fetchLists.fulfilled, (state, action) => {
+      return action.payload;
+    });
   }
-})
+});
 
-export default listsSlice.reducer
+export const selectLists = (state) => state.lists;
+
+export default listsSlice.reducer;
