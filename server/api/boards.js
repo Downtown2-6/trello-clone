@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const Board = require('../db/models/Board')
+const userBoards = require('../db/models/UserBoard')
 
 // matches GET requests to /api/kittens/
 router.get('/', async (req, res, next) => {
@@ -9,6 +10,19 @@ router.get('/', async (req, res, next) => {
     res.status(200).json(boards)
   } catch(err){
     next(err)
+  }
+});
+
+router.get('/user', async (req, res, next) => {
+  try {
+    const theUserId = 1
+    const boards = await userBoards.findAll({
+      where: {userId : theUserId},
+      include: { model: Board },
+    });
+    res.json(boards);
+  } catch (error) {
+    next(error)
   }
 });
 
