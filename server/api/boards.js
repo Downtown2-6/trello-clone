@@ -12,7 +12,7 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-// GET /api/boards/:boardId
+// GET lists by their boardId
 router.get('/:boardId', async (req, res, next) => {
   try {
     const board = await Board.findByPk(req.params.boardId, {
@@ -25,7 +25,7 @@ router.get('/:boardId', async (req, res, next) => {
     next(err);
   }
 });
-
+// GET tasks by their listId
 router.get('/:boardId/:listId', async (req, res, next) => {
   try{
     console.log('88888 LIST/TASK ROUTE HIT 88888')
