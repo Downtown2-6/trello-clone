@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchLists, selectLists } from "../lists/listsSlice";
 import { fetchSingleBoard, selectSingleBoard } from "./singleBoardSlice";
+import SingleList from "../singleList/SingleList";
 
 const SingleBoard = () => {
   const dispatch = useDispatch();
@@ -18,16 +19,17 @@ const SingleBoard = () => {
 
   return (
     <div>
-      {board ? 
+      {board ?
       <div className='board-container'>
         <h2>{board.boardName}</h2>
         <div className='board-lists-container'>
+
           {lists && lists.length ? lists.map((list) => (
             <div key={`list#${list.id}`} className='list-container'>
-              {/* <SingleList list={list} /> */}
-              <h5>{list.listName}</h5>
+              <SingleList list={list} />
             </div>
           )) : null}
+
         </div>
       </div>
       : null}
