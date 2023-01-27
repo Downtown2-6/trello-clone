@@ -20,3 +20,21 @@ nav {
   text-decoration: none;
   color:darkslategrey;
 }
+
+.board-lists-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.list-container {
+  display: flex;
+  flex-direction: column;
+  margin: 1em;
+  border: 1px solid red;
+}
+
+.taskCard {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid green;
+}

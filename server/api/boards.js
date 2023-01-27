@@ -1,6 +1,5 @@
-const router = require("express").Router();
-const Board = require("../db/models/Board");
-const userBoards = require("../db/models/UserBoard");
+const router = require('express').Router();
+const { models: { Board, List, TaskCard. userBoards } } = require('../db');
 
 // matches GET requests to /api/kittens/
 router.get("/", async (req, res, next) => {
@@ -44,13 +43,18 @@ router.post("/", async (req, res, next) => {
 });
 //#endregion This works
 
-// // matches POST requests to /api/kittens/
-// router.post('/', function (req, res, next) { /* etc */});
-
-// // matches PUT requests to /api/kittens/:kittenId
-// router.put('/:kittenId', function (req, res, next) { /* etc */});
-
-// // matches DELETE requests to /api/kittens/:kittenId
-// router.delete('/:kittenId', function (req, res, next) { /* etc */});
+// GET /api/boards/:userId/:boardId
+router.get('/:userId/:boardId', async (req, res, next) => {
+  try {
+    const board = await Board.findByPk(req.params.boardId, {
+      include: {
+        model: List,
+      }
+    });
+    res.status(200).json(board);
+  } catch (err) {
+    next(err);
+  }
+});
 
 module.exports = router;

@@ -1,3 +1,5 @@
+/*eslint-disable no-unused-vars */
+
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Routes, Route, useNavigate } from 'react-router-dom';
@@ -5,7 +7,7 @@ import { me, logout } from '../features/auth/authSlice';
 import Login from './Login';
 import Signup from './Signup';
 import Home from './Home';
-import SingleBoard from '../features/board/SingleBoard';
+import SingleBoard from '../features/singleBoard/SingleBoard';
 import Navbar from '../features/navBar/NavBar';
 
 const Main = () => {
@@ -33,7 +35,7 @@ const Main = () => {
           <div>
             {/* The navbar will show these links after user logs in */}
             <Link to='/home'>Home</Link>
-            <Link to='/board'>Board</Link>
+            {/* <Link to='/board/:boardId'>Board</Link> */}
             <button type='button' onClick={logoutAndRedirectHome}>Logout</button>
           </div>
         ) : (
@@ -49,7 +51,7 @@ const Main = () => {
           <Routes>
             <Route path='/*' element={<Home />} />
             <Route path='/home' element={<Home />} />
-            <Route path='/board' element={<SingleBoard />} />
+            <Route path='/board/:boardId' element={<SingleBoard />} />
           </Routes>
         ) : (
           <Routes>
