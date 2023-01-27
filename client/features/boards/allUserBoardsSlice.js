@@ -15,7 +15,10 @@ export const createUserBoard = createAsyncThunk(
   "userBoard/add",
   async (parameter) => {
     console.log("this is userboard in the add thunk", parameter);
-    const { data } = await axios.post("http://localhost:3000/api/boards", parameter);
+    const { data } = await axios.post(
+      "http://localhost:3000/api/boards",
+      parameter
+    );
     return data;
   }
 );

@@ -10,6 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 
 
+
 const Navbar = () => {
   const isLoggedIn = useSelector((state) => !!state.auth.me.id);
   const dispatch = useDispatch();
@@ -25,7 +26,27 @@ const Navbar = () => {
 
 
   return (
-    <AppBar position="static">
+    <>
+          {isLoggedIn ? (
+          <AppBar position="static">
+          <Toolbar>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+            >
+              {/* <MenuIcon /> */}
+            </IconButton>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} onClick={() => navigate(`/home`)}>
+              Trell-O
+            </Typography>
+            {/* <Button color="inherit" onClick={() => navigate(`/login`)}>Login</Button> */}
+          </Toolbar>
+        </AppBar>
+        ) : (
+          <AppBar position="static">
     <Toolbar>
       <IconButton
         size="large"
@@ -34,14 +55,17 @@ const Navbar = () => {
         aria-label="menu"
         sx={{ mr: 2 }}
       >
-        <MenuIcon />
+        {/* <MenuIcon /> */}
       </IconButton>
-      <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-        News
+      <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} onClick={() => navigate(`/home`)}>
+        Trell-O
       </Typography>
-      <Button color="inherit">Login</Button>
+      <Button color="inherit" onClick={() => navigate(`/login`)}>Login</Button>
     </Toolbar>
   </AppBar>
+        )}
+    </>
+    
 
   );
 };
