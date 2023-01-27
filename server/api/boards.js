@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Board = require("../db/models/Board");
+const UserBoard = require("../db/models/UserBoard");
 const userBoards = require("../db/models/UserBoard");
 
 // matches GET requests to /api/kittens/
@@ -36,6 +37,11 @@ router.post("/", async (req, res, next) => {
     const newBoard = await Board.create({
       boardName: req.body.boardName,
       creatorId: req.body.loggedInUserId,
+    });
+    const userBoard = await UserBoard.create({
+      userId: req.body.loggedInUserId,
+      boardId: newBoard.id,
+      privilege: "ADMIN",
     });
     res.status(201).send(newBoard);
   } catch (error) {
