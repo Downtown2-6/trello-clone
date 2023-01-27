@@ -10,20 +10,38 @@ const SingleList = (props) => {
 
   useEffect(() => {
     dispatch(fetchTaskCards({listId}))
-
   }, [dispatch])
 
+  const addTaskCard = async (evt) => {
+    evt.preventDefault();
+    await dispatch()
+  }
 
   return (
     <div>
       <h4>{props.list.listName}</h4>
       <div className='list-taskCards-container'>
+        
         {taskCards && taskCards.length ? taskCards.map((taskCard) => (
           <div key={`taskCard#${taskCard.id}`} className='taskCard'>
             {/* // <TaskCards taskCard={taskCard} /> */}
             <p> TEST TASK CARD </p>
           </div>
         )) : null}
+
+      </div>
+      <div className='list-bottom-container'>
+        <form className='add-taskCard-form' onSubmit={addTaskCard}>
+          <input 
+            className='add-taskCard' 
+            name='taskcardName'
+            type='text'
+            minlength='1'
+          />
+          <button className='add-taskCard-button' type='submit'>
+            Add card
+          </button>
+        </form>
       </div>
     </div>
   )
