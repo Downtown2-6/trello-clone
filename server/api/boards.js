@@ -1,6 +1,5 @@
 const router = require("express").Router();
-const Board = require("../db/models/Board");
-const userBoards = require("../db/models/UserBoard");
+const { models: { Board, UserBoard, List, TaskCard }} = require('../db');
 
 // matches GET requests to /api/kittens/
 router.get("/", async (req, res, next) => {
@@ -13,11 +12,25 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+// GET /api/boards/:userId/:boardId
+router.get('/:userId/:boardId', async (req, res, next) => {
+  try {
+    const board = await Board.findByPk(req.params.boardId, {
+      include: [
+        {model: List, include: [TaskCard]}
+      ]
+    });
+    res.status(200).json(board);
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.get("/user", async (req, res, next) => {
   try {
     console.log("This is inside of the api route for boards/user");
     const theUserId = 1;
-    const boards = await userBoards.findAll({
+    const boards = await UserBoard.findAll({
       where: { userId: theUserId },
       include: { model: Board },
     });
@@ -44,18 +57,6 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-// GET /api/boards/:userId/:boardId
-router.get('/:userId/:boardId', async (req, res, next) => {
-  try {
-    const board = await Board.findByPk(req.params.boardId, {
-      include: [
-        {model: List, include: [TaskCard]}
-      ]
-    });
-    res.status(200).json(board);
-  } catch (err) {
-    next(err);
-  }
-});
+
 
 module.exports = router;

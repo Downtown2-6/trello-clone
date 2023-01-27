@@ -38,7 +38,7 @@ const SingleList = (props) => {
             className='add-taskCard' 
             name='taskcardName'
             type='text'
-            minlength='1'
+            minLength='1'
           />
           <button className='add-taskCard-button' type='submit'>
             Add card
