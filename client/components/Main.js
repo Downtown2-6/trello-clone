@@ -8,6 +8,7 @@ import Login from './Login';
 import Signup from './Signup';
 import Home from './Home';
 import SingleBoard from '../features/singleBoard/SingleBoard';
+import Navbar from '../features/navBar/NavBar';
 
 const Main = () => {
   const isLoggedIn = useSelector((state) => !!state.auth.me.id); // !! lets you convert a non-Boolean value to Boolean
@@ -28,6 +29,7 @@ const Main = () => {
       <div id='header'>
         <h1>Trell-O</h1>
       </div>
+      <Navbar />
       <nav>
         {isLoggedIn ? (
           <div>
@@ -48,12 +50,12 @@ const Main = () => {
         {isLoggedIn ? (
           <Routes>
             <Route path='/*' element={<Home />} />
-            <Route path='/home' element={<Home />} />
+            <Route path='/:user' element={<Home />} />
             <Route path='/board/:boardId' element={<SingleBoard />} />
           </Routes>
         ) : (
           <Routes>
-            <Route path='/*' element={<Login />} />
+            <Route path='/*' element={<Signup />} />
             <Route path='/login' element={<Login />} />
             <Route path='/signup' element={<Signup />} />
           </Routes>

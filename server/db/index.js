@@ -8,12 +8,16 @@ const Board = require("./models/Board");
 const UserBoard = require("./models/UserBoard");
 const UserTaskCard = require("./models/UserTaskCard");
 
+
 User.belongsToMany(Board, { through: UserBoard });
-UserBoard.belongsTo(Board);
+UserBoard.belongsTo(Board, { foreignKey: "boardId" });
+UserBoard.belongsTo(User, { foreignKey: "userId" });
 User.belongsToMany(TaskCard, { through: UserTaskCard });
 List.hasMany(TaskCard);
 TaskCard.belongsTo(List);
+TaskCard.belongsToMany(User, { through: UserTaskCard });
 Board.hasMany(List);
+Board.belongsToMany(User, { through: UserBoard })
 List.belongsTo(Board);
 Board.hasMany(TaskCard)
 TaskCard.belongsTo(Board)
