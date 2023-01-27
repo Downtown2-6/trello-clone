@@ -39,12 +39,12 @@ async function seed() {
 
   // Creating TaskCard
   const taskcard = await Promise.all([
-    TaskCard.create({ id: 1, taskcardName: "Navbar", position: 1, listId: 2 }),
-    TaskCard.create({ id: 2, taskcardName: "Express Routes", position: 1, listId: 3 }),
-    TaskCard.create({ id: 3, taskcardName: "Board Feature", position: 2, listId: 2 }),
-    TaskCard.create({ id: 4, taskcardName: "List Feature", position: 3, listId: 2 }),
-    TaskCard.create({ id: 5, taskcardName: "TaskCard Feature", position: 1, listId: 1 }),
-    TaskCard.create({ id: 6, taskcardName: "Task Feature", position: 2, listId: 1 }),
+    TaskCard.create({ id: 1, taskcardName: "Navbar", position: 1, listId: 2, boardId: 1 }),
+    TaskCard.create({ id: 2, taskcardName: "Express Routes", position: 1, listId: 3, boardId: 1 }),
+    TaskCard.create({ id: 3, taskcardName: "Board Feature", position: 2, listId: 2, boardId: 1 }),
+    TaskCard.create({ id: 4, taskcardName: "List Feature", position: 3, listId: 2, boardId: 1 }),
+    TaskCard.create({ id: 5, taskcardName: "TaskCard Feature", position: 1, listId: 1, boardId: 1 }),
+    TaskCard.create({ id: 6, taskcardName: "Task Feature", position: 2, listId: 1, boardId: 1 }),
   ]);
 
   // Creating UserTaskCard

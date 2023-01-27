@@ -48,9 +48,9 @@ router.post("/", async (req, res, next) => {
 router.get('/:userId/:boardId', async (req, res, next) => {
   try {
     const board = await Board.findByPk(req.params.boardId, {
-      include: {
-        model: List,
-      }
+      include: [
+        {model: List, include: [TaskCard]}
+      ]
     });
     res.status(200).json(board);
   } catch (err) {
