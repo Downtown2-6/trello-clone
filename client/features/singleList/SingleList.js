@@ -8,6 +8,17 @@ const SingleList = (props) => {
   const list = props.list
   console.log(list)
 
+  // const dispatch = useDispatch();
+  // const taskCards = useSelector(selectTaskCards);
+
+  // useEffect(() => {
+  //   dispatch(fetchTaskCards({listId}))
+  // }, [dispatch])
+
+  const addTaskCard = async (evt) => {
+    evt.preventDefault();
+    await dispatch()
+  }
 
   return (
     <div>
@@ -19,6 +30,20 @@ const SingleList = (props) => {
             <p> TEST TASK CARD </p>
           </div>
         )) : null}
+
+      </div>
+      <div className='list-bottom-container'>
+        <form className='add-taskCard-form' onSubmit={addTaskCard}>
+          <input 
+            className='add-taskCard' 
+            name='taskcardName'
+            type='text'
+            minLength='1'
+          />
+          <button className='add-taskCard-button' type='submit'>
+            Add card
+          </button>
+        </form>
       </div>
     </div>
   )

@@ -6,13 +6,29 @@ export const fetchTaskCards = createAsyncThunk(
   'fetchTaskCards',
   async ({listId}) => {
     try{
-      const { data } = await axios.get(`/api/tasks/${listId}`)
-      return data
-    }catch (err){
-      console.log(err)
+      const { data } = await axios.get(`/api/tasks/${listId}`);
+      return data;
+    } catch (err) {
+      console.log(err);
     }
   }
 )
+
+export const addTaskCard = createAsyncThunk(
+  'addTaskCard',
+  async ({listId, taskcardName, position}) => {
+    try {
+      const { data } = await axios.post(`/api/tasks/${listId}`, {
+        taskcardName,
+        position,
+        listId
+      });
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
 
 const taskCardsSlice = createSlice({
   name: 'taskCards',
@@ -20,10 +36,13 @@ const taskCardsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchTaskCards.fulfilled, (state, action) => {
-      return action.payload
-    })
-  }
+      return action.payload;
+    });
 
+    builder.addCase(addTaskCard.fulfilled, (state, action) => {
+      state.push(action.payload);
+    });
+  }
 })
 
 export const selectTaskCards = (state) => state.taskCards

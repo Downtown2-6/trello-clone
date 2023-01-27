@@ -27,4 +27,4 @@ const singleBoardSlice = createSlice({
 
 export const selectSingleBoard = (state) => state.singleBoard;
 
-export default singleBoardSlice.reducer
+export default singleBoardSlice.reducer;
