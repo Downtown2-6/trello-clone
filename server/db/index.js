@@ -15,6 +15,8 @@ List.hasMany(TaskCard);
 TaskCard.belongsTo(List);
 Board.hasMany(List);
 List.belongsTo(Board);
+Board.hasMany(TaskCard)
+TaskCard.belongsTo(Board)
 
 module.exports = {
   db,
