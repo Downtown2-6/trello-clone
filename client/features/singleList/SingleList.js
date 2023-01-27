@@ -8,6 +8,9 @@ const SingleList = (props) => {
   const list = props.list
   console.log(list)
 
+  // const dispatch = useDispatch();
+  // const taskCards = useSelector(selectTaskCards);
+
   // useEffect(() => {
   //   dispatch(fetchTaskCards({listId}))
   // }, [dispatch])
