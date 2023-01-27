@@ -50,7 +50,7 @@ const Main = () => {
         {isLoggedIn ? (
           <Routes>
             <Route path='/*' element={<Home />} />
-            <Route path='/home' element={<Home />} />
+            <Route path='/:user' element={<Home />} />
             <Route path='/board/:boardId' element={<SingleBoard />} />
           </Routes>
         ) : (

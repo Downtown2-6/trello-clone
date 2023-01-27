@@ -1,5 +1,6 @@
-const router = require('express').Router();
-const { models: { Board, List, TaskCard. userBoards } } = require('../db');
+const router = require("express").Router();
+const Board = require("../db/models/Board");
+const userBoards = require("../db/models/UserBoard");
 
 // matches GET requests to /api/kittens/
 router.get("/", async (req, res, next) => {
@@ -36,12 +37,12 @@ router.post("/", async (req, res, next) => {
       boardName: req.body.boardName,
       creatorId: req.body.loggedInUserId,
     });
+
     res.status(201).send(newBoard);
   } catch (error) {
     next(error);
   }
 });
-//#endregion This works
 
 // GET /api/boards/:userId/:boardId
 router.get('/:userId/:boardId', async (req, res, next) => {

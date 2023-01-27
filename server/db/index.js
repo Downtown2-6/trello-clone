@@ -15,7 +15,9 @@ UserBoard.belongsTo(User, { foreignKey: "userId" });
 User.belongsToMany(TaskCard, { through: UserTaskCard });
 List.hasMany(TaskCard);
 TaskCard.belongsTo(List);
+TaskCard.belongsToMany(User, { through: UserTaskCard });
 Board.hasMany(List);
+Board.belongsToMany(User, { through: UserBoard })
 List.belongsTo(Board);
 
 module.exports = {

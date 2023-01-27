@@ -7,6 +7,7 @@ import CreateBoardForm from "../features/createBoardForm/CreateBoardForm";
 const Home = () => {
 const username = useSelector((state) => state.auth.me.username);
 
+
   return (
     <>
       <div>
