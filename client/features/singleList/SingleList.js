@@ -1,6 +1,7 @@
 import React, { useState }from "react";
 import { useDispatch } from "react-redux";
 import { addTaskCard } from "../taskCards/taskCardsSlice";
+import SingleTaskCard from "../taskCards/SingleTaskCard";
 
 const SingleList = (props) => {
   const [taskCardName, setTaskCardName] = useState('');
@@ -31,8 +32,8 @@ const SingleList = (props) => {
       <div className='list-taskCards-container'>
         {list.taskcards && list.taskcards.length ? list.taskcards.map((taskCard) => (
           <div key={`taskCard#${taskCard.id}`} className='taskCard'>
-            {/* // <TaskCards taskCard={taskCard} /> */}
-            <p> TEST TASK CARD </p>
+            <SingleTaskCard taskCard={taskCard} />
+            {/* <p> TEST TASK CARD </p> */}
           </div>
         )) : null}
 
