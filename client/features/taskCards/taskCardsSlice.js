@@ -12,7 +12,7 @@ export const fetchTaskCards = createAsyncThunk(
       console.log(err);
     }
   }
-)
+);
 
 export const addTaskCard = createAsyncThunk(
   'addTaskCard',
@@ -23,6 +23,7 @@ export const addTaskCard = createAsyncThunk(
         position,
         listId
       });
+      console.log(data);
       return data;
     } catch (err) {
       console.log(err);
@@ -43,9 +44,9 @@ const taskCardsSlice = createSlice({
       state.push(action.payload);
     });
   }
-})
+});
 
-export const selectTaskCards = (state) => state.taskCards
+export const selectTaskCards = (state) => state.taskCards;
 
-export default taskCardsSlice.reducer
+export default taskCardsSlice.reducer;
 
