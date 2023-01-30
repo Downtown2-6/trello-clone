@@ -31,6 +31,5 @@ module.exports = {
     TaskCard,
     UserTaskCard,
     UserBoard,
-    Event,
   },
 };
