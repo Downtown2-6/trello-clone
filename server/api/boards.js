@@ -2,7 +2,6 @@ const router = require("express").Router();
 
 const Board = require("../db/models/Board");
 const UserBoard = require("../db/models/UserBoard");
-const userBoards = require("../db/models/UserBoard");
 const List = require("../db/models/List");
 const TaskCard = require("../db/models/TaskCard");
 
@@ -18,6 +17,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+
 // GET /api/boards/:userId/:boardId
 router.get('/:userId/:boardId', async (req, res, next) => {
   try {
@@ -32,19 +32,7 @@ router.get('/:userId/:boardId', async (req, res, next) => {
   }
 });
 
-router.get("/user", async (req, res, next) => {
-  try {
-    console.log("This is inside of the api route for boards/user");
-    const theUserId = 1;
-    const boards = await UserBoard.findAll({
-      where: { userId: theUserId },
-      include: { model: Board },
-    });
-    res.json(boards);
-  } catch (error) {
-    next(error);
-  }
-});
+
 
 // --------------------------
 //#region This works

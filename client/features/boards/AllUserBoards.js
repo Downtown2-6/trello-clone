@@ -7,21 +7,20 @@ const UserBoards = () => {
   const dispatch = useDispatch();
   const allUserBoards = useSelector(selectUserBoards);
   const navigate = useNavigate();
-
+  const userId = useSelector((state) => state.auth.me.id);
   console.log("This is allUserBoards", allUserBoards);
 
   useEffect(() => {
-    dispatch(fetchAllUserBoards());
-  }, [dispatch]);
+    dispatch(fetchAllUserBoards(userId));
+  }, []);
 
   return (
     <div>
       <h4>Your Boards</h4>
       <div>
-        {console.log(allUserBoards)}
         {allUserBoards && allUserBoards.length
-          ? allUserBoards.map(({ board }, index) => {
-              console.log("Board name", board.boardName);
+          ? allUserBoards.map(({board}, index) => {
+              console.log("Board name", board);
               //will need to fix navigate when we have more than one board
               return (
                 <div key={index} onClick={() => navigate(`/board`)}>
