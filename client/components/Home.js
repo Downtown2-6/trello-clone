@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import Navbar from "../features/navBar/NavBar";
 import UserBoards from "../features/boards/AllUserBoards";
 import CreateBoardForm from "../features/createBoardForm/CreateBoardForm";
+import AllUserBoardsSlice from "../features/boards/allUserBoardsSlice";
 
 const Home = () => {
 const username = useSelector((state) => state.auth.me.username);

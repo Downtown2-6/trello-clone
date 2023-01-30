@@ -1,5 +1,11 @@
 const router = require("express").Router();
-const { models: { Board, UserBoard, List, TaskCard }} = require('../db');
+
+const Board = require("../db/models/Board");
+const UserBoard = require("../db/models/UserBoard");
+const userBoards = require("../db/models/UserBoard");
+const List = require("../db/models/List");
+const TaskCard = require("../db/models/TaskCard");
+
 
 // matches GET requests to /api/kittens/
 router.get("/", async (req, res, next) => {
@@ -51,6 +57,11 @@ router.post("/", async (req, res, next) => {
       creatorId: req.body.loggedInUserId,
     });
 
+    const userBoard = await UserBoard.create({
+      userId: req.body.loggedInUserId,
+      boardId: newBoard.id,
+      privilege: "ADMIN",
+    });
     res.status(201).send(newBoard);
   } catch (error) {
     next(error);
