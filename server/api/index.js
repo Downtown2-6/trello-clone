@@ -1,8 +1,8 @@
 const router = require('express').Router();
 
-router.use('/users', require('./users')); 
-router.use('/boards', require('./boards')); 
-router.use('/tasks', require('./tasks')); 
+router.use('/users', require('./users'));
+router.use('/boards', require('./boards'));
+router.use('/tasks', require('./tasks'));
 
 // 404 error handling
 router.use((req, res, next) => {
