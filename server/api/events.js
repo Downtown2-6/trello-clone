@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Event = require("../models/Event");
+const Event = require("../db/models/Event");
 
 router.get("/", async (req, res) => {
   try {
@@ -20,3 +20,5 @@ router.post("/", async (req, res) => {
     res.status(500).send(err);
   }
 });
+
+module.exports = router;
