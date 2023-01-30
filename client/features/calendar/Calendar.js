@@ -1,39 +1,22 @@
 import React from "react";
-import FullCalendar from "fullcalendar-reactwrapper";
+import FullCalendar from "@fullcalendar/react";
+import daygridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import { useState } from "react";
 
-class Calendar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { events: [] };
-  }
-
-  componentDidMount() {
-    // fetch events from the backend and set them in the state
-    fetch("/api/events")
-      .then((response) => response.json())
-      .then((data) => {
-        this.setState({ events: data });
-      });
-  }
-
-  render() {
-    return (
+export const MyCalendar = () => {
+  return (
+    <div>
       <FullCalendar
-        events={this.state.events}
-        header={{
-          left: "prev,next today",
-          center: "title",
-          right: "month,agendaWeek,agendaDay",
+        headerToolbar={{
+          start: "today prev next",
+          end: "dayGridMonth dayGridWeek dayGridDay",
         }}
-        defaultView="month"
-        navLinks={true}
-        editable={true}
-        eventLimit={true}
-        selectable={true}
-        selectHelper={true}
-        select={this.handleSelect}
-        eventClick={this.handleEventClick}
+        plugins={[daygridPlugin]}
+        views={["dayGridMonth", "dayGridWeek", "dayGridDay"]}
+        height={"90vh"}
       />
-    );
-  }
-}
+      ;
+    </div>
+  );
+};
