@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { fetchLists, selectLists } from "../lists/listsSlice";
 import { fetchSingleBoard, selectSingleBoard } from "./singleBoardSlice";
 import SingleList from "../singleList/SingleList";
+import { fetchTaskCards, selectTaskCards } from "../taskCards/taskCardsSlice";
 
 const SingleBoard = () => {
   const dispatch = useDispatch();
@@ -11,11 +12,13 @@ const SingleBoard = () => {
   const { boardId } = useParams();
   const board = useSelector(selectSingleBoard);
   const lists = useSelector(selectLists);
+  const taskCards = useSelector(selectTaskCards);
 
   useEffect(() => {
     dispatch(fetchSingleBoard({userId, boardId}));
     dispatch(fetchLists({userId, boardId}));
-  }, [dispatch, board.boardId]);
+    dispatch(fetchTaskCards({boardId}));
+  }, [dispatch, board.id, taskCards.length]);
 
   return (
     <div>
@@ -26,7 +29,7 @@ const SingleBoard = () => {
 
           {lists && lists.length ? lists.map((list) => (
             <div key={`list#${list.id}`} className='list-container'>
-              <SingleList list={list} />
+              <SingleList boardId={board.id} list={list} />
             </div>
           )) : null}
 

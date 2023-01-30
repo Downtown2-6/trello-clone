@@ -1,23 +1,28 @@
-import React, { useEffect }from "react";
-import { useDispatch, useSelector } from "react-redux";
-import TaskCards from '../taskCards/TaskCards';
-import { fetchTaskCards, selectTaskCards } from "../taskCards/taskCardsSlice";
+import React, { useState }from "react";
+import { useDispatch } from "react-redux";
+import { addTaskCard } from "../taskCards/taskCardsSlice";
 
 const SingleList = (props) => {
+  const [taskCardName, setTaskCardName] = useState('');
 
-  const list = props.list
-  console.log(list)
+  const boardId = props.boardId;
+  const list = props.list;
+  const listId = list.id;
+  const numTaskCards = list.taskcards.length;
 
-  // const dispatch = useDispatch();
-  // const taskCards = useSelector(selectTaskCards);
+  const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   dispatch(fetchTaskCards({listId}))
-  // }, [dispatch])
-
-  const addTaskCard = async (evt) => {
+  const handleSubmitTaskCard = async (evt) => {
     evt.preventDefault();
-    await dispatch()
+    if (taskCardName.length) {
+      await dispatch(addTaskCard({ 
+        boardId, 
+        listId, 
+        taskcardName: taskCardName, 
+        position: numTaskCards 
+      }));
+      setTaskCardName('');
+    }
   }
 
   return (
@@ -33,12 +38,13 @@ const SingleList = (props) => {
 
       </div>
       <div className='list-bottom-container'>
-        <form className='add-taskCard-form' onSubmit={addTaskCard}>
+        <form className='add-taskCard-form' onSubmit={handleSubmitTaskCard}>
           <input 
             className='add-taskCard' 
             name='taskcardName'
             type='text'
-            minLength='1'
+            value={taskCardName}
+            onChange={(evt) => setTaskCardName(evt.target.value)}
           />
           <button className='add-taskCard-button' type='submit'>
             Add card
