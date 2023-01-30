@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import { logout } from '../auth/authSlice';
 
 
 
@@ -17,7 +18,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const logoutAndRedirectHome = () => {
     dispatch(logout());
-    navigate('/login');
+    navigate('/signup');
   };
 
   const id = useSelector((state) => state.auth.me.cartId);
@@ -42,7 +43,8 @@ const Navbar = () => {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} onClick={() => navigate(`/home`)}>
               Trell-O
             </Typography>
-            {/* <Button color="inherit" onClick={() => navigate(`/login`)}>Login</Button> */}
+            <Button color="inherit" onClick={() => navigate(`/calendar`)}>My Calendar</Button>
+            <Button color="inherit" onClick={() => logoutAndRedirectHome()}>Logout</Button>
           </Toolbar>
         </AppBar>
         ) : (
