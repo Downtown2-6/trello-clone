@@ -19,7 +19,8 @@ export const createUserBoard = createAsyncThunk(
       "http://localhost:3000/api/boards",
       parameter
     );
-    return data;
+    const response = await axios.get(`/api/boards/user`);
+    return response.data;
   }
 );
 
