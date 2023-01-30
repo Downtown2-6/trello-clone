@@ -4,9 +4,9 @@ import axios from "axios";
 
 export const fetchTaskCards = createAsyncThunk(
   'fetchTaskCards',
-  async ({listId}) => {
+  async ({boardId}) => {
     try{
-      const { data } = await axios.get(`/api/tasks/${listId}`);
+      const { data } = await axios.get(`/api/tasks/${boardId}`);
       return data;
     } catch (err) {
       console.log(err);
@@ -16,12 +16,13 @@ export const fetchTaskCards = createAsyncThunk(
 
 export const addTaskCard = createAsyncThunk(
   'addTaskCard',
-  async ({listId, taskcardName, position}) => {
+  async ({boardId, listId, taskcardName, position}) => {
     try {
-      const { data } = await axios.post(`/api/tasks/${listId}`, {
+      const { data } = await axios.post(`/api/tasks/${boardId}`, {
         taskcardName,
         position,
-        listId
+        listId,
+        boardId
       });
       console.log(data);
       return data;

@@ -2,12 +2,12 @@ const TaskCard = require('../db/models/TaskCard');
 
 const router = require('express').Router();
 
-// GET /api/tasks/:listId
-router.get('/:listId', async (req, res, next) => {
+// GET /api/tasks/:boardId
+router.get('/:boardId', async (req, res, next) => {
   try{
     const tasks = await TaskCard.findAll({
       where: {
-        listId: req.params.listId
+        boardId: req.params.boardId
       },
       order: [['position', 'ASC']],
     });
@@ -17,8 +17,8 @@ router.get('/:listId', async (req, res, next) => {
   }
 });
 
-// POST /api/tasks/:listId
-router.post('/:listId', async (req, res, next) => {
+// POST /api/tasks/:boardId
+router.post('/:boardId', async (req, res, next) => {
   try {
     res.status(200).json(await TaskCard.create(req.body));
   } catch (err) {

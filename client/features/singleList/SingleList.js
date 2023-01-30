@@ -1,27 +1,26 @@
-import React, { useEffect, useState }from "react";
-import { useDispatch, useSelector } from "react-redux";
-import TaskCards from '../taskCards/TaskCards';
-import { addTaskCard, fetchTaskCards, selectTaskCards } from "../taskCards/taskCardsSlice";
+import React, { useState }from "react";
+import { useDispatch } from "react-redux";
+import { addTaskCard } from "../taskCards/taskCardsSlice";
 
 const SingleList = (props) => {
   const [taskCardName, setTaskCardName] = useState('');
 
+  const boardId = props.boardId;
   const list = props.list;
   const listId = list.id;
   const numTaskCards = list.taskcards.length;
-  console.log(list)
 
   const dispatch = useDispatch();
-  // const taskCards = useSelector(selectTaskCards);
-
-  // useEffect(() => {
-  //   dispatch(fetchTaskCards({listId}));
-  // }, [dispatch]);
 
   const handleSubmitTaskCard = async (evt) => {
     evt.preventDefault();
     if (taskCardName.length) {
-      await dispatch(addTaskCard({ listId, taskcardName: taskCardName, position: numTaskCards }));
+      await dispatch(addTaskCard({ 
+        boardId, 
+        listId, 
+        taskcardName: taskCardName, 
+        position: numTaskCards 
+      }));
       setTaskCardName('');
     }
   }
