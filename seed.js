@@ -10,8 +10,10 @@ const {
  *      match the models, and populates the database.
  */
 async function seed() {
+  console.log(`\nHere\n\nis\nthe\nbeforeSync`);
   await db.sync({ force: true }); // clears db and matches models to tables
   console.log("db synced!");
+  console.log(`\nHere\n\nis\nthe\n AFTER \n SYNC\n`);
 
   // Creating Users
   const users = await Promise.all([
@@ -60,7 +62,10 @@ async function seed() {
   const userBoard = await Promise.all([
     UserBoard.create({ userId: 1, boardId: 1, privilege: "ADMIN" }),
     UserBoard.create({ userId: 2, boardId: 2, privilege: "ADMIN" }),
+    UserBoard.create({ userId: 2, boardId: 1, privilege: "USER" }),
+    UserBoard.create({ userId: 1, boardId: 2, privilege: "USER" }),
   ]);
+
 
   console.log(`seeded ${users.length} users`);
   console.log(`seeded successfully`);
