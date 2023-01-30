@@ -2,7 +2,7 @@
 
 const {
   db,
-  models: { User, Board, List, Event, Taskcard, UserTaskcard, UserBoard },
+  models: { User, Board, List, TaskCard, UserTaskCard, UserBoard },
 } = require("./server/db");
 const EventInvite = require("./server/db/models/EventInvite");
 
@@ -18,8 +18,8 @@ async function seed() {
 
   // Creating Users
   const users = await Promise.all([
-    User.create({ email: "cody@gmail.com", password: "123" }),
-    User.create({ email: "murphy@gmail.com", password: "123" }),
+    User.create({ firstName: 'Cody', lastName: 'Code', email: "cody@gmail.com", password: "123" }),
+    User.create({ firstName: 'Murphy', lastName: 'Murph', email: "murphy@gmail.com", password: "123" }),
   ]);
 
   // Creating Board
@@ -30,24 +30,32 @@ async function seed() {
 
   // Creating List
   const list = await Promise.all([
-    List.create({ listName: "This List", position: 1 }),
-    List.create({ listName: "That List", position: 2 }),
+    List.create({ id: 1, listName: "To Do", position: 1, boardId: 1 }),
+    List.create({ id: 2, listName: "In Progress", position: 2, boardId: 1 }),
+    List.create({ id: 3, listName: "Code Review", position: 3, boardId: 1 }),
+    List.create({ id: 4, listName: "Complete", position: 4, boardId: 1 }),
+    List.create({ id: 5, listName: "To Do", position: 1, boardId: 2 }),
+    List.create({ id: 6, listName: "In Progress", position: 2, boardId: 2 }),
+    List.create({ id: 7, listName: "Code Review", position: 3, boardId: 2 }),
+    List.create({ id: 8, listName: "Complete", position: 4, boardId: 2 }),
   ]);
 
-  // Creating Taskcard
+  // Creating TaskCard
   const taskcard = await Promise.all([
-    Taskcard.create({ taskcardName: "First Task", position: 1 }),
-    Taskcard.create({ taskcardName: "Second Task", position: 2 }),
-    Taskcard.create({ taskcardName: "Third Task", position: 3 }),
-    Taskcard.create({ taskcardName: "Fourth Task", position: 4 }),
+    TaskCard.create({ id: 1, taskcardName: "Navbar", position: 1, listId: 2, boardId: 1 }),
+    TaskCard.create({ id: 2, taskcardName: "Express Routes", position: 1, listId: 3, boardId: 1 }),
+    TaskCard.create({ id: 3, taskcardName: "Board Feature", position: 2, listId: 2, boardId: 1 }),
+    TaskCard.create({ id: 4, taskcardName: "List Feature", position: 3, listId: 2, boardId: 1 }),
+    TaskCard.create({ id: 5, taskcardName: "TaskCard Feature", position: 1, listId: 1, boardId: 1 }),
+    TaskCard.create({ id: 6, taskcardName: "Task Feature", position: 2, listId: 1, boardId: 1 }),
   ]);
 
-  // Creating UserTaskcard
-  const userTaskcard = await Promise.all([
-    UserTaskcard.create({ userId: 1, taskcardId: 1 }),
-    UserTaskcard.create({ userId: 1, taskcardId: 2 }),
-    UserTaskcard.create({ userId: 2, taskcardId: 3 }),
-    UserTaskcard.create({ userId: 2, taskcardId: 4 }),
+  // Creating UserTaskCard
+  const userTaskCard = await Promise.all([
+    UserTaskCard.create({ userId: 1, taskcardId: 1 }),
+    UserTaskCard.create({ userId: 1, taskcardId: 2 }),
+    UserTaskCard.create({ userId: 2, taskcardId: 3 }),
+    UserTaskCard.create({ userId: 2, taskcardId: 4 }),
   ]);
 
   // Creating UserBoard

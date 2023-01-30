@@ -1,9 +1,8 @@
 const router = require('express').Router();
 
-router.use('/users', require('./users')); // matches all requests to /api/users/
-router.use('/tasks', require('./tasks')); // matches all requests to  /api/puppies/
-router.use('/events', require('./events')); // matches all requests to  /api/puppies/
-router.use('/boards', require('./boards')); // matches all requests to  /api/kittens/
+router.use('/users', require('./users'));
+router.use('/boards', require('./boards'));
+router.use('/tasks', require('./tasks'));
 
 // 404 error handling
 router.use((req, res, next) => {

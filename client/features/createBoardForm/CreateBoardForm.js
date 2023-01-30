@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createUserBoard } from "../boards/allUserBoardsSlice";
+import { createUserBoard, fetchAllUserBoards } from "../boards/allUserBoardsSlice";
 
 const CreateBoardForm = (props) => {
   const [boardName, setBoardName] = useState("");
   const dispatch = useDispatch();
   const loggedInUserId = useSelector((state) => state.auth.me.id);
+
 
   const handleSubmit = (e) => {
     e.preventDefault();

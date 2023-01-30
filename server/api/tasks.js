@@ -2,24 +2,28 @@ const TaskCard = require('../db/models/TaskCard');
 
 const router = require('express').Router();
 
-// matches GET requests to /api/tasks/
-router.get('/', async (req, res, next) => {
+// GET /api/tasks/:listId
+router.get('/:listId', async (req, res, next) => {
   try{
-    console.log('***** tasks backend route hit *****')
-    const tasks = await TaskCard.findAll()
+    const tasks = await TaskCard.findAll({
+      where: {
+        listId: req.params.listId
+      },
+      order: [['position', 'ASC']],
+    });
     res.status(200).json(tasks)
   }catch (err){
-    next(err)
+    next(err);
   }
 });
 
-// // matches POST requests to /api/puppies/
-// router.post('/', function (req, res, next) { /* etc */});
-
-// // matches PUT requests to /api/puppies/:puppyId
-// router.put('/:puppyId', function (req, res, next) { /* etc */});
-
-// // matches DELETE requests to /api/puppies/:puppyId
-// router.delete('/:puppyId', function (req, res, next) { /* etc */});
+// POST /api/tasks/:listId
+router.post('/:listId', async (req, res, next) => {
+  try {
+    res.status(200).json(await TaskCard.create(req.body));
+  } catch (err) {
+    next(err);
+  }
+});
 
 module.exports = router;
