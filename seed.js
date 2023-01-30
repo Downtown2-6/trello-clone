@@ -4,7 +4,6 @@ const {
   db,
   models: { User, Board, List, TaskCard, UserTaskCard, UserBoard },
 } = require("./server/db");
-const EventInvite = require("./server/db/models/EventInvite");
 
 /**
  * seed - this function clears the database, updates tables to
@@ -67,47 +66,6 @@ async function seed() {
     UserBoard.create({ userId: 1, boardId: 2, privilege: "USER" }),
   ]);
 
-  // Creating Event
-  console.log(`creating events`);
-  const events = await Promise.all([
-    Event.create({
-      title: "Meeting with team",
-      startTime: "2022-03-01T10:00:00",
-      endTime: "2022-03-01T12:00:00",
-      userId: 1,
-      description: "No",
-    }),
-    Event.create({
-      title: "Project deadline",
-      startTime: "2022-03-15T09:00:00",
-      endTime: "2022-03-15T17:00:00",
-      userId: 1,
-      description: "No",
-    }),
-    Event.create({
-      title: "Client call",
-      startTime: "2022-03-10T14:00:00",
-      endTime: "2022-03-10T15:00:00",
-      userId: 2,
-      description: "No",
-    }),
-    Event.create({
-      title: "Team lunch",
-      startTime: "2022-03-20T12:00:00",
-      endTime: "2022-03-20T13:00:00",
-      userId: 2,
-      description: "No",
-    }),
-  ]);
-
-  // Creating EventInvite
-  const eventinvite = Promise.all([
-    EventInvite.create({ eventId: 1, userId: 2, status: "accepted" }),
-    EventInvite.create({ eventId: 1, userId: 1, status: "accepted" }),
-    EventInvite.create({ eventId: 2, userId: 2, status: "rejected" }),
-    EventInvite.create({ eventId: 1, userId: 1, status: "accepted" }),
-    EventInvite.create({ eventId: 2, userId: 2, status: "pending" }),
-  ]);
 
   console.log(`seeded ${users.length} users`);
   console.log(`seeded successfully`);
