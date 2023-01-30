@@ -28,7 +28,6 @@ const Main = () => {
   return (
     <div id="main">
       <div id="header">
-        <h1>Trell-O</h1>
       </div>
       <Navbar />
       <nav>
@@ -37,6 +36,9 @@ const Main = () => {
             {/* The navbar will show these links after user logs in */}
             <Link to="/home">Home</Link>
             {/* <Link to='/board/:boardId'>Board</Link> */}
+            <Link to="/calendar" id="nav-link-calendar" className="nav-link">
+              My Calendar
+            </Link>
             <button type="button" onClick={logoutAndRedirectHome}>
               Logout
             </button>
