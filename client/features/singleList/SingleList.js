@@ -9,7 +9,7 @@ const SingleList = (props) => {
   const boardId = props.boardId;
   const list = props.list;
   const listId = list.id;
-  const numTaskCards = list.taskcards.length;
+  const numTaskCards = list.taskcards.length + 1;
 
   const dispatch = useDispatch();
 

@@ -1,5 +1,4 @@
-const TaskCard = require('../db/models/TaskCard');
-
+const { models: { TaskCard }} = require('../db');
 const router = require('express').Router();
 
 // GET /api/tasks/:boardId

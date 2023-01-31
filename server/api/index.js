@@ -2,6 +2,7 @@ const router = require('express').Router();
 
 router.use('/users', require('./users'));
 router.use('/boards', require('./boards'));
+router.use('/lists', require('./lists'));
 router.use('/tasks', require('./tasks'));
 
 // 404 error handling
