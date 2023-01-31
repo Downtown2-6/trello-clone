@@ -4,14 +4,14 @@ import { addTaskCard } from "../taskCards/taskCardsSlice";
 import SingleTaskCard from "../taskCards/SingleTaskCard";
 
 const SingleList = (props) => {
-  const [taskCardTitle, setTaskCardTitle] = useState('');
-
   const boardId = props.boardId;
   const list = props.list;
   const listId = list.id;
   const numTaskCards = list.taskcards.length + 1;
 
   const dispatch = useDispatch();
+
+  const [taskCardTitle, setTaskCardTitle] = useState('');
 
   const handleSubmitTaskCard = async (evt) => {
     evt.preventDefault();
