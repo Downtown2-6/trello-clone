@@ -2,14 +2,18 @@ const Sequelize = require("sequelize");
 const db = require("../db");
 
 const TaskCard = db.define("taskcard", {
-  taskcardName: {
+  title: {
     type: Sequelize.STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
     },
   },
-  dueDate: {
+  start: {
+    type: Sequelize.DATE,
+    allowNull: true,
+  },
+  end: {
     type: Sequelize.DATE,
     allowNull: true,
   },

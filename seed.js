@@ -41,12 +41,12 @@ async function seed() {
 
   // Creating TaskCard
   const taskcard = await Promise.all([
-    TaskCard.create({ taskcardName: "Navbar", position: 1, listId: 2, boardId: 1 }),
-    TaskCard.create({ taskcardName: "Express Routes", position: 1, listId: 3, boardId: 1 }),
-    TaskCard.create({ taskcardName: "Board Feature", position: 2, listId: 2, boardId: 1 }),
-    TaskCard.create({ taskcardName: "List Feature", position: 3, listId: 2, boardId: 1 }),
-    TaskCard.create({ taskcardName: "TaskCard Feature", position: 1, listId: 1, boardId: 1 }),
-    TaskCard.create({ taskcardName: "Task Feature", position: 2, listId: 1, boardId: 1 }),
+    TaskCard.create({start: new Date('2023-01-29T03:24:00'), end:new Date('2023-01-30T03:24:00') , title: "Navbar", position: 1, listId: 2, boardId: 1 }),
+    TaskCard.create({start: new Date('2023-01-29T03:24:00'), end:new Date('2023-01-30T03:24:00') , title: "Express Routes", position: 1, listId: 3, boardId: 1 }),
+    TaskCard.create({start: new Date('2023-01-29T03:24:00'), end:new Date('2023-01-30T03:24:00') , title: "Board Feature", position: 2, listId: 2, boardId: 1 }),
+    TaskCard.create({start: new Date('2023-01-29T03:24:00'), end:new Date('2023-01-30T03:24:00') , title: "List Feature", position: 3, listId: 2, boardId: 1 }),
+    TaskCard.create({start: new Date('2023-01-29T03:24:00'), end:new Date('2023-01-30T03:24:00') , title: "TaskCard Feature", position: 1, listId: 1, boardId: 1 }),
+    TaskCard.create({start: new Date('2023-01-29T03:24:00'), end:new Date('2023-01-30T03:24:00') , title: "Task Feature", position: 2, listId: 1, boardId: 1 }),
   ]);
 
   // Creating UserTaskCard
