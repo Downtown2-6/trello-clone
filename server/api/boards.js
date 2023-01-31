@@ -1,8 +1,6 @@
 const router = require("express").Router();
-
 const Board = require("../db/models/Board");
 const UserBoard = require("../db/models/UserBoard");
-const userBoards = require("../db/models/UserBoard");
 const List = require("../db/models/List");
 const TaskCard = require("../db/models/TaskCard");
 
@@ -18,12 +16,13 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+
 // GET /api/boards/:userId/:boardId
 router.get('/:userId/:boardId', async (req, res, next) => {
   try {
     const board = await Board.findByPk(req.params.boardId, {
       include: {
-        model: List, 
+        model: List,
         separate: true,
         order: [['position', 'ASC']],
         include: {
@@ -39,25 +38,13 @@ router.get('/:userId/:boardId', async (req, res, next) => {
   }
 });
 
-router.get("/user", async (req, res, next) => {
-  try {
-    console.log("This is inside of the api route for boards/user");
-    const theUserId = 1;
-    const boards = await UserBoard.findAll({
-      where: { userId: theUserId },
-      include: { model: Board },
-    });
-    res.json(boards);
-  } catch (error) {
-    next(error);
-  }
-});
 
 // --------------------------
 //#region This works
 // --------------------------
 router.post("/", async (req, res, next) => {
   try {
+
     console.log(`The\npost\nthing\nis\nhere\n HAHA`, req.body);
     const newBoard = await Board.create({
       boardName: req.body.boardName,
@@ -74,7 +61,6 @@ router.post("/", async (req, res, next) => {
     next(error);
   }
 });
-
 
 
 module.exports = router;
