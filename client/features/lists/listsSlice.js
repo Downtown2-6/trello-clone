@@ -8,7 +8,7 @@ export const fetchLists = createAsyncThunk(
       const {data} = await axios.get(`/api/lists/${boardId}`);
       return data;
     } catch (err) {
-      next(err);
+      console.log(err);
     };
   }
 );
@@ -24,7 +24,7 @@ export const addList = createAsyncThunk(
       });
       return data;
     } catch (err) {
-      next(err);
+      console.log(err);
     }
   }
 )

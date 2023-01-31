@@ -5,9 +5,8 @@ export const fetchSingleBoard = createAsyncThunk(
   'fetchSingleBoard',
   async ({userId, boardId}) => {
     try {
-      const response = await axios.get(`/api/boards/${userId}/${boardId}`);
-      console.log(response.data);
-      return response.data;
+      const {data} = await axios.get(`/api/boards/${userId}/${boardId}`);
+      return data;
     } catch (error) {
       console.log(error);
     }

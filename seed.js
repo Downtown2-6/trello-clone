@@ -29,14 +29,14 @@ async function seed() {
 
   // Creating List
   const list = await Promise.all([
-    List.create({ id: 1, listName: "To Do", position: 1, boardId: 1 }),
-    List.create({ id: 2, listName: "In Progress", position: 2, boardId: 1 }),
-    List.create({ id: 3, listName: "Code Review", position: 3, boardId: 1 }),
-    List.create({ id: 4, listName: "Complete", position: 4, boardId: 1 }),
-    List.create({ id: 5, listName: "To Do", position: 1, boardId: 2 }),
-    List.create({ id: 6, listName: "In Progress", position: 2, boardId: 2 }),
-    List.create({ id: 7, listName: "Code Review", position: 3, boardId: 2 }),
-    List.create({ id: 8, listName: "Complete", position: 4, boardId: 2 }),
+    List.create({ listName: "To Do", position: 1, boardId: 1 }),
+    List.create({ listName: "In Progress", position: 2, boardId: 1 }),
+    List.create({ listName: "Code Review", position: 3, boardId: 1 }),
+    List.create({ listName: "Complete", position: 4, boardId: 1 }),
+    List.create({ listName: "To Do", position: 1, boardId: 2 }),
+    List.create({ listName: "In Progress", position: 2, boardId: 2 }),
+    List.create({ listName: "Code Review", position: 3, boardId: 2 }),
+    List.create({ listName: "Complete", position: 4, boardId: 2 }),
   ]);
 
   // Creating TaskCard

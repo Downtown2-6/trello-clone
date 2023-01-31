@@ -33,7 +33,6 @@ const SingleList = (props) => {
         {list.taskcards && list.taskcards.length ? list.taskcards.map((taskCard) => (
           <div key={`taskCard#${taskCard.id}`} className='taskCard'>
             <SingleTaskCard taskCard={taskCard} />
-            {/* <p> TEST TASK CARD </p> */}
           </div>
         )) : null}
 

@@ -20,19 +20,20 @@ const SingleBoard = () => {
     dispatch(fetchSingleBoard({userId, boardId}));
     dispatch(fetchLists({userId, boardId}));
     dispatch(fetchTaskCards({boardId}));
-  }, [dispatch, board.id, taskCards.length]);
+  }, [dispatch, board.id, taskCards.length, lists.length]);
 
-  // const handleSubmitList = async (evt) => {
-  //   evt.preventDefault();
-  //   if (listName.length) {
-  //     await dispatch(addList({
-  //       boardId: board.id,
-  //       listName,
-  //       position: board.lists.length + 1
-  //     }));
-  //     setListName('');
-  //   };
-  // };
+  const handleSubmitList = async (evt) => {
+    evt.preventDefault();
+    const position = board.lists.length + 1;
+    if (listName.length) {
+      await dispatch(addList({
+        boardId: board.id,
+        listName,
+        position
+      }));
+      setListName('');
+    };
+  };
 
   return (
     <div>
@@ -41,13 +42,13 @@ const SingleBoard = () => {
         <h2>{board.boardName}</h2>
         <div className='board-lists-container'>
 
-          {lists && lists.length ? lists.map((list) => (
+          {board.lists && board.lists.length ? board.lists.map((list) => (
             <div key={`list#${list.id}`} className='list-container'>
               <SingleList boardId={board.id} list={list} />
             </div>
           )) : null}
 
-          {/* <div className='list-container add-list-container'>
+          <div className='list-container add-list-container'>
             <form className='add-list-form' onSubmit={handleSubmitList}>
               <input 
                 className='add-list' 
@@ -60,7 +61,7 @@ const SingleBoard = () => {
                 Add another list
               </button>
             </form>
-          </div> */}
+          </div>
 
         </div>
       </div>
