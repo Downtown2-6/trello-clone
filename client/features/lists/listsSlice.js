@@ -3,15 +3,31 @@ import axios from "axios";
 
 export const fetchLists = createAsyncThunk(
   'fetchLists',
-  async ({userId, boardId}) => {
+  async ({boardId}) => {
     try {
-      const {data} = await axios.get(`/api/boards/${userId}/${boardId}`);
-      return data.lists;
+      const {data} = await axios.get(`/api/lists/${boardId}`);
+      return data;
     } catch (err) {
-      next(err);
+      console.log(err);
     };
   }
 );
+
+export const addList = createAsyncThunk(
+  'addList',
+  async ({boardId, listName, position}) => {
+    try {
+      const {data} = await axios.post(`/api/lists/${boardId}`, {
+        listName,
+        position,
+        boardId
+      });
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+)
 
 const listsSlice = createSlice({
   name: 'lists',
@@ -20,6 +36,10 @@ const listsSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchLists.fulfilled, (state, action) => {
       return action.payload;
+    });
+
+    builder.addCase(addList.fulfilled, (state, action) => {
+      state.push(action.payload);
     });
   }
 });

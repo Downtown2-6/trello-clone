@@ -6,7 +6,7 @@ const List = require("../db/models/List");
 const TaskCard = require("../db/models/TaskCard");
 
 
-// matches GET requests to /api/kittens/
+// GET /api/boards
 router.get("/", async (req, res, next) => {
   try {
     console.log("***** Boards backend route hit *****");
@@ -22,9 +22,16 @@ router.get("/", async (req, res, next) => {
 router.get('/:userId/:boardId', async (req, res, next) => {
   try {
     const board = await Board.findByPk(req.params.boardId, {
-      include: [
-        {model: List, include: [TaskCard]}
-      ]
+      include: {
+        model: List, 
+        separate: true,
+        order: [['position', 'ASC']],
+        include: {
+          model: TaskCard,
+          separate: true,
+          order: [['position', 'ASC']]
+        }
+      }
     });
     res.status(200).json(board);
   } catch (err) {
