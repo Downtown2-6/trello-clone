@@ -21,6 +21,14 @@ const TaskCard = db.define("taskcard", {
     type: Sequelize.INTEGER,
     allowNull: true,
   },
+  editable: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: true,
+    validate: {
+      notEmpty: true,
+    },
+  },
 });
 
 module.exports = TaskCard;

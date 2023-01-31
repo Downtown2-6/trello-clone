@@ -16,9 +16,18 @@ export const MyCalendar = () => {
     });
   }, []);
 
+  const updateEvent = async ({event}) => {
+    console.log('This is updateEvent', event);
+    console.log('This is updateEvent event start', event.start);
+    console.log("This is updateEvent event end", event.end);
+    axios.put(`/api/tasks/${event.id}`, {
+      start: event.start,
+      end: event.end,
+    });
+  };
+
   return (
     <div>
-      {console.log(`These are the events at the FullCalender prop`, events)}
       <FullCalendar
         headerToolbar={{
           start: "today prev next",
@@ -30,6 +39,7 @@ export const MyCalendar = () => {
         views={["dayGridMonth", "dayGridWeek", "dayGridDay"]}
         height={"80vh"}
         events={events}
+        eventDrop={updateEvent}
       />
       ;
     </div>
