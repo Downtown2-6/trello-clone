@@ -6,7 +6,7 @@ const SingleTaskCard = (props) => {
 
   return (
     // <Link>
-      <p>{taskCard.taskcardName}</p>
+      <p>{taskCard.title}</p>
     // </Link>
   )
 }

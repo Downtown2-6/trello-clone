@@ -4,7 +4,7 @@ import { addTaskCard } from "../taskCards/taskCardsSlice";
 import SingleTaskCard from "../taskCards/SingleTaskCard";
 
 const SingleList = (props) => {
-  const [taskCardName, setTaskCardName] = useState('');
+  const [taskCardTitle, setTaskCardTitle] = useState('');
 
   const boardId = props.boardId;
   const list = props.list;
@@ -15,14 +15,14 @@ const SingleList = (props) => {
 
   const handleSubmitTaskCard = async (evt) => {
     evt.preventDefault();
-    if (taskCardName.length) {
+    if (taskCardTitle.length) {
       await dispatch(addTaskCard({ 
         boardId, 
         listId, 
-        taskcardName: taskCardName, 
+        title: taskCardTitle, 
         position: numTaskCards 
       }));
-      setTaskCardName('');
+      setTaskCardTitle('');
     }
   }
 
@@ -41,10 +41,10 @@ const SingleList = (props) => {
         <form className='add-taskCard-form' onSubmit={handleSubmitTaskCard}>
           <input 
             className='add-taskCard' 
-            name='taskcardName'
+            name='title'
             type='text'
-            value={taskCardName}
-            onChange={(evt) => setTaskCardName(evt.target.value)}
+            value={taskCardTitle}
+            onChange={(evt) => setTaskCardTitle(evt.target.value)}
           />
           <button className='add-taskCard-button' type='submit'>
             Add card
