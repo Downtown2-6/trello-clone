@@ -27,7 +27,7 @@ const SingleList = (props) => {
   }
 
   return (
-    <div>
+    <div className='list-container-content'>
       <h4>{list.listName}</h4>
       <div className='list-taskCards-container'>
         {list.taskcards && list.taskcards.length ? list.taskcards.map((taskCard) => (

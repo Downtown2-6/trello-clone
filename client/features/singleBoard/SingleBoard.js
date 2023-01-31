@@ -36,20 +36,53 @@ const SingleBoard = () => {
   };
 
   return (
+    // <div>
+    //   {board ?
+    //   <div className='board-container'>
+    //     <h2>{board.boardName}</h2>
+    //     <div className='board-lists-container'>
+
+    //       {board.lists && board.lists.length ? board.lists.map((list) => (
+    //         <div key={`list#${list.id}`} className='list-container'>
+    //           <SingleList boardId={board.id} list={list} />
+    //         </div>
+    //       )) : null}
+
+    //       <div className='list-container add-list-container'>
+    //         <form className='add-list-form' onSubmit={handleSubmitList}>
+    //           <input 
+    //             className='add-list' 
+    //             name='listName'
+    //             type='text'
+    //             value={listName}
+    //             onChange={(evt) => setListName(evt.target.value)}
+    //           />
+    //           <button className='add-list-button' type='submit'>
+    //             Add another list
+    //           </button>
+    //         </form>
+    //       </div>
+
+    //     </div>
+    //   </div>
+    //   : null}
+    // </div>
+
     <div>
       {board ?
       <div className='board-container'>
         <h2>{board.boardName}</h2>
         <div className='board-lists-container'>
 
-          {board.lists && board.lists.length ? board.lists.map((list) => (
+          {board.lists && board.lists.length ? 
+          board.lists.map((list) => (
             <div key={`list#${list.id}`} className='list-container'>
               <SingleList boardId={board.id} list={list} />
             </div>
           )) : null}
 
-          <div className='list-container add-list-container'>
-            <form className='add-list-form' onSubmit={handleSubmitList}>
+          <div className='list-container'>
+            <form className='add-list-form list-container-content' onSubmit={handleSubmitList}>
               <input 
                 className='add-list' 
                 name='listName'
