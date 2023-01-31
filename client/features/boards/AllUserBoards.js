@@ -19,12 +19,23 @@ const UserBoards = () => {
       <h4>Your Boards</h4>
       <div>
         {allUserBoards && allUserBoards.length
-          ? allUserBoards.map(({board}, index) => {
+          ? allUserBoards.map(({ board }, index) => {
               console.log("Board name", board);
               //will need to fix navigate when we have more than one board
               return (
-                <div key={index} onClick={() => navigate(`/board`)}>
-                  {board.boardName}
+                <div key={index}>
+                  <div onClick={() => navigate(`/board/${board.id}`)}>
+                    {board.boardName}
+                  </div>
+                  {board.isArchived ? (
+                    <button onClick={() => (board.isArchived = false)}>
+                      👁
+                    </button>
+                  ) : (
+                    <button onClick={() => (board.isArchived = true)}>
+                      🙈
+                    </button>
+                  )}
                 </div>
               );
             })

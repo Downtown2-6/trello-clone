@@ -1,5 +1,4 @@
 const router = require("express").Router();
-
 const Board = require("../db/models/Board");
 const UserBoard = require("../db/models/UserBoard");
 const List = require("../db/models/List");
@@ -23,7 +22,7 @@ router.get('/:userId/:boardId', async (req, res, next) => {
   try {
     const board = await Board.findByPk(req.params.boardId, {
       include: {
-        model: List, 
+        model: List,
         separate: true,
         order: [['position', 'ASC']],
         include: {
@@ -40,12 +39,12 @@ router.get('/:userId/:boardId', async (req, res, next) => {
 });
 
 
-
 // --------------------------
 //#region This works
 // --------------------------
 router.post("/", async (req, res, next) => {
   try {
+
     console.log(`The\npost\nthing\nis\nhere\n HAHA`, req.body);
     const newBoard = await Board.create({
       boardName: req.body.boardName,
@@ -62,7 +61,6 @@ router.post("/", async (req, res, next) => {
     next(error);
   }
 });
-
 
 
 module.exports = router;

@@ -1,5 +1,5 @@
-const Sequelize = require('sequelize');
-const db = require('../db');
+const Sequelize = require("sequelize");
+const db = require("../db");
 
 // --------------------------
 //#region FOR MONDAY REVIEW
@@ -19,6 +19,14 @@ const Board = db.define("board", {
   creatorId: {
     type: Sequelize.INTEGER,
     allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
+  },
+  isArchived: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
     validate: {
       notEmpty: true,
     },
