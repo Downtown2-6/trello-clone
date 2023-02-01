@@ -54,6 +54,7 @@ nav {
   border: 1px solid orange;
 }
 
+.editable,
 .taskCard-modal-item {
   margin: 0;
 }
