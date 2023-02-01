@@ -55,21 +55,22 @@ const SingleBoard = () => {
 
           )) : null}
 
-          <div className='list-container'>
-            <form className='add-list-form' onSubmit={handleSubmitList}>
-              <input 
-                className='add-list' 
-                name='listName'
-                type='text'
-                value={listName}
-                onChange={(evt) => setListName(evt.target.value)}
-              />
-              <button className='add-list-button' type='submit'>
-                Add another list
-              </button>
-            </form>
-          </div>
+            <div className='list-container'>
+              <form className='add-list-form' onSubmit={handleSubmitList}>
+                <input 
+                  className='add-list' 
+                  name='listName'
+                  type='text'
+                  value={listName}
+                  onChange={(evt) => setListName(evt.target.value)}
+                />
+                <button className='add-list-button' type='submit'>
+                  Add another list
+                </button>
+              </form>
+            </div>
 
+          </div>
         </div>
         : null}
       </div>

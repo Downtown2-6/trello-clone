@@ -30,6 +30,7 @@ nav {
   display: flex;
   flex-direction: column;
   flex-basis: 0;
+  min-width: 15em;
   margin: 1em;
   border: 1px solid red;
 }
@@ -43,5 +44,10 @@ nav {
   display: flex;
   flex-direction: row;
   flex: 1 auto;
+  width: 100%;
   border: 1px solid green;
+}
+
+.taskCard-draggable {
+  min-width: 14em;
 }

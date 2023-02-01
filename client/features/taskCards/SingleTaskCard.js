@@ -69,9 +69,12 @@ const SingleTaskCard = (props) => {
         {...provided.dragHandleProps}
         isDragging={snapshot.isDragging}
       >
-        <Button 
+        <div className='taskCard-draggable' onClick={handleOpen}>
+          {taskCard.title}
+        </div>
+        {/* <Button 
           sx={{ 
-            width: '100%', 
+            minWidth: '15em', 
             fontFamily: 'Segoe UI', 
             justifyContent: 'left', 
             textTransform: 'unset !important' 
@@ -79,7 +82,7 @@ const SingleTaskCard = (props) => {
           onClick={handleOpen}
         >
           {taskCard.title}
-        </Button>
+        </Button> */}
         <Modal
           open={open}
           onClose={handleClose}
@@ -95,7 +98,7 @@ const SingleTaskCard = (props) => {
         </Modal>
       </TaskContainer>
       )}
-      
+
     </Draggable>
   )
 }
