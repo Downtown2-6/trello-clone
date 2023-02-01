@@ -2,6 +2,17 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchAllUserBoards, selectUserBoards } from "./allUserBoardsSlice";
 import { useParams, useNavigate } from "react-router-dom";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import {
+  CardActionArea,
+  Box,
+  Container,
+  Typography,
+  Grid,
+} from "@mui/material";
+import CreateBoardFormMUI from "../createBoardForm/createMUIBoardForm";
 
 const UserBoards = () => {
   const dispatch = useDispatch();
@@ -15,34 +26,37 @@ const UserBoards = () => {
   }, []);
 
   return (
-    <div>
-      <h4>Your Boards</h4>
-      <div>
+    <Container>
+      <br />
+      <Typography variant="h5">Your Boards</Typography>
+      <br />
+      <Grid container spacing={1}>
         {allUserBoards && allUserBoards.length
           ? allUserBoards.map(({ board }, index) => {
               console.log("Board name", board);
               //will need to fix navigate when we have more than one board
               return (
-                <div key={index}>
-                  <div onClick={() => navigate(`/board/${board.id}`)}>
-                    {board.boardName}
-                  </div>
-                  {board.isArchived ? (
-                    <button onClick={() => (board.isArchived = false)}>
-                      👁
-                    </button>
-                  ) : (
-                    <button onClick={() => (board.isArchived = true)}>
-                      🙈
-                    </button>
-                  )}
-                </div>
+                <Grid item xs={4} key={index}>
+                  <Card key={index} sx={{height: 100, width: 200, minWidth: 200}}>
+                    <CardActionArea
+                      onClick={() => navigate(`/board/${board.id}`)}
+                    >
+                      <CardContent>
+                        <Typography gutterBottom variant="h6" component="div">
+                          {board.boardName}
+                        </Typography>
+                      </CardContent>
+                    </CardActionArea>
+                  </Card>
+                </Grid>
               );
             })
           : null}
-      </div>
-      <div onClick={() => navigate(`/newBoard`)}>Add a Board</div>
-    </div>
+        <Grid item xs={2} >
+          <CreateBoardFormMUI />
+        </Grid>
+      </Grid>
+    </Container>
   );
 };
 

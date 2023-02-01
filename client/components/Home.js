@@ -3,22 +3,21 @@ import { useSelector } from "react-redux";
 import Navbar from "../features/navBar/NavBar";
 import UserBoards from "../features/boards/AllUserBoards";
 import CreateBoardForm from "../features/createBoardForm/CreateBoardForm";
+import CreateBoardFormMUI from "../features/createBoardForm/createMUIBoardForm";
 import AllUserBoardsSlice from "../features/boards/allUserBoardsSlice";
+import { Container, Typography, Grid } from "@mui/material";
 
 const Home = () => {
-const username = useSelector((state) => state.auth.me.username);
-
+  const username = useSelector((state) => state.auth.me.username);
 
   return (
     <>
-      <div>
-        <h3>Welcome!</h3>
-      </div>
-      <div>List of User's Boards</div>
-      <div>Create a new board</div>
-      <div>Insert the list of all the boards the user belongs to</div>
-      <UserBoards />
-      <CreateBoardForm />
+      <Container sx={{ paddingTop: 5 }}>
+        <Typography variant="h4">Welcome!</Typography>
+          <UserBoards />
+          {/* <CreateBoardForm />
+          <CreateBoardFormMUI/> */}
+      </Container>
     </>
   );
 };
