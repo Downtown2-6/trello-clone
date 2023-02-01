@@ -2,6 +2,10 @@ import React, { useState }from "react";
 import { useDispatch } from "react-redux";
 import { addTaskCard } from "../taskCards/taskCardsSlice";
 import SingleTaskCard from "../taskCards/SingleTaskCard";
+import { Droppable } from "react-beautiful-dnd";
+import styled from "styled-components";
+
+const ListContainer = styled.div``
 
 const SingleList = (props) => {
   const boardId = props.boardId;
@@ -27,31 +31,43 @@ const SingleList = (props) => {
   }
 
   return (
-    <div className='list-container-content'>
-      <h4>{list.listName}</h4>
-      <div className='list-taskCards-container'>
-        {list.taskcards && list.taskcards.length ? list.taskcards.map((taskCard) => (
-          <div key={`taskCard#${taskCard.id}`} className='taskCard'>
-            <SingleTaskCard taskCard={taskCard} />
-          </div>
-        )) : null}
+    <Droppable droppableId={listId.toString()}>
+      {(provided, snapshot) => (
+        <ListContainer
+          innerRef={provided.innerRef}
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          isDragging={snapshot.isDragging}
+        >
+          <div className='list-container-content'>
+            <h4>{list.listName}</h4>
+            <div className='list-taskCards-container'>
+              {list.taskcards && list.taskcards.length ? list.taskcards.map((taskCard, index) => (
+                <div key={`taskCard#${taskCard.id}`} className='taskCard'>
+                  <SingleTaskCard taskCard={taskCard} index={index} />
+                </div>
+              )) : null}
 
-      </div>
-      <div className='list-bottom-container'>
-        <form className='add-taskCard-form' onSubmit={handleSubmitTaskCard}>
-          <input 
-            className='add-taskCard' 
-            name='title'
-            type='text'
-            value={taskCardTitle}
-            onChange={(evt) => setTaskCardTitle(evt.target.value)}
-          />
-          <button className='add-taskCard-button' type='submit'>
-            Add card
-          </button>
-        </form>
-      </div>
-    </div>
+            </div>
+            <div className='list-bottom-container'>
+              <form className='add-taskCard-form' onSubmit={handleSubmitTaskCard}>
+                <input
+                  className='add-taskCard'
+                  name='title'
+                  type='text'
+                  value={taskCardTitle}
+                  onChange={(evt) => setTaskCardTitle(evt.target.value)}
+                />
+                <button className='add-taskCard-button' type='submit'>
+                  Add card
+                </button>
+              </form>
+            </div>
+          </div>
+        </ListContainer>
+      )}
+    </Droppable>
   )
 }
 

@@ -63,6 +63,8 @@
     "material-ui-modal": "^1.0.0",
     "morgan": "^1.10.0",
     "pg": "^8.8.0",
-    "sequelize": "^6.28.0"
+    "react-beautiful-dnd": "^13.1.1",
+    "sequelize": "^6.28.0",
+    "styled-components": "^5.3.6"
   }
 }

@@ -1,5 +1,9 @@
 import React, { useState, Fragment } from 'react';
 import { Button, Modal, Box } from "@mui/material";
+import { Draggable } from 'react-beautiful-dnd';
+import styled from 'styled-components';
+
+const TaskContainer = styled.div ``
 
 const style = {
   position: 'absolute',
@@ -55,32 +59,44 @@ const SingleTaskCard = (props) => {
   };
 
   return (
-    <>
-      <Button 
-        sx={{ 
-          width: '100%', 
-          fontFamily: 'Segoe UI', 
-          justifyContent: 'left', 
-          textTransform: 'unset !important' 
-        }} 
-        onClick={handleOpen}
+    <Draggable draggableId={taskCard.id.toString()} index={props.index}>
+      
+      {(provided, snapshot) => (
+      <TaskContainer
+        innerRef={provided.innerRef}
+        ref={provided.innerRef}
+        {...provided.draggableProps}
+        {...provided.dragHandleProps}
+        isDragging={snapshot.isDragging}
       >
-        {taskCard.title}
-      </Button>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby='parent-modal-title'
-        aria-describedby='parent-modal-description'
-      >
-        <Box sx={{ ...style, width: '90vw', height: '90vh' }}>
-          <h4 id='parent-modal-title'>{taskCard.title}</h4>
-          <p id='parent-modal-description'>
-            TaskCard Description
-          </p>
-        </Box>
-      </Modal>
-    </>
+        <Button 
+          sx={{ 
+            width: '100%', 
+            fontFamily: 'Segoe UI', 
+            justifyContent: 'left', 
+            textTransform: 'unset !important' 
+          }} 
+          onClick={handleOpen}
+        >
+          {taskCard.title}
+        </Button>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby='parent-modal-title'
+          aria-describedby='parent-modal-description'
+        >
+          <Box sx={{ ...style, width: '90vw', height: '90vh' }}>
+            <h4 id='parent-modal-title'>{taskCard.title}</h4>
+            <p id='parent-modal-description'>
+              TaskCard Description
+            </p>
+          </Box>
+        </Modal>
+      </TaskContainer>
+      )}
+      
+    </Draggable>
   )
 }
 
