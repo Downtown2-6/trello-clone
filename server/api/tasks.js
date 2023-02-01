@@ -18,6 +18,16 @@ router.get("/:boardId", async (req, res, next) => {
   }
 });
 
+// PUT /api/tasks/:boardId/:taskCardId
+router.put('/:boardId/:taskCardId', async (req, res, next) => {
+  try {
+    const taskCard = await TaskCard.findByPk(req.params.taskCardId);
+    res.status(200).json(await taskCard.update(req.body));
+  } catch (err) {
+    next(err);
+  }
+});
+
 // PUT /api/tasks/:taskId
 router.put("/:taskId", async (req, res, next) => {
   try {
