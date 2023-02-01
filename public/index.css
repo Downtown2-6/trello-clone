@@ -44,10 +44,12 @@ nav {
   display: flex;
   flex-direction: row;
   flex: 1 auto;
+  justify-content: center;
   width: 100%;
   border: 1px solid green;
 }
 
 .taskCard-draggable {
-  min-width: 14em;
+  min-width: 13em;
+  border: 1px solid orange;
 }

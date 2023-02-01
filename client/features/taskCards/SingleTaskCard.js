@@ -12,6 +12,8 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: '90vw',
   bgcolor: 'gainsboro',
+  outline: 'none',
+  borderRadius: 0.5,
   boxshadow: 24,
 };
 
@@ -89,7 +91,7 @@ const SingleTaskCard = (props) => {
           aria-labelledby='parent-modal-title'
           aria-describedby='parent-modal-description'
         >
-          <Box sx={{ ...style, width: '90vw', height: '90vh' }}>
+          <Box sx={{ ...style, width: '90vw', height: '90vh', border: 0 }}>
             <h4 id='parent-modal-title'>{taskCard.title}</h4>
             <p id='parent-modal-description'>
               TaskCard Description
