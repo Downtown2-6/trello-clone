@@ -5,6 +5,7 @@ import { addList, fetchLists, selectLists } from "../lists/listsSlice";
 import { fetchSingleBoard, selectSingleBoard } from "./singleBoardSlice";
 import SingleList from "../singleList/SingleList";
 import { fetchTaskCards, selectTaskCards } from "../taskCards/taskCardsSlice";
+import { DragDropContext } from "react-beautiful-dnd";
 
 const SingleBoard = () => {
   const [listName, setListName] = useState('');
@@ -32,41 +33,45 @@ const SingleBoard = () => {
         position
       }));
       setListName('');
-    };
+    }
   };
 
+  const onDragEnd = () => {}
+
   return (
-    <div>
-      {board ?
-      <div className='board-container'>
-        <h2>{board.boardName}</h2>
-        <div className='board-lists-container'>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <div>
+        {board ?
+        <div className='board-container'>
+          <h2>{board.boardName}</h2>
+          <div className='board-lists-container'>
 
-          {board.lists && board.lists.length ? board.lists.map((list) => (
-            <div key={`list#${list.id}`} className='list-container'>
-              <SingleList boardId={board.id} list={list} />
+            {board.lists && board.lists.length ? board.lists.map((list) => (
+              <div key={`list#${list.id}`} className='list-container'>
+                <SingleList boardId={board.id} list={list} />
+              </div>
+            )) : null}
+
+            <div className='list-container add-list-container'>
+              <form className='add-list-form' onSubmit={handleSubmitList}>
+                <input
+                  className='add-list'
+                  name='listName'
+                  type='text'
+                  value={listName}
+                  onChange={(evt) => setListName(evt.target.value)}
+                />
+                <button className='add-list-button' type='submit'>
+                  Add another list
+                </button>
+              </form>
             </div>
-          )) : null}
 
-          <div className='list-container add-list-container'>
-            <form className='add-list-form' onSubmit={handleSubmitList}>
-              <input 
-                className='add-list' 
-                name='listName'
-                type='text'
-                value={listName}
-                onChange={(evt) => setListName(evt.target.value)}
-              />
-              <button className='add-list-button' type='submit'>
-                Add another list
-              </button>
-            </form>
           </div>
-
         </div>
+        : null}
       </div>
-      : null}
-    </div>
+    </DragDropContext>
   )
 }
 
