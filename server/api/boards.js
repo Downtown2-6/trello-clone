@@ -4,7 +4,6 @@ const UserBoard = require("../db/models/UserBoard");
 const List = require("../db/models/List");
 const TaskCard = require("../db/models/TaskCard");
 
-
 // GET /api/boards
 router.get("/", async (req, res, next) => {
   try {
@@ -17,20 +16,21 @@ router.get("/", async (req, res, next) => {
 });
 
 
+
 // GET /api/boards/:userId/:boardId
-router.get('/:userId/:boardId', async (req, res, next) => {
+router.get("/:userId/:boardId", async (req, res, next) => {
   try {
     const board = await Board.findByPk(req.params.boardId, {
       include: {
         model: List,
         separate: true,
-        order: [['position', 'ASC']],
+        order: [["position", "ASC"]],
         include: {
           model: TaskCard,
           separate: true,
-          order: [['position', 'ASC']]
-        }
-      }
+          order: [["position", "ASC"]],
+        },
+      },
     });
     res.status(200).json(board);
   } catch (err) {
@@ -38,13 +38,11 @@ router.get('/:userId/:boardId', async (req, res, next) => {
   }
 });
 
-
 // --------------------------
 //#region This works
 // --------------------------
 router.post("/", async (req, res, next) => {
   try {
-
     console.log(`The\npost\nthing\nis\nhere\n HAHA`, req.body);
     const newBoard = await Board.create({
       boardName: req.body.boardName,
@@ -61,6 +59,5 @@ router.post("/", async (req, res, next) => {
     next(error);
   }
 });
-
 
 module.exports = router;
