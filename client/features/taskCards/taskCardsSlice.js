@@ -24,7 +24,6 @@ export const addTaskCard = createAsyncThunk(
         listId,
         boardId
       });
-      console.log(data);
       return data;
     } catch (err) {
       console.log(err);

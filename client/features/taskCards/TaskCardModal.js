@@ -1,6 +1,10 @@
 import React, { useState, Fragment } from 'react';
+import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import ContentEditable from 'react-contenteditable';
+import sanitizeHtml from 'sanitize-html';
 import { Modal, Box } from "@mui/material";
+import { updateTaskCardTitle } from '../singleTaskCard/singleTaskCardSlice';
 
 function ChildModal() {
   const [open, setOpen] = useState(false);
@@ -36,19 +40,41 @@ function ChildModal() {
 
 const TaskCardModal = (props) => {
   const { list, taskCard, style } = props;
+  const { boardId } = useParams();
 
-  const [titleValue, setTitleValue] = useState(taskCard.title);
+  const [title, setTitle] = useState(taskCard.title);
+  const dispatch = useDispatch();
 
-  const html = `<h3 className='taskCard-modal-item'>${titleValue}</h3>`;
+  var html = `<h3 class='taskCard-modal-item'>${title}</h3>`;
+
+  const handleTitleChange = (evt) => {
+    setTitle(sanitizeHtml(evt.target.value, sanitizeConf));
+  }
+
+  const sanitizeConf = {
+    allowedTags: ['b', 'i', 'em', 'strong', 'a', 'p'],
+    allowedAttributes: { a: ['href'] },
+  }
+
+  const handleTitleUpdate = async () => {
+    await dispatch(updateTaskCardTitle({
+      boardId, 
+      taskCardId: taskCard.id, 
+      title
+    }));
+  };
 
   return (
     <>
       <Box>
         <ContentEditable
           className='editable'
+          tagName='pre'
           html={html}
+          onChange={handleTitleChange}
+          onBlur={handleTitleUpdate}
         />
-        <div><small>in list {list.listName}</small></div>
+        <small>in list {list.listName}</small>
       </Box>
       <Box>
         <h5 id='taskCard-modal-description-label'>
