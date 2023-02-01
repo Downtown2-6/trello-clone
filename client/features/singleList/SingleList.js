@@ -8,8 +8,6 @@ import styled from "styled-components";
 const ListContainer = styled.div``
 
 const SingleList = (props) => {
-  const [taskCardName, setTaskCardName] = useState('');
-
   const boardId = props.boardId;
   const list = props.list;
   const listId = list.id;
@@ -17,16 +15,18 @@ const SingleList = (props) => {
 
   const dispatch = useDispatch();
 
+  const [taskCardTitle, setTaskCardTitle] = useState('');
+
   const handleSubmitTaskCard = async (evt) => {
     evt.preventDefault();
-    if (taskCardName.length) {
-      await dispatch(addTaskCard({
-        boardId,
-        listId,
-        taskcardName: taskCardName,
-        position: numTaskCards
+    if (taskCardTitle.length) {
+      await dispatch(addTaskCard({ 
+        boardId, 
+        listId, 
+        title: taskCardTitle, 
+        position: numTaskCards 
       }));
-      setTaskCardName('');
+      setTaskCardTitle('');
     }
   }
 
@@ -40,7 +40,7 @@ const SingleList = (props) => {
           {...provided.dragHandleProps}
           isDragging={snapshot.isDragging}
         >
-          <div>
+          <div className='list-container-content'>
             <h4>{list.listName}</h4>
             <div className='list-taskCards-container'>
               {list.taskcards && list.taskcards.length ? list.taskcards.map((taskCard, index) => (
@@ -54,10 +54,10 @@ const SingleList = (props) => {
               <form className='add-taskCard-form' onSubmit={handleSubmitTaskCard}>
                 <input
                   className='add-taskCard'
-                  name='taskcardName'
+                  name='title'
                   type='text'
-                  value={taskCardName}
-                  onChange={(evt) => setTaskCardName(evt.target.value)}
+                  value={taskCardTitle}
+                  onChange={(evt) => setTaskCardTitle(evt.target.value)}
                 />
                 <button className='add-taskCard-button' type='submit'>
                   Add card

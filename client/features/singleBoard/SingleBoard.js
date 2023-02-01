@@ -46,16 +46,19 @@ const SingleBoard = () => {
           <h2>{board.boardName}</h2>
           <div className='board-lists-container'>
 
-            {board.lists && board.lists.length ? board.lists.map((list) => (
-              <div key={`list#${list.id}`} className='list-container'>
-                <SingleList boardId={board.id} list={list} />
-              </div>
-            )) : null}
+          {board.lists && board.lists.length ? 
+          board.lists.map((list) => (
 
-            <div className='list-container add-list-container'>
+            <div key={`list#${list.id}`} className='list-container'>
+              <SingleList boardId={board.id} list={list} />
+            </div>
+
+          )) : null}
+
+            <div className='list-container'>
               <form className='add-list-form' onSubmit={handleSubmitList}>
-                <input
-                  className='add-list'
+                <input 
+                  className='add-list' 
                   name='listName'
                   type='text'
                   value={listName}
