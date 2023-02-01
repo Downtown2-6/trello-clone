@@ -53,3 +53,7 @@ nav {
   min-width: 13em;
   border: 1px solid orange;
 }
+
+.taskCard-modal-item {
+  margin: 0;
+}
