@@ -16,10 +16,10 @@ export const fetchTaskCards = createAsyncThunk(
 
 export const addTaskCard = createAsyncThunk(
   'addTaskCard',
-  async ({boardId, listId, taskcardName, position}) => {
+  async ({boardId, listId, title, position}) => {
     try {
       const { data } = await axios.post(`/api/tasks/${boardId}`, {
-        taskcardName,
+        title,
         position,
         listId,
         boardId
