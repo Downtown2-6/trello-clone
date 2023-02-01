@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState, Fragment } from 'react';
+import ContentEditable from 'react-contenteditable';
+import { Modal, Box } from "@mui/material";
 
 function ChildModal() {
   const [open, setOpen] = useState(false);
@@ -35,17 +37,24 @@ function ChildModal() {
 const TaskCardModal = (props) => {
   const { list, taskCard, style } = props;
 
+  const [titleValue, setTitleValue] = useState(taskCard.title);
+
+  const html = `<h3 className='taskCard-modal-item'>${titleValue}</h3>`;
+
   return (
     <>
-      <div id='taskCard-modal-header'>
-        <h3 id='taskCard-modal-title' className='taskCard-modal-item'>{taskCard.title}</h3>
-        <small>in list {list.listName}</small>
-      </div>
-      <div id='taskCard-modal-description-container'>
+      <Box>
+        <ContentEditable
+          className='editable'
+          html={html}
+        />
+        <div><small>in list {list.listName}</small></div>
+      </Box>
+      <Box>
         <h5 id='taskCard-modal-description-label'>
           Description
         </h5>
-      </div>
+      </Box>
     </>
   )
 }

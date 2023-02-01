@@ -1,5 +1,5 @@
-import React, { useState, Fragment } from 'react';
-import { Button, Modal, Box } from "@mui/material";
+import React, { useState } from 'react';
+import { Modal, Box } from "@mui/material";
 import { Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import TaskCardModal from './TaskCardModal';
