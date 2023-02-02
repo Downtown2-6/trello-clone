@@ -21,6 +21,7 @@ import {
   Grid,
   TextField,
   Typography,
+  Alert,
 } from "@mui/material";
 
 const SingleBoardUsers = () => {
@@ -41,13 +42,23 @@ const SingleBoardUsers = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("this is the handleSubmit", e);
-    dispatch(fetchGrantUserAccess({userEmail, boardId}));
+    console.log(
+      `***
+    ***
+    ***
+    Logging:this is the handle submit
+    ***
+    ***
+    ***
+    `,
+      userEmail
+    );
+    Alert(dispatch(fetchGrantUserAccess({ userEmail, boardId })));
     setOpen(false);
   };
 
   useEffect(() => {
-    dispatch(fetchAllUsersInBoard(1));
+    dispatch(fetchAllUsersInBoard(boardId));
   }, []);
 
   const allUsersInThisBoard = useSelector((state) => state.singleBoardUsers);

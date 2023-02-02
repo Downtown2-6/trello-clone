@@ -14,7 +14,7 @@ export const fetchAllUsersInBoard = createAsyncThunk(
     ***
     ***
     `,
-      response
+      response.data
     );
     return response.data;
   }

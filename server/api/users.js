@@ -56,13 +56,25 @@ router.get("/specificBoard/:userId/:boardId", async (req, res, next) => {
 router.post("/grantAccess/:boardId", async (req, res, next) => {
   try {
     const { boardId } = req.params;
-    const { email } = req.body;
+    const { userEmail:email } = req.body;
+    console.log(
+      `***
+    ***
+    ***
+    Logging:inside the API
+    ***
+    ***
+    ***
+    `,
+      boardId,
+      email
+    );
     const findUser = await User.findOne({ where: { email } });
-if(!findUser){
-  res.status(404).json({message:'User Not found'})
-}
+    if (!findUser) {
+      res.status(404).json({ message: "User Not found" });
+    }
     const privilege = "USER";
-    const userId = findUser.id
+    const userId = findUser.id;
     const boards = await UserBoard.findAll({
       where: { userId: userId, boardId: boardId },
     });
