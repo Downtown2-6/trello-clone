@@ -7,6 +7,7 @@ import SingleList from "../singleList/SingleList";
 import { fetchTaskCards, selectTaskCards } from "../taskCards/taskCardsSlice";
 import { selectSingleTaskCard } from '../singleTaskCard/singleTaskCardSlice';
 import { DragDropContext } from "react-beautiful-dnd";
+import SingleBoardUsers from "../singleBoardUsers/singleBoardUsers";
 
 const SingleBoard = () => {
   const [listName, setListName] = useState('');
@@ -39,6 +40,9 @@ const SingleBoard = () => {
   const onDragEnd = () => {}
 
   return (
+    <>
+    <br/>
+    <SingleBoardUsers/>
     <DragDropContext onDragEnd={onDragEnd}>
       <div>
         {board ?
@@ -75,6 +79,7 @@ const SingleBoard = () => {
         : null}
       </div>
     </DragDropContext>
+    </>
   )
 }
 
