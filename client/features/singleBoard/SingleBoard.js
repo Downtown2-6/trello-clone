@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { fetchSingleBoard, selectSingleBoard } from "./singleBoardSlice";
+import { fetchSingleBoard, selectSingleBoard, addList } from "./singleBoardSlice";
 import SingleList from "../singleList/SingleList";
 import { DragDropContext } from "react-beautiful-dnd";
-import list from "@fullcalendar/list";
+
+
 
 const SingleBoard = () => {
   const [listName, setListName] = useState('');
@@ -34,8 +35,8 @@ const SingleBoard = () => {
   const onDragEnd = (result) => {
     const { destination, source, draggableId } = result
 
-    console.log(result)
-    console.log("taskcards", board.lists.taskcards)
+    const { index: sourceIndex } = source
+    const { index: destinationIndex } = destination
 
     //if no destination in result object return
     if(!destination) return
@@ -47,30 +48,28 @@ const SingleBoard = () => {
     }
 
     //reorder taskIds for the column
-    const sourceList = board.lists.taskcards[source.droppableId]
-    const destinationList = board.lists.taskcards[destination.droppableId]
+    const sourceTaskCards = [...board.lists[sourceIndex].taskcards ]
 
+    const destinationTaskCards = [...board.lists[destinationIndex].taskcards]
 
-    const { index: sourceIndex } = source
-    const { index: destinationIndex } = destination
     // const taskcard = { ...sourceList.taskCards[sourceIndex]}
 
-    sourceList.splice(sourceIndex, 1)
-    destinationList.taskCards.splice(destinationIndex, 0, draggableId)
+    sourceTaskCards.splice(sourceIndex, 1)
+    destinationTaskCards.splice(destinationIndex, 0, draggableId)
+
+    // update board to right data structure / where taskcard was just moved
+    //singleBoardSlice: create setBoard() => in Thunk == listId + position
+
+    // dispatch setBoard(newBoardState)
+
+    // what is the index within the taskCards array where this task was grabbed from /sent to
+    // axios call to update the DB
 
     // console.log("******LISTS*******", board.lists)
 
   }
 
   console.log("******LISTS*******", board.lists)
-
-  // if (!board.list) {
-  //   return (
-  //     <div>
-  //       Generic loading message
-  //     </div>
-  //   )
-  // }
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>

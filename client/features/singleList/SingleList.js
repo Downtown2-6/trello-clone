@@ -17,7 +17,7 @@ console.log(`***
 const SingleList = (props) => {
   const { boardId, list } = props;
   const listId = list.id;
-  const numTaskCards = list.taskcards.length + 1;
+  const numTaskCards = list.taskcards ? list.taskcards.length + 1 : 1;
 
   const dispatch = useDispatch();
 
@@ -72,6 +72,7 @@ const SingleList = (props) => {
               </form>
             </div>
           </div>
+          {provided.placeholder}
         </ListContainer>
       )}
     </Droppable>
