@@ -21,9 +21,9 @@ router.get("/", async (req, res, next) => {
 // GET /api/users/allBoards/:userId
 router.get("/allBoards/:userId", async (req, res, next) => {
   try {
-    const {userId} = req.params;
+    const { userId } = req.params;
     const boards = await UserBoard.findAll({
-      where: { userId},
+      where: { userId },
       include: { model: Board },
     });
     res.json(boards);
@@ -39,9 +39,9 @@ router.get("/specificBoard/:userId/:boardId", async (req, res, next) => {
       "This\n--is\n--inside\n--of\n--the\n--api\n--route\n--for\n--boards/user",
       req.params.userId
     );
-    const {userId, boardId} = req.params;
+    const { userId, boardId } = req.params;
     const boards = await UserBoard.findAll({
-      where: { userId, boardId},
+      where: { userId, boardId },
     });
     res.json(boards);
   } catch (error) {
@@ -52,7 +52,7 @@ router.get("/specificBoard/:userId/:boardId", async (req, res, next) => {
 // PUT /api/users/grantAccess/:boardId/:userId
 router.put("/grantAccess/:boardId/:userId", async (req, res, next) => {
   try {
-    const {boardId, userId} = req.params;
+    const { boardId, userId } = req.params;
     const privilege = "USER";
     const boards = await UserBoard.findAll({
       where: { userId: userId, boardId: boardId },
@@ -81,10 +81,14 @@ router.put(
     try {
       const { userIssuingRequestId: issuer, boardId, userId } = req.params;
       const theIssuer = await UserBoard.findOne({
-        where: { boardId, userId:issuer },
+        where: { boardId, userId: issuer },
       });
-      console.log("Is the issuer an ADMIN?", theIssuer.privilege==="ADMIN");
-
+      console.log("Is the issuer an ADMIN?", theIssuer.privilege === "ADMIN");
+      if (theIssuer.privilege != "ADMIN") {
+        return res
+          .status(401)
+          .json({ message: "You need to be an admin to do this." });
+      }
       const { privilege } = req.body;
       const userBoard = await UserBoard.findOne({ where: { boardId, userId } });
       if (!userBoard) {

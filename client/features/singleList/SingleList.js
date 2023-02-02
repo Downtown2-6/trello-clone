@@ -7,6 +7,13 @@ import styled from "styled-components";
 
 const ListContainer = styled.div``
 
+console.log(`***
+***
+***
+***
+***
+***
+`, );
 const SingleList = (props) => {
   const boardId = props.boardId;
   const list = props.list;
@@ -20,11 +27,11 @@ const SingleList = (props) => {
   const handleSubmitTaskCard = async (evt) => {
     evt.preventDefault();
     if (taskCardTitle.length) {
-      await dispatch(addTaskCard({ 
-        boardId, 
-        listId, 
-        title: taskCardTitle, 
-        position: numTaskCards 
+      await dispatch(addTaskCard({
+        boardId,
+        listId,
+        title: taskCardTitle,
+        position: numTaskCards
       }));
       setTaskCardTitle('');
     }

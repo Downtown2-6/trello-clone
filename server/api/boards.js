@@ -15,7 +15,14 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-
+console.log(`***
+***
+***
+Logging:aklskdfjalsdjfqqqq
+***
+***
+***
+`, );
 
 // GET /api/boards/:userId/:boardId
 router.get("/:userId/:boardId", async (req, res, next) => {
