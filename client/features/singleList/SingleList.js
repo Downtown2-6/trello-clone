@@ -1,6 +1,6 @@
 import React, { useState }from "react";
 import { useDispatch } from "react-redux";
-import { addTaskCard } from "../taskCards/taskCardsSlice";
+import { addTaskCard } from "../singleBoard/singleBoardSlice";
 import SingleTaskCard from "../taskCards/SingleTaskCard";
 import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
