@@ -7,16 +7,10 @@ import styled from "styled-components";
 
 const ListContainer = styled.div``
 
-console.log(`***
-***
-***
-***
-***
-***
-`, );
 const SingleList = (props) => {
   const { boardId, list } = props;
   const listId = list.id;
+  console.log(list);
   const numTaskCards = list.taskcards ? list.taskcards.length + 1 : 1;
 
   const dispatch = useDispatch();

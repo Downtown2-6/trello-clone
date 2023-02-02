@@ -24,7 +24,20 @@ router.get('/:boardId', async (req, res, next) => {
 // POST /api/lists/:boardId
 router.post('/:boardId', async (req, res, next) => {
   try {
-    res.status(200).json(await List.create(req.body));
+    await List.create(req.body);
+    const list = await List.findOne({
+      where: {
+        listName: req.body.listName,
+        position: req.body.position,
+        boardId: req.body.boardId
+      },
+      include: {
+        model: TaskCard,
+        separate: true,
+        order: [['position', 'ASC']]
+      }
+    });
+    res.status(200).json(list);
   } catch (err) {
     next(err);
   }

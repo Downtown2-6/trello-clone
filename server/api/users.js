@@ -76,10 +76,10 @@ router.put("/grantAccess/:boardId/:userId", async (req, res, next) => {
 
 // PUT /api/users/modifyPrivilege/:userIssuingRequestId/:boardId/:userId
 router.put(
-  "/modifyPrivilege/:userIssuingRequestId/:boardId/:userId",
+  "/modifyPrivilege/:userIssuingRequestId/:boardId",
   async (req, res, next) => {
     try {
-      const { userIssuingRequestId: issuer, boardId, userId } = req.params;
+      const { userIssuingRequestId: issuer, boardId,  } = req.params;
       const theIssuer = await UserBoard.findOne({
         where: { boardId, userId: issuer },
       });
@@ -89,7 +89,14 @@ router.put(
           .status(401)
           .json({ message: "You need to be an admin to do this." });
       }
-      const { privilege } = req.body;
+      const { privilege, email } = req.body;
+      const findUser = await User.findOne({where:{email}});
+      if (!findUser){
+            return res
+              .status(404)
+              .json({ message: "This email isn't registered to a user." });
+      }
+      const userId = findUser.id
       const userBoard = await UserBoard.findOne({ where: { boardId, userId } });
       if (!userBoard) {
         return res.status(404).json({ message: "User not found in the board" });

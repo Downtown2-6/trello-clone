@@ -18,6 +18,15 @@ router.get("/:boardId", async (req, res, next) => {
   }
 });
 
+// POST /api/tasks/:boardId
+router.post("/:boardId", async (req, res, next) => {
+  try {
+    res.status(200).json(await TaskCard.create(req.body));
+  } catch (err) {
+    next(err);
+  }
+});
+
 // PUT /api/tasks/:boardId/:taskCardId
 router.put('/:boardId/:taskCardId', async (req, res, next) => {
   try {
@@ -28,27 +37,19 @@ router.put('/:boardId/:taskCardId', async (req, res, next) => {
   }
 });
 
+// the above put request should suffice
 // PUT /api/tasks/:taskId
-router.put("/:taskId", async (req, res, next) => {
-  try {
-    const { title, start, end } = req.body;
-    const task = await TaskCard.update(
-      { title, start, end },
-      { where: { id: req.params.taskId } }
-    );
-    res.status(200).json({ message: "Task updated successfully" });
-  } catch (err) {
-    next(err);
-  }
-});
-
-// POST /api/tasks/:boardId
-router.post("/:boardId", async (req, res, next) => {
-  try {
-    res.status(200).json(await TaskCard.create(req.body));
-  } catch (err) {
-    next(err);
-  }
-});
+// router.put("/:taskId", async (req, res, next) => {
+//   try {
+//     const { title, start, end } = req.body;
+//     const task = await TaskCard.update(
+//       { title, start, end },
+//       { where: { id: req.params.taskId } }
+//     );
+//     res.status(200).json({ message: "Task updated successfully" });
+//   } catch (err) {
+//     next(err);
+//   }
+// });
 
 module.exports = router;
