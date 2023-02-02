@@ -48,7 +48,6 @@ export const MyCalendar = () => {
         eventResizableFromStart={true}
         eventDrop={updateEvent}
       />
-      ;
     </div>
   );
 };
