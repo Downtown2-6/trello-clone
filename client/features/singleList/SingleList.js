@@ -15,8 +15,7 @@ console.log(`***
 ***
 `, );
 const SingleList = (props) => {
-  const boardId = props.boardId;
-  const list = props.list;
+  const { boardId, list } = props;
   const listId = list.id;
   const numTaskCards = list.taskcards.length + 1;
 
@@ -52,7 +51,7 @@ const SingleList = (props) => {
             <div className='list-taskCards-container'>
               {list.taskcards && list.taskcards.length ? list.taskcards.map((taskCard, index) => (
                 <div key={`taskCard#${taskCard.id}`} className='taskCard'>
-                  <SingleTaskCard taskCard={taskCard} index={index} />
+                  <SingleTaskCard list={list} taskCard={taskCard} index={index} />
                 </div>
               )) : null}
 
