@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import ContentEditable from 'react-contenteditable';
 import sanitizeHtml from 'sanitize-html';
 import { Modal, Box } from "@mui/material";
-import { updateTaskCardTitle } from '../singleTaskCard/singleTaskCardSlice';
+import { updateTaskCardTitle } from '../singleBoard/singleBoardSlice';
 
 function ChildModal() {
   const [open, setOpen] = useState(false);
