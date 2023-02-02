@@ -15,14 +15,6 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-console.log(`***
-***
-***
-Logging:aklskdfjalsdjfqqqq
-***
-***
-***
-`, );
 
 // GET /api/boards/:userId/:boardId
 router.get("/:userId/:boardId", async (req, res, next) => {
@@ -44,6 +36,22 @@ router.get("/:userId/:boardId", async (req, res, next) => {
     next(err);
   }
 });
+
+
+// GET /api/boards/allUsers/:boardId
+router.get("/allBoards/:boardId", async (req, res, next) => {
+  try {
+    const { boardId } = req.params;
+    const users = await UserBoard.findAll({
+      where: { boardId },
+      include: { model: User },
+    });
+    res.json(users);
+  } catch (error) {
+    next(error);
+  }
+});
+
 
 // --------------------------
 //#region This works
