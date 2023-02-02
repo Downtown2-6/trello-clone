@@ -30,31 +30,8 @@ const Main = () => {
       <div id="header">
       </div>
       <Navbar />
-      <nav>
-        {isLoggedIn ? (
-          <div>
-            {/* The navbar will show these links after user logs in */}
-            <Link to="/home">Home</Link>
-            {/* <Link to='/board/:boardId'>Board</Link> */}
-            <Link to="/calendar" id="nav-link-calendar" className="nav-link">
-              My Calendar
-            </Link>
-            <button type="button" onClick={logoutAndRedirectHome}>
-              Logout
-            </button>
-          </div>
-        ) : (
-          <div>
-            <Link to="/login" id="nav-link-login" className="nav-link">
-              Login
-            </Link>
-            <Link to="/signup" id="nav-link-signup" className="nav-link">
-              Sign Up
-            </Link>
-          </div>
-        )}
-      </nav>
-      <hr />
+      <br />
+      <br />
       <div>
         {isLoggedIn ? (
           <Routes>

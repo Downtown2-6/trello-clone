@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { fetchSingleBoard, selectSingleBoard, addList } from "./singleBoardSlice";
 import SingleList from "../singleList/SingleList";
 import { DragDropContext } from "react-beautiful-dnd";
+import SingleBoardUsers from "../singleBoardUsers/singleBoardUsers";
 
 const SingleBoard = () => {
   const [listName, setListName] = useState('');
@@ -33,6 +34,9 @@ const SingleBoard = () => {
   const onDragEnd = () => {}
 
   return (
+    <>
+    <br/>
+    <SingleBoardUsers/>
     <DragDropContext onDragEnd={onDragEnd}>
       <div>
         {board ?
@@ -69,6 +73,7 @@ const SingleBoard = () => {
         : null}
       </div>
     </DragDropContext>
+    </>
   )
 }
 

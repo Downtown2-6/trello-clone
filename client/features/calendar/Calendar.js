@@ -33,6 +33,7 @@ export const MyCalendar = () => {
 
   return (
     <div>
+      <br/>
       <FullCalendar
         headerToolbar={{
           start: "today prev next",
