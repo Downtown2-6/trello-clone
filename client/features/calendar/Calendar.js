@@ -8,7 +8,12 @@ import axios from "axios";
 export const MyCalendar = () => {
   const [events, setEvents] = useState([]);
 
+  // --------------------------
+  //#region HARDCODING THE BOARDID TO '1' BECAUSE NO OTHER BOARD RIGHT NOW HAS TASKS
+  // --------------------------
   const getEvents = async () => await axios.get("/api/tasks/1");
+
+  //#endregion HARDCODING THE BOARDID TO '1' BECAUSE NO OTHER BOARD RIGHT NOW HAS TASKS
 
   useEffect(() => {
     getEvents().then((res) => {
@@ -16,9 +21,9 @@ export const MyCalendar = () => {
     });
   }, []);
 
-  const updateEvent = async ({event}) => {
-    console.log('This is updateEvent', event);
-    console.log('This is updateEvent event start', event.start);
+  const updateEvent = async ({ event }) => {
+    console.log("This is updateEvent", event);
+    console.log("This is updateEvent event start", event.start);
     console.log("This is updateEvent event end", event.end);
     axios.put(`/api/tasks/${event.id}`, {
       start: event.start,
@@ -35,11 +40,12 @@ export const MyCalendar = () => {
           end: "dayGridMonth dayGridWeek dayGridDay",
         }}
         plugins={[daygridPlugin, interactionPlugin]}
-        editable
         selectable
         views={["dayGridMonth", "dayGridWeek", "dayGridDay"]}
         height={"80vh"}
         events={events}
+        editable={true}
+        eventResizableFromStart={true}
         eventDrop={updateEvent}
       />
       ;

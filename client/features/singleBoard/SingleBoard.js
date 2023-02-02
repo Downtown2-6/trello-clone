@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { addList, fetchLists, selectLists } from "../lists/listsSlice";
 import { fetchSingleBoard, selectSingleBoard } from "./singleBoardSlice";
 import SingleList from "../singleList/SingleList";
-import { fetchTaskCards, selectTaskCards } from "../taskCards/taskCardsSlice";
-import { selectSingleTaskCard } from '../singleTaskCard/singleTaskCardSlice';
 import { DragDropContext } from "react-beautiful-dnd";
 import SingleBoardUsers from "../singleBoardUsers/singleBoardUsers";
 
@@ -16,13 +13,10 @@ const SingleBoard = () => {
   const userId = useSelector((state) => state.auth.me.id);
   const { boardId } = useParams();
   const board = useSelector(selectSingleBoard);
-  const lists = useSelector(selectLists);
-  const taskCards = useSelector(selectTaskCards);
-  const singleTaskCard = useSelector(selectSingleTaskCard);
 
   useEffect(() => {
     dispatch(fetchSingleBoard({userId, boardId}));
-  }, [dispatch, board.id, taskCards.length, lists.length, singleTaskCard]);
+  }, [dispatch]);
 
   const handleSubmitList = async (evt) => {
     evt.preventDefault();
