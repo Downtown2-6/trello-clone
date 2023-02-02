@@ -13,14 +13,42 @@ export const fetchSingleBoard = createAsyncThunk(
   }
 );
 
+export const addTaskCard = createAsyncThunk(
+  'addTaskCard',
+  async ({boardId, listId, title, position}) => {
+    try {
+      const { data } = await axios.post(`/api/tasks/${boardId}`, {
+        title,
+        position,
+        listId,
+        boardId
+      });
+      console.log(data);
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
+
 const singleBoardSlice = createSlice({
   name: 'singleBoard',
-  initialState: {},
+  initialState: {
+
+  },
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchSingleBoard.fulfilled, (state, action) => {
       return action.payload;
     });
+    builder.addCase(addTaskCard.fulfilled, (state, action) => {
+     const listIdx = state.lists.findIndex((list) => {
+        //finding the index of the list that taskCard need to be added to
+        return list.id == action.payload.listId
+      })
+      state.lists[listIdx].taskcards.push(action.payload)
+
+    })
   }
 });
 

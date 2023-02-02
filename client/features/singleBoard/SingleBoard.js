@@ -6,6 +6,7 @@ import { fetchSingleBoard, selectSingleBoard } from "./singleBoardSlice";
 import SingleList from "../singleList/SingleList";
 import { fetchTaskCards, selectTaskCards } from "../taskCards/taskCardsSlice";
 import { DragDropContext } from "react-beautiful-dnd";
+import list from "@fullcalendar/list";
 
 const SingleBoard = () => {
   const [listName, setListName] = useState('');
@@ -19,9 +20,10 @@ const SingleBoard = () => {
 
   useEffect(() => {
     dispatch(fetchSingleBoard({userId, boardId}));
-    dispatch(fetchLists({userId, boardId}));
-    dispatch(fetchTaskCards({boardId}));
-  }, [dispatch, board.id, taskCards.length, lists.length]);
+    // dispatch(fetchLists({userId, boardId}));
+    // dispatch(fetchTaskCards({boardId}));
+  }, [dispatch]);
+  // }, [dispatch, board.id, taskCards.length, lists.length]);
 
   const handleSubmitList = async (evt) => {
     evt.preventDefault();
@@ -36,7 +38,46 @@ const SingleBoard = () => {
     }
   };
 
-  const onDragEnd = () => {}
+  const onDragEnd = (result) => {
+    const { destination, source, draggableId } = result
+
+    console.log(result)
+    console.log("taskcards", board.lists.taskcards)
+
+    //if no destination in result object return
+    if(!destination) return
+
+    //if destination is same as source && index is the same, return
+    if (destination.droppableId === source.droppableId
+      && destination.index === source.index) {
+        return
+    }
+
+    //reorder taskIds for the column
+    const sourceList = board.lists.taskcards[source.droppableId]
+    const destinationList = board.lists.taskcards[destination.droppableId]
+
+
+    const { index: sourceIndex } = source
+    const { index: destinationIndex } = destination
+    // const taskcard = { ...sourceList.taskCards[sourceIndex]}
+
+    sourceList.splice(sourceIndex, 1)
+    destinationList.taskCards.splice(destinationIndex, 0, draggableId)
+
+    // console.log("******LISTS*******", board.lists)
+
+  }
+
+  console.log("******LISTS*******", board.lists)
+
+  // if (!board.list) {
+  //   return (
+  //     <div>
+  //       Generic loading message
+  //     </div>
+  //   )
+  // }
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
@@ -46,7 +87,7 @@ const SingleBoard = () => {
           <h2>{board.boardName}</h2>
           <div className='board-lists-container'>
 
-          {board.lists && board.lists.length ? 
+          {board.lists && board.lists.length ?
           board.lists.map((list) => (
 
             <div key={`list#${list.id}`} className='list-container'>
@@ -57,8 +98,8 @@ const SingleBoard = () => {
 
             <div className='list-container'>
               <form className='add-list-form' onSubmit={handleSubmitList}>
-                <input 
-                  className='add-list' 
+                <input
+                  className='add-list'
                   name='listName'
                   type='text'
                   value={listName}

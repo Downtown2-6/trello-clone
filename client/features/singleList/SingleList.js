@@ -1,6 +1,6 @@
 import React, { useState }from "react";
 import { useDispatch } from "react-redux";
-import { addTaskCard } from "../taskCards/taskCardsSlice";
+import { addTaskCard } from "../singleBoard/singleBoardSlice";
 import SingleTaskCard from "../taskCards/SingleTaskCard";
 import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
@@ -17,14 +17,15 @@ const SingleList = (props) => {
 
   const [taskCardTitle, setTaskCardTitle] = useState('');
 
+
   const handleSubmitTaskCard = async (evt) => {
     evt.preventDefault();
     if (taskCardTitle.length) {
-      await dispatch(addTaskCard({ 
-        boardId, 
-        listId, 
-        title: taskCardTitle, 
-        position: numTaskCards 
+      await dispatch(addTaskCard({
+        boardId,
+        listId,
+        title: taskCardTitle,
+        position: numTaskCards
       }));
       setTaskCardTitle('');
     }
@@ -46,6 +47,7 @@ const SingleList = (props) => {
               {list.taskcards && list.taskcards.length ? list.taskcards.map((taskCard, index) => (
                 <div key={`taskCard#${taskCard.id}`} className='taskCard'>
                   <SingleTaskCard taskCard={taskCard} index={index} />
+                  {provided.placeholder}
                 </div>
               )) : null}
 

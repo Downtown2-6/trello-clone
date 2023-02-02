@@ -29,6 +29,8 @@ export const addList = createAsyncThunk(
   }
 )
 
+//todo updateList thunk => express PUT route
+
 const listsSlice = createSlice({
   name: 'lists',
   initialState: [],
