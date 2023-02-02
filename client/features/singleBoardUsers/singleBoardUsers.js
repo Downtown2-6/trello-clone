@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  createUserBoard,
-  fetchAllUserBoards,
-} from "../boards/allUserBoardsSlice";
+  fetchAllUsersInBoard,
+  fetchGrantUserAccess,
+} from "./singleBoardUsersSlice";
+import { useParams } from "react-router-dom";
 import {
   Button,
   Box,
@@ -23,8 +24,10 @@ import {
 } from "@mui/material";
 
 const SingleBoardUsers = () => {
-  // const [boardName, setBoardName] = useState("");
-  // const dispatch = useDispatch();
+  const [userEmail, setUserEmail] = useState("");
+  const dispatch = useDispatch();
+  const { boardId } = useParams();
+
   // const loggedInUserId = useSelector((state) => state.auth.me.id);
   const [open, setOpen] = React.useState(false);
 
@@ -37,12 +40,17 @@ const SingleBoardUsers = () => {
   };
 
   const handleSubmit = (e) => {
-    // e.preventDefault();
-    // console.log("this is the handleSubmit", e);
-    // console.log("and\n this\n is\n the\n me", loggedInUserId);
-    // dispatch(createUserBoard({ boardName, loggedInUserId }));
+    e.preventDefault();
+    console.log("this is the handleSubmit", e);
+    dispatch(fetchGrantUserAccess({userEmail, boardId}));
     setOpen(false);
   };
+
+  useEffect(() => {
+    dispatch(fetchAllUsersInBoard(1));
+  }, []);
+
+  const allUsersInThisBoard = useSelector((state) => state.singleBoardUsers);
 
   return (
     <>
@@ -63,7 +71,8 @@ const SingleBoardUsers = () => {
             type="email"
             fullWidth
             variant="standard"
-            onChange={(e) => setBoardName(e.target.value)}
+            onChange={(e) => setUserEmail(e.target.value)}
+            onSubmit={(boardName) => handleSubmit()}
           />
         </DialogContent>
         <DialogActions>
@@ -71,10 +80,10 @@ const SingleBoardUsers = () => {
         </DialogActions>
         <DialogContent>
           <DialogContentText>Current Board Users</DialogContentText>
-          {/* 
+          {/*
           We need to map through the users associated with the board and include a toggle to give them admin access
-          
-          
+
+
           <TextField
             autoFocus
             margin="dense"
@@ -85,6 +94,11 @@ const SingleBoardUsers = () => {
             variant="standard"
             onChange={(e) => setBoardName(e.target.value)}
           /> */}
+          {allUsersInThisBoard && allUsersInThisBoard.length
+            ? allUsersInThisBoard.map((item, index) => {
+                return <li key={index}>{item.user.email}</li>;
+              })
+            : null}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
