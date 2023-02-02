@@ -10,7 +10,6 @@ const ListContainer = styled.div``
 const SingleList = (props) => {
   const { boardId, list } = props;
   const listId = list.id;
-  console.log(list);
   const numTaskCards = list.taskcards ? list.taskcards.length + 1 : 1;
 
   const dispatch = useDispatch();

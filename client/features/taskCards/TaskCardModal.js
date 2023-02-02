@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import ContentEditable from 'react-contenteditable';
 import sanitizeHtml from 'sanitize-html';
-import { Modal, Box } from "@mui/material";
-import { updateTaskCardTitle } from '../singleBoard/singleBoardSlice';
+import { Modal, Box, TextField } from "@mui/material";
+import { updateTaskCard } from '../singleBoard/singleBoardSlice';
 
 function ChildModal() {
   const [open, setOpen] = useState(false);
@@ -43,12 +43,15 @@ const TaskCardModal = (props) => {
   const { boardId } = useParams();
 
   const [title, setTitle] = useState(taskCard.title);
+  const [description, setDescription] = useState('');
+  const [taskCardValues, setTaskCardValues] = useState({});
   const dispatch = useDispatch();
 
   var html = `<h3 class='taskCard-modal-item'>${title}</h3>`;
 
   const handleTitleChange = (evt) => {
     setTitle(sanitizeHtml(evt.target.value, sanitizeConf));
+    taskCardValues.title = title;
   }
 
   const sanitizeConf = {
@@ -56,13 +59,19 @@ const TaskCardModal = (props) => {
     allowedAttributes: { a: ['href'] },
   }
 
-  const handleTitleUpdate = async () => {
-    await dispatch(updateTaskCardTitle({
+  const handleTaskCardUpdate = async () => {
+    await dispatch(updateTaskCard({
       boardId, 
       taskCardId: taskCard.id, 
-      title
+      taskCardValues
     }));
+    setTaskCardValues({});
   };
+
+  const handleDescriptionChange = (evt) => {
+    setDescription(evt.target.value);
+    taskCardValues.description = description;
+  }
 
   return (
     <>
@@ -72,7 +81,7 @@ const TaskCardModal = (props) => {
           tagName='pre'
           html={html}
           onChange={handleTitleChange}
-          onBlur={handleTitleUpdate}
+          onBlur={handleTaskCardUpdate}
         />
         <small>in list {list.listName}</small>
       </Box>
@@ -80,9 +89,20 @@ const TaskCardModal = (props) => {
         <h5 id='taskCard-modal-description-label'>
           Description
         </h5>
-        <p>
-          a
-        </p>
+        <TextField 
+          placeholder='Add a more detailed description...' 
+          multiline
+          variant='filled' 
+          size='small'
+          fullWidth
+          onChange={handleDescriptionChange}
+          onBlur={handleTaskCardUpdate}
+        />
+      </Box>
+      <Box>
+        <h5 id='taskCard-modal-activity-label'>
+          Activity
+        </h5>
       </Box>
     </>
   )

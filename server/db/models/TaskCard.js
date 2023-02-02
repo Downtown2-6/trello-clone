@@ -21,6 +21,10 @@ const TaskCard = db.define("taskcard", {
     type: Sequelize.INTEGER,
     allowNull: true,
   },
+  description: {
+    type: Sequelize.TEXT,
+    allowNull: true,
+  },
   editable: {
     type: Sequelize.BOOLEAN,
     allowNull: false,
