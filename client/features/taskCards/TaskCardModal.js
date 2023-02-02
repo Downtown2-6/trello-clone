@@ -43,15 +43,13 @@ const TaskCardModal = (props) => {
   const { boardId } = useParams();
 
   const [title, setTitle] = useState(taskCard.title);
-  const [description, setDescription] = useState('');
-  const [taskCardValues, setTaskCardValues] = useState({});
+  const [description, setDescription] = useState(taskCard.description);
   const dispatch = useDispatch();
 
   var html = `<h3 class='taskCard-modal-item'>${title}</h3>`;
 
   const handleTitleChange = (evt) => {
     setTitle(sanitizeHtml(evt.target.value, sanitizeConf));
-    taskCardValues.title = title;
   }
 
   const sanitizeConf = {
@@ -63,15 +61,10 @@ const TaskCardModal = (props) => {
     await dispatch(updateTaskCard({
       boardId, 
       taskCardId: taskCard.id, 
-      taskCardValues
+      description,
+      title
     }));
-    setTaskCardValues({});
   };
-
-  const handleDescriptionChange = (evt) => {
-    setDescription(evt.target.value);
-    taskCardValues.description = description;
-  }
 
   return (
     <>
@@ -95,7 +88,7 @@ const TaskCardModal = (props) => {
           variant='filled' 
           size='small'
           fullWidth
-          onChange={handleDescriptionChange}
+          onChange={(evt) => setDescription(evt.target.value)}
           onBlur={handleTaskCardUpdate}
         />
       </Box>
