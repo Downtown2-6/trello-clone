@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import Diversity2Icon from '@mui/icons-material/Diversity2';
 import { logout } from '../auth/authSlice';
 
 
@@ -29,7 +30,7 @@ const Navbar = () => {
   return (
     <>
           {isLoggedIn ? (
-          <AppBar position="static">
+          <AppBar position="fixed">
           <Toolbar>
             <IconButton
               size="large"
@@ -38,9 +39,9 @@ const Navbar = () => {
               aria-label="menu"
               sx={{ mr: 2 }}
             >
-              {/* <MenuIcon /> */}
+              <Diversity2Icon />
             </IconButton>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} onClick={() => navigate(`/home`)}>
+            <Typography variant="h5" component="div" sx={{ flexGrow: 1 }} onClick={() => navigate(`/home`)}>
               Trell-O
             </Typography>
             <Button color="inherit" onClick={() => navigate(`/calendar`)}>My Calendar</Button>
@@ -57,7 +58,7 @@ const Navbar = () => {
         aria-label="menu"
         sx={{ mr: 2 }}
       >
-        {/* <MenuIcon /> */}
+        <Diversity2Icon />
       </IconButton>
       <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} onClick={() => navigate(`/home`)}>
         Trell-O

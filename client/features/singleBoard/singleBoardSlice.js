@@ -13,6 +13,22 @@ export const fetchSingleBoard = createAsyncThunk(
   }
 );
 
+export const addList = createAsyncThunk(
+  'addList',
+  async ({boardId, listName, position}) => {
+    try {
+      const {data} = await axios.post(`/api/lists/${boardId}`, {
+        listName,
+        position,
+        boardId
+      });
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
+
 export const addTaskCard = createAsyncThunk(
   'addTaskCard',
   async ({boardId, listId, title, position}) => {
@@ -23,7 +39,20 @@ export const addTaskCard = createAsyncThunk(
         listId,
         boardId
       });
-      console.log(data);
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
+
+export const updateTaskCardTitle = createAsyncThunk(
+  'updateTaskCardTitle',
+  async ({boardId, taskCardId, title}) => {
+    try {
+      const { data } = await axios.put(`/api/tasks/${boardId}/${taskCardId}`, {
+        title,
+      });
       return data;
     } catch (err) {
       console.log(err);
@@ -41,14 +70,21 @@ const singleBoardSlice = createSlice({
     builder.addCase(fetchSingleBoard.fulfilled, (state, action) => {
       return action.payload;
     });
-    builder.addCase(addTaskCard.fulfilled, (state, action) => {
-     const listIdx = state.lists.findIndex((list) => {
-        //finding the index of the list that taskCard need to be added to
-        return list.id == action.payload.listId
-      })
-      state.lists[listIdx].taskcards.push(action.payload)
 
+    builder.addCase(addList.fulfilled, (state, action) => {
+      state.lists.push(action.payload);
     })
+
+    builder.addCase(addTaskCard.fulfilled, (state, action) => {
+      const listIdx = state.lists.findIndex((list) => list.id === action.payload.listId);
+      state.lists[listIdx].taskcards.push(action.payload);
+    });
+
+    builder.addCase(updateTaskCardTitle.fulfilled, (state, action) => {
+      const listIdx = state.lists.findIndex((list) => list.id === action.payload.listId);
+      const taskcardIdx = state.lists[listIdx].taskcards.findIndex((taskcard) => taskcard.id === action.payload.id);
+      state.lists[listIdx].taskcards[taskcardIdx] = action.payload;
+    });
   }
 });
 
