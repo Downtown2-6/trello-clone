@@ -131,15 +131,28 @@ const SingleBoard = () => {
         lists: newLists
       }
 
-      // destinationListTasks.forEach((task, index )=> {
-      //   dispatch(updateTaskCard({
-      //     boardId,
-      //     taskCard: {
-      //       ...task,
-      //       position: index + 1
-      //     }
-      //   }));
-      // })
+      sourceListTasks.forEach((task, index )=> {
+        dispatch(updateTaskCard({
+          boardId,
+          taskCard: {
+            ...task,
+            position: index
+          }
+        }));
+
+      })
+      console.log(destinationListTasks)
+      destinationListTasks.forEach((task, index )=> {
+        console.log(task, destination)
+        dispatch(updateTaskCard({
+          boardId,
+          taskCard: {
+            ...task,
+            position: index,
+            listId: parseInt(destination.droppableId)
+          }
+        }));
+      })
 
 
 

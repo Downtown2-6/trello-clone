@@ -67,7 +67,6 @@ export const updateTaskCard = createAsyncThunk(
       const { data } = await axios.put(`/api/tasks/${boardId}/${taskCard.id}`, {
         ...taskCard,
       });
-      console.log("***THUNK ",data)
       return data;
     } catch (err) {
       console.log(err);
@@ -113,13 +112,14 @@ const singleBoardSlice = createSlice({
       //   } else {
       //     return state.lists[listIdx].taskcards[a]
       //   }
-      let newArray =[]
-      for (let i = 0; i < state.lists[listIdx].taskcards.length; i++){
-        if(state.lists[listIdx].taskcards[i].position === i){
-          newArray.push(state.lists[listIdx].taskcards[i])
-        }
-      }
-      state.lists[listIdx].taskcards = newArray
+      // let newArray =[]
+      // for (let i = 0; i < state.lists[listIdx].taskcards.length; i++){
+      //   if(state.lists[listIdx].taskcards[i].position === i){
+      //     newArray.push(state.lists[listIdx].taskcards[i])
+      //   }
+      // }
+      // state.lists[listIdx].taskcards = newArray
+      // console.log(newArray)
     });
   }
 });
