@@ -30,8 +30,6 @@ const SingleList = (props) => {
       setTaskCardTitle('');
     }
   }
-  const taskCardsCopy = [...(list.taskcards || [])]
-
 
   return (
     <Droppable droppableId={listId.toString()}>
@@ -46,11 +44,11 @@ const SingleList = (props) => {
           <div className='list-container-content'>
             <h4>{list.listName}</h4>
             <div className='list-taskCards-container'>
-              {taskCardsCopy.sort((a, b) => a.position - b.position).map((taskCard, index) => (
+              {list.taskcards && list.taskcards.length ? list.taskcards.map((taskCard, index) => (
                 <div key={`taskCard#${taskCard.id}`} className='taskCard'>
                   <SingleTaskCard list={list} taskCard={taskCard} index={index} />
                 </div>
-              ))}
+              )) : null}
 
             </div>
             {provided.placeholder}
