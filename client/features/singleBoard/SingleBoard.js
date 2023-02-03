@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { fetchSingleBoard, selectSingleBoard, addList } from "./singleBoardSlice";
+import { fetchSingleBoard, selectSingleBoard, addList, updateTaskCard } from "./singleBoardSlice";
 import SingleList from "../singleList/SingleList";
 import { DragDropContext } from "react-beautiful-dnd";
 import SingleBoardUsers from "../singleBoardUsers/singleBoardUsers";
@@ -11,13 +11,18 @@ import SingleBoardUsers from "../singleBoardUsers/singleBoardUsers";
 const SingleBoard = () => {
   const [listName, setListName] = useState('');
 
-  //testing for onDragEnd
-  const [newList, setNewList] = useState([])
-
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.auth.me.id);
   const { boardId } = useParams();
   const board = useSelector(selectSingleBoard);
+
+  //testing for persistent DnD
+  // const [boardState, setBoardState] = useState(board)
+
+  // useEffect(() => {
+  //   setBoardState(board);
+  // }, [board]);
+
 
   useEffect(() => {
     dispatch(fetchSingleBoard({userId, boardId}));
@@ -36,11 +41,13 @@ const SingleBoard = () => {
     }
   };
 
+
   const onDragEnd = (result) => {
     const { destination, source, draggableId } = result
 
     //if no destination in result object return
     if(!destination) return
+
 
     //if destination is same as source && index is the same, return
     if (destination.droppableId === source.droppableId
@@ -52,27 +59,96 @@ const SingleBoard = () => {
     const { index: destinationIndex } = destination
 
     //reorder taskIds for the column
-    const sourceList = board.lists[parseInt(source.droppableId, 10)]
-    console.log("**Source",sourceList)
-
-    const newTasksArray = Array.from(sourceList)
-    console.log("***SourceList Copy", newTasksArray)
-
-    newTasksArray.splice(sourceIndex, 1)
-    newTasksArray.splice(destinationIndex, 0, draggableId)
 
 
-    const destinationTaskCards = board.lists[parseInt(destination.droppableId, 10)]
+    const sourceList = board.lists.find((list) => list.id === parseInt(source.droppableId, 10))
+
+    if (source.droppableId === destination.droppableId){
+      const sourceListTasks = Array.from(sourceList.taskcards)
+      const taskToMove = sourceListTasks.find((task) => task.id === parseInt(draggableId, 10))
+      sourceListTasks.splice(sourceIndex, 1)
+      sourceListTasks.splice(destinationIndex, 0, taskToMove)
+
+
+      const newLists = board.lists.map((list) => {
+
+        if (list.id.toString() === source.droppableId){
+          return {
+            ...list,
+            taskcards: sourceListTasks
+          }
+        } else {
+          return list
+        }
+      })
+
+      const newBoard = {
+        ...board,
+        lists: newLists
+      }
+
+      sourceListTasks.forEach((task, index )=> {
+        dispatch(updateTaskCard({
+          boardId,
+          taskCard: {
+            ...task,
+            position: index
+          }
+        }));
+
+      })
+
+
+      // setBoardState(newBoard)
+
+    } else {
+      const destinationList = board.lists.find((list) => list.id === parseInt(destination.droppableId, 10))
+      const sourceListTasks = Array.from(sourceList.taskcards)
+      const destinationListTasks = Array.from(destinationList.taskcards)
+      const taskToMove = sourceListTasks.find((task) => task.id === parseInt(draggableId, 10))
+      sourceListTasks.splice(sourceIndex, 1)
+      destinationListTasks.splice(destinationIndex, 0, taskToMove)
+
+      const newLists = board.lists.map((list) => {
+
+        if (list.id.toString() === source.droppableId){
+          return {
+            ...list,
+            taskcards: sourceListTasks
+          }
+        }
+        if (list.id.toString() === destination.droppableId){
+          return {
+            ...list,
+            taskcards: destinationListTasks
+          }
+        }
+        return list
+      })
+
+      const newBoard = {
+        ...board,
+        lists: newLists
+      }
+
+      // destinationListTasks.forEach((task, index )=> {
+      //   dispatch(updateTaskCard({
+      //     boardId,
+      //     taskCard: {
+      //       ...task,
+      //       position: index + 1
+      //     }
+      //   }));
+      // })
 
 
 
-    // update board to right data structure / where taskcard was just moved
-    //singleBoardSlice: create setBoard() => in Thunk == listId + position
+      // setBoardState(newBoard)
+      //if list.id === source.droppableId => build out source list
+    }
 
-    // dispatch setBoard(newBoardState)
-
-
-    // axios call to update the DB
+    //sourceList id + position of taskCard in the sourceList if(taskcard id > minus 1 from positon )
+    //destination id + new position in the destination if(taskcard id < incoming taskcard add 1 to position )
 
   }
 

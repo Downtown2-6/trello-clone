@@ -60,6 +60,21 @@ export const updateTaskCardTitle = createAsyncThunk(
   }
 );
 
+export const updateTaskCard = createAsyncThunk(
+  'updateTaskCard',
+  async ({boardId, taskCard}) => {
+    try {
+      const { data } = await axios.put(`/api/tasks/${boardId}/${taskCard.id}`, {
+        ...taskCard,
+      });
+      console.log("***THUNK ",data)
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
+
 const singleBoardSlice = createSlice({
   name: 'singleBoard',
   initialState: {
@@ -84,6 +99,27 @@ const singleBoardSlice = createSlice({
       const listIdx = state.lists.findIndex((list) => list.id === action.payload.listId);
       const taskcardIdx = state.lists[listIdx].taskcards.findIndex((taskcard) => taskcard.id === action.payload.id);
       state.lists[listIdx].taskcards[taskcardIdx] = action.payload;
+    });
+
+    builder.addCase(updateTaskCard.fulfilled, (state, action) => {
+      const listIdx = state.lists.findIndex((list) => list.id === action.payload.listId);
+      const taskcardIdx = state.lists[listIdx].taskcards.findIndex((taskcard) => taskcard.id === action.payload.id);
+      state.lists[listIdx].taskcards[taskcardIdx] = action.payload;
+      // state.lists[listIdx].taskcards = state.lists[listIdx].taskcards.sort((a, b) => {
+      //   // a = state.lists[listIdx].taskcards[a]
+      //   // b = state.lists[listIdx].taskcards[b]
+      //   if(state.lists[listIdx].taskcards[a] > state.lists[listIdx].taskcards[b]){
+      //     return state.lists[listIdx].taskcards[b]
+      //   } else {
+      //     return state.lists[listIdx].taskcards[a]
+      //   }
+      let newArray =[]
+      for (let i = 0; i < state.lists[listIdx].taskcards.length; i++){
+        if(state.lists[listIdx].taskcards[i].position === i){
+          newArray.push(state.lists[listIdx].taskcards[i])
+        }
+      }
+      state.lists[listIdx].taskcards = newArray
     });
   }
 });

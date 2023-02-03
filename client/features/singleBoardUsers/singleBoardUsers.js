@@ -107,7 +107,7 @@ const SingleBoardUsers = () => {
           /> */}
           {allUsersInThisBoard && allUsersInThisBoard.length
             ? allUsersInThisBoard.map((item, index) => {
-                return <li key={index}>{item.user.email}</li>;
+                return <li key={index}>{(item.user || {}).email}</li>;
               })
             : null}
         </DialogContent>

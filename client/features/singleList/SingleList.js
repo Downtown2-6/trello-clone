@@ -47,11 +47,11 @@ const SingleList = (props) => {
               {list.taskcards && list.taskcards.length ? list.taskcards.map((taskCard, index) => (
                 <div key={`taskCard#${taskCard.id}`} className='taskCard'>
                   <SingleTaskCard list={list} taskCard={taskCard} index={index} />
-                  {provided.placeholder}
                 </div>
               )) : null}
 
             </div>
+            {provided.placeholder}
             <div className='list-bottom-container'>
               <form className='add-taskCard-form' onSubmit={handleSubmitTaskCard}>
                 <input
