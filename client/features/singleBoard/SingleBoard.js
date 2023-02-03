@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { fetchSingleBoard, selectSingleBoard, addList, updateTaskCardPosition, persistList } from "./singleBoardSlice";
+import { fetchSingleBoard, selectSingleBoard, addList, updateTaskCardPosition, persistList, persistLists } from "./singleBoardSlice";
 import SingleList from "../singleList/SingleList";
 import { DragDropContext } from "react-beautiful-dnd";
 import SingleBoardUsers from "../singleBoardUsers/singleBoardUsers";
-
-
 
 const SingleBoard = () => {
   const [listName, setListName] = useState('');
@@ -15,14 +13,6 @@ const SingleBoard = () => {
   const userId = useSelector((state) => state.auth.me.id);
   const { boardId } = useParams();
   const board = useSelector(selectSingleBoard);
-
-  //testing for persistent DnD
-  // const [boardState, setBoardState] = useState(board)
-
-  // useEffect(() => {
-  //   setBoardState(board);
-  // }, [board]);
-
 
   useEffect(() => {
     dispatch(fetchSingleBoard({userId, boardId}));
@@ -40,7 +30,6 @@ const SingleBoard = () => {
       setListName('');
     }
   };
-
 
   const onDragEnd = (result) => {
     const { destination, source, draggableId } = result
@@ -136,6 +125,17 @@ const SingleBoard = () => {
         lists: newLists
       }
 
+      const sourceListTasksUpdated = sourceListTasks.map((task, index)=> ({ ...task, position: index }));
+
+      const destinationListTasksUpdated = destinationListTasks.map((task, index)=> ({ ...task, position: index }));
+
+      dispatch(persistLists({
+        sourceListId: sourceList.id, 
+        sourceListTaskCards: sourceListTasksUpdated,
+        destinationListId: destinationList.id,
+        destinationListTaskCards: destinationListTasksUpdated,
+      }));
+
       sourceListTasks.forEach((task, index )=> {
         dispatch(updateTaskCardPosition({
           boardId,
@@ -158,19 +158,8 @@ const SingleBoard = () => {
           }
         }));
       })
-
-
-
-      // setBoardState(newBoard)
-      //if list.id === source.droppableId => build out source list
     }
-
-    //sourceList id + position of taskCard in the sourceList if(taskcard id > minus 1 from positon )
-    //destination id + new position in the destination if(taskcard id < incoming taskcard add 1 to position )
-
   }
-
-
 
   return (
     <>
