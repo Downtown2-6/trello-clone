@@ -10,7 +10,7 @@ const ListContainer = styled.div``
 const SingleList = (props) => {
   const { boardId, list } = props;
   const listId = list.id;
-  console.log(list);
+
   const numTaskCards = list.taskcards ? list.taskcards.length + 1 : 1;
 
   const dispatch = useDispatch();
@@ -47,6 +47,7 @@ const SingleList = (props) => {
               {list.taskcards && list.taskcards.length ? list.taskcards.map((taskCard, index) => (
                 <div key={`taskCard#${taskCard.id}`} className='taskCard'>
                   <SingleTaskCard list={list} taskCard={taskCard} index={index} />
+                  {provided.placeholder}
                 </div>
               )) : null}
 
@@ -66,7 +67,6 @@ const SingleList = (props) => {
               </form>
             </div>
           </div>
-          {provided.placeholder}
         </ListContainer>
       )}
     </Droppable>

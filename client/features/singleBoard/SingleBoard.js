@@ -10,6 +10,9 @@ import { DragDropContext } from "react-beautiful-dnd";
 const SingleBoard = () => {
   const [listName, setListName] = useState('');
 
+  //testing for onDragEnd
+  const [newList, setNewList] = useState([])
+
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.auth.me.id);
   const { boardId } = useParams();
@@ -35,9 +38,6 @@ const SingleBoard = () => {
   const onDragEnd = (result) => {
     const { destination, source, draggableId } = result
 
-    const { index: sourceIndex } = source
-    const { index: destinationIndex } = destination
-
     //if no destination in result object return
     if(!destination) return
 
@@ -47,29 +47,35 @@ const SingleBoard = () => {
         return
     }
 
+    const { index: sourceIndex } = source
+    const { index: destinationIndex } = destination
+
     //reorder taskIds for the column
-    const sourceTaskCards = [...board.lists[sourceIndex].taskcards ]
+    const sourceList = board.lists[parseInt(source.droppableId, 10)]
+    console.log("**Source",sourceList)
 
-    const destinationTaskCards = [...board.lists[destinationIndex].taskcards]
+    const newTasksArray = Array.from(sourceList)
+    console.log("***SourceList Copy", newTasksArray)
 
-    // const taskcard = { ...sourceList.taskCards[sourceIndex]}
+    newTasksArray.splice(sourceIndex, 1)
+    newTasksArray.splice(destinationIndex, 0, draggableId)
 
-    sourceTaskCards.splice(sourceIndex, 1)
-    destinationTaskCards.splice(destinationIndex, 0, draggableId)
+
+    const destinationTaskCards = board.lists[parseInt(destination.droppableId, 10)]
+
+
 
     // update board to right data structure / where taskcard was just moved
     //singleBoardSlice: create setBoard() => in Thunk == listId + position
 
     // dispatch setBoard(newBoardState)
 
-    // what is the index within the taskCards array where this task was grabbed from /sent to
-    // axios call to update the DB
 
-    // console.log("******LISTS*******", board.lists)
+    // axios call to update the DB
 
   }
 
-  console.log("******LISTS*******", board.lists)
+
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
