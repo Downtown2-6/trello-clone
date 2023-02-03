@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import ContentEditable from 'react-contenteditable';
 import sanitizeHtml from 'sanitize-html';
 import { Modal, Box, TextField } from "@mui/material";
-import { Textarea } from '@mui/joy/Textarea';
+// import { Textarea } from '@mui/joy/Textarea';
 import { updateTaskCard } from '../singleBoard/singleBoardSlice';
 
 function ChildModal() {
@@ -75,19 +75,19 @@ const TaskCardModal = (props) => {
   return (
     <>
       <Box>
-        {/* <ContentEditable
+        <ContentEditable
           className='editable'
           tagName='pre'
           html={titleHtml}
           onChange={handleTitleChange}
           onBlur={handleTaskCardUpdate}
-        /> */}
-        <Textarea
+        />
+        {/* <Textarea
           className='editable'
           value={title}
           onChange={(evt) => setTitle(evt.target.value)}
           onBlur={handleTaskCardUpdate}
-        />
+        /> */}
         <small>in list {list.listName}</small>
       </Box>
       <Box>
