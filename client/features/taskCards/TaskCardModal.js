@@ -46,14 +46,19 @@ const TaskCardModal = (props) => {
   const [description, setDescription] = useState(taskCard.description);
   const dispatch = useDispatch();
 
-  var html = `<h3 class='taskCard-modal-item'>${title}</h3>`;
+  var titleHtml = `<h3 class='taskCard-modal-item'>${title}</h3>`;
+  var descriptionHtml = `<p class='taskCard-modal-item'>${description}</p>`
 
   const handleTitleChange = (evt) => {
     setTitle(sanitizeHtml(evt.target.value, sanitizeConf));
   }
 
+  const handleDescriptionChange = (evt) => {
+    setDescription(sanitizeHtml(evt.target.value, sanitizeConf));
+  }
+
   const sanitizeConf = {
-    allowedTags: ['b', 'i', 'em', 'strong', 'a', 'p'],
+    allowedTags: ['b', 'i', 'em', 'strong', 'a'],
     allowedAttributes: { a: ['href'] },
   }
 
@@ -72,7 +77,7 @@ const TaskCardModal = (props) => {
         <ContentEditable
           className='editable'
           tagName='pre'
-          html={html}
+          html={titleHtml}
           onChange={handleTitleChange}
           onBlur={handleTaskCardUpdate}
         />
@@ -82,6 +87,16 @@ const TaskCardModal = (props) => {
         <h5 id='taskCard-modal-description-label'>
           Description
         </h5>
+
+        {taskCard.description && taskCard.description.length ? 
+        <ContentEditable
+          className='editable'
+          tagName='pre'
+          html={descriptionHtml}
+          onChange={handleDescriptionChange}
+          onBlur={handleTaskCardUpdate}
+        />
+        : 
         <TextField 
           placeholder='Add a more detailed description...' 
           multiline
@@ -91,6 +106,8 @@ const TaskCardModal = (props) => {
           onChange={(evt) => setDescription(evt.target.value)}
           onBlur={handleTaskCardUpdate}
         />
+        }
+
       </Box>
       <Box>
         <h5 id='taskCard-modal-activity-label'>
