@@ -53,7 +53,7 @@ export const updateTaskCard = createAsyncThunk(
 );
 
 export const updateTaskCardPosition = createAsyncThunk(
-  'updateTaskCard',
+  'updateTaskCardPosition',
   async ({boardId, taskCard}) => {
     try {
       const { data } = await axios.put(`/api/tasks/${boardId}/${taskCard.id}`, taskCard);

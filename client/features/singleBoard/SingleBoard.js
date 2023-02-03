@@ -90,7 +90,7 @@ const SingleBoard = () => {
       const sourceListTasksUpdated = sourceListTasks.map((task, index)=> ({ ...task, position: index }));
 
       dispatch(persistList({
-        listId: sourceList.id, 
+        listId: sourceList.id,
         taskcards: sourceListTasksUpdated
       }));
 
@@ -137,7 +137,7 @@ const SingleBoard = () => {
       }
 
       sourceListTasks.forEach((task, index )=> {
-        dispatch(updateTaskCard({
+        dispatch(updateTaskCardPosition({
           boardId,
           taskCard: {
             ...task,
@@ -149,7 +149,7 @@ const SingleBoard = () => {
       console.log(destinationListTasks)
       destinationListTasks.forEach((task, index )=> {
         console.log(task, destination)
-        dispatch(updateTaskCard({
+        dispatch(updateTaskCardPosition({
           boardId,
           taskCard: {
             ...task,
