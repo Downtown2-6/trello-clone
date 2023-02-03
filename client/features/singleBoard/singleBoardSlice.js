@@ -53,7 +53,7 @@ export const updateTaskCard = createAsyncThunk(
 );
 
 export const updateTaskCardPosition = createAsyncThunk(
-  'updateTaskCard',
+  'updateTaskCardPosition',
   async ({boardId, taskCard}) => {
     try {
       const { data } = await axios.put(`/api/tasks/${boardId}/${taskCard.id}`, taskCard);
@@ -68,6 +68,16 @@ export const updateTaskCardPosition = createAsyncThunk(
 export const persistList = createAsyncThunk(
   'persistList', ({listId, taskcards}) => {
     return {listId, taskcards};
+  }
+);
+
+export const persistLists = createAsyncThunk(
+  'persistLists', ({
+    sourceListId, 
+    sourceListTaskCards, 
+    destinationListId, 
+    destinationListTaskCards}) => {
+    return {sourceListId, sourceListTaskCards, destinationListId, destinationListTaskCards};
   }
 );
 
@@ -98,6 +108,13 @@ const singleBoardSlice = createSlice({
     builder.addCase(persistList.fulfilled, (state, action) => {
       const listIdx = state.lists.findIndex((list) => list.id === action.payload.listId);
       state.lists[listIdx].taskcards = action.payload.taskcards;
+    });
+
+    builder.addCase(persistLists.fulfilled, (state, action) => {
+      const sourceListIdx = state.lists.findIndex((list) => list.id === action.payload.sourceListId);
+      const destinationListIdx = state.lists.findIndex((list) => list.id === action.payload.destinationListId);
+      state.lists[sourceListIdx].taskcards = action.payload.sourceListTaskCards;
+      state.lists[destinationListIdx].taskcards = action.payload.destinationListTaskCards;
     });
   }
 });

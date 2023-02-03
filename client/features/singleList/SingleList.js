@@ -16,7 +16,6 @@ const SingleList = (props) => {
 
   const [taskCardTitle, setTaskCardTitle] = useState('');
 
-
   const handleSubmitTaskCard = async (evt) => {
     evt.preventDefault();
     if (taskCardTitle.length) {
