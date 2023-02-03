@@ -64,6 +64,7 @@ const Navbar = () => {
         Trell-O
       </Typography>
       <Button color="inherit" onClick={() => navigate(`/login`)}>Login</Button>
+      <Button color="inherit" onClick={() => navigate(`/signup`)}>Sign UP</Button>
     </Toolbar>
   </AppBar>
         )}

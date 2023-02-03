@@ -16,6 +16,7 @@ const SingleList = (props) => {
 
   const [taskCardTitle, setTaskCardTitle] = useState('');
 
+
   const handleSubmitTaskCard = async (evt) => {
     evt.preventDefault();
     if (taskCardTitle.length) {
@@ -49,6 +50,7 @@ const SingleList = (props) => {
               )) : null}
 
             </div>
+            {provided.placeholder}
             <div className='list-bottom-container'>
               <form className='add-taskCard-form' onSubmit={handleSubmitTaskCard}>
                 <input

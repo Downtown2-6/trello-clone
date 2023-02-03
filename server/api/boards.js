@@ -3,6 +3,7 @@ const Board = require("../db/models/Board");
 const UserBoard = require("../db/models/UserBoard");
 const List = require("../db/models/List");
 const TaskCard = require("../db/models/TaskCard");
+const User = require("../db/models/User");
 
 // GET /api/boards
 router.get("/", async (req, res, next) => {
@@ -15,14 +16,19 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-console.log(`***
-***
-***
-Logging:aklskdfjalsdjfqqqq
-***
-***
-***
-`, );
+// GET /api/boards/allUsers/:boardId
+router.get("/allUsers/:boardId", async (req, res, next) => {
+  try {
+    const { boardId } = req.params;
+    const users = await UserBoard.findAll({
+      where: { boardId },
+      include: { model: User },
+    });
+    res.json(users);
+  } catch (error) {
+    next(error);
+  }
+});
 
 // GET /api/boards/:userId/:boardId
 router.get("/:userId/:boardId", async (req, res, next) => {

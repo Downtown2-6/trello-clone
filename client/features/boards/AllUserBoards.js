@@ -16,8 +16,8 @@ import CreateBoardFormMUI from "../createBoardForm/createMUIBoardForm";
 
 const UserBoards = () => {
   const dispatch = useDispatch();
-  const allUserBoards = useSelector(selectUserBoards);
   const navigate = useNavigate();
+  const allUserBoards = useSelector(selectUserBoards);
   const userId = useSelector((state) => state.auth.me.id);
   console.log("This is allUserBoards", allUserBoards);
 

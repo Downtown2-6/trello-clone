@@ -26,28 +26,28 @@ nav {
   flex-direction: row;
 }
 
-.list-container {
+/* .list-container {
   display: flex;
   flex-direction: column;
   flex-basis: 0;
   min-width: 15em;
   margin: 1em;
   border: 1px solid red;
-}
+} */
 
 .list-container-content {
   margin: 0.5em;
   border: 1px solid purple;
 }
 
-.taskCard {
+/* .taskCard {
   display: flex;
   flex-direction: row;
   flex: 1 auto;
   justify-content: center;
   width: 100%;
   border: 1px solid green;
-}
+} */
 
 .taskCard-draggable {
   min-width: 13em;
