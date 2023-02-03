@@ -38,7 +38,7 @@ export const addTaskCard = createAsyncThunk(
 );
 
 export const updateTaskCard = createAsyncThunk(
-  'updateTaskCardTitle',
+  'updateTaskCard',
   async ({boardId, taskCardId, description, title}) => {
     try {
       const { data } = await axios.put(`/api/tasks/${boardId}/${taskCardId}`, {
@@ -52,13 +52,12 @@ export const updateTaskCard = createAsyncThunk(
   }
 );
 
-export const updateTaskCard = createAsyncThunk(
+export const updateTaskCardPosition = createAsyncThunk(
   'updateTaskCard',
   async ({boardId, taskCard}) => {
     try {
-      const { data } = await axios.put(`/api/tasks/${boardId}/${taskCard.id}`, {
-        ...taskCard,
-      });
+      const { data } = await axios.put(`/api/tasks/${boardId}/${taskCard.id}`, taskCard);
+      console.log("***THUNK ",data)
       return data;
     } catch (err) {
       console.log(err);
@@ -66,11 +65,15 @@ export const updateTaskCard = createAsyncThunk(
   }
 );
 
+export const persistList = createAsyncThunk(
+  'persistList', ({listId, taskcards}) => {
+    return {listId, taskcards};
+  }
+);
+
 const singleBoardSlice = createSlice({
   name: 'singleBoard',
-  initialState: {
-
-  },
+  initialState: {},
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchSingleBoard.fulfilled, (state, action) => {
@@ -79,7 +82,7 @@ const singleBoardSlice = createSlice({
 
     builder.addCase(addList.fulfilled, (state, action) => {
       state.lists.push(action.payload);
-    })
+    });
 
     builder.addCase(addTaskCard.fulfilled, (state, action) => {
       const listIdx = state.lists.findIndex((list) => list.id === action.payload.listId);
@@ -92,26 +95,9 @@ const singleBoardSlice = createSlice({
       state.lists[listIdx].taskcards[taskcardIdx] = action.payload;
     });
 
-    builder.addCase(updateTaskCard.fulfilled, (state, action) => {
+    builder.addCase(persistList.fulfilled, (state, action) => {
       const listIdx = state.lists.findIndex((list) => list.id === action.payload.listId);
-      const taskcardIdx = state.lists[listIdx].taskcards.findIndex((taskcard) => taskcard.id === action.payload.id);
-      state.lists[listIdx].taskcards[taskcardIdx] = action.payload;
-      // state.lists[listIdx].taskcards = state.lists[listIdx].taskcards.sort((a, b) => {
-      //   // a = state.lists[listIdx].taskcards[a]
-      //   // b = state.lists[listIdx].taskcards[b]
-      //   if(state.lists[listIdx].taskcards[a] > state.lists[listIdx].taskcards[b]){
-      //     return state.lists[listIdx].taskcards[b]
-      //   } else {
-      //     return state.lists[listIdx].taskcards[a]
-      //   }
-      // let newArray =[]
-      // for (let i = 0; i < state.lists[listIdx].taskcards.length; i++){
-      //   if(state.lists[listIdx].taskcards[i].position === i){
-      //     newArray.push(state.lists[listIdx].taskcards[i])
-      //   }
-      // }
-      // state.lists[listIdx].taskcards = newArray
-      // console.log(newArray)
+      state.lists[listIdx].taskcards = action.payload.taskcards;
     });
   }
 });

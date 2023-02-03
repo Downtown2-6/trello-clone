@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { fetchSingleBoard, selectSingleBoard, addList, updateTaskCard } from "./singleBoardSlice";
+import { fetchSingleBoard, selectSingleBoard, addList, updateTaskCardPosition, persistList } from "./singleBoardSlice";
 import SingleList from "../singleList/SingleList";
 import { DragDropContext } from "react-beautiful-dnd";
 import SingleBoardUsers from "../singleBoardUsers/singleBoardUsers";
@@ -87,17 +87,22 @@ const SingleBoard = () => {
         lists: newLists
       }
 
-      sourceListTasks.forEach((task, index )=> {
-        dispatch(updateTaskCard({
+      const sourceListTasksUpdated = sourceListTasks.map((task, index)=> ({ ...task, position: index }));
+
+      dispatch(persistList({
+        listId: sourceList.id, 
+        taskcards: sourceListTasksUpdated
+      }));
+
+      sourceListTasks.forEach(async (task, index )=> {
+        await dispatch(updateTaskCardPosition({
           boardId,
           taskCard: {
             ...task,
             position: index
           }
         }));
-
-      })
-
+      });
 
       // setBoardState(newBoard)
 
