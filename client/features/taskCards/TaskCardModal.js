@@ -3,8 +3,9 @@ import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import ContentEditable from 'react-contenteditable';
 import sanitizeHtml from 'sanitize-html';
-import { Modal, Box } from "@mui/material";
-import { updateTaskCardTitle } from '../singleBoard/singleBoardSlice';
+import { Modal, Box, TextField } from "@mui/material";
+import { Textarea } from '@mui/joy/Textarea';
+import { updateTaskCard } from '../singleBoard/singleBoardSlice';
 
 function ChildModal() {
   const [open, setOpen] = useState(false);
@@ -43,23 +44,30 @@ const TaskCardModal = (props) => {
   const { boardId } = useParams();
 
   const [title, setTitle] = useState(taskCard.title);
+  const [description, setDescription] = useState(taskCard.description);
   const dispatch = useDispatch();
 
-  var html = `<h3 class='taskCard-modal-item'>${title}</h3>`;
+  var titleHtml = `<h3 class='taskCard-modal-item'>${title}</h3>`;
+  var descriptionHtml = `<p class='taskCard-modal-item'>${description}</p>`
 
   const handleTitleChange = (evt) => {
     setTitle(sanitizeHtml(evt.target.value, sanitizeConf));
   }
 
+  const handleDescriptionChange = (evt) => {
+    setDescription(sanitizeHtml(evt.target.value, sanitizeConf));
+  }
+
   const sanitizeConf = {
-    allowedTags: ['b', 'i', 'em', 'strong', 'a', 'p'],
+    allowedTags: ['b', 'i', 'em', 'strong', 'a'],
     allowedAttributes: { a: ['href'] },
   }
 
-  const handleTitleUpdate = async () => {
-    await dispatch(updateTaskCardTitle({
+  const handleTaskCardUpdate = async () => {
+    await dispatch(updateTaskCard({
       boardId, 
       taskCardId: taskCard.id, 
+      description,
       title
     }));
   };
@@ -67,12 +75,18 @@ const TaskCardModal = (props) => {
   return (
     <>
       <Box>
-        <ContentEditable
+        {/* <ContentEditable
           className='editable'
           tagName='pre'
-          html={html}
+          html={titleHtml}
           onChange={handleTitleChange}
-          onBlur={handleTitleUpdate}
+          onBlur={handleTaskCardUpdate}
+        /> */}
+        <Textarea
+          className='editable'
+          value={title}
+          onChange={(evt) => setTitle(evt.target.value)}
+          onBlur={handleTaskCardUpdate}
         />
         <small>in list {list.listName}</small>
       </Box>
@@ -80,9 +94,32 @@ const TaskCardModal = (props) => {
         <h5 id='taskCard-modal-description-label'>
           Description
         </h5>
-        <p>
-          a
-        </p>
+
+        {taskCard.description && taskCard.description.length ? 
+        <ContentEditable
+          className='editable'
+          tagName='pre'
+          html={descriptionHtml}
+          onChange={handleDescriptionChange}
+          onBlur={handleTaskCardUpdate}
+        />
+        : 
+        <TextField 
+          placeholder='Add a more detailed description...' 
+          multiline
+          variant='filled' 
+          size='small'
+          fullWidth
+          onChange={(evt) => setDescription(evt.target.value)}
+          onBlur={handleTaskCardUpdate}
+        />
+        }
+
+      </Box>
+      <Box>
+        <h5 id='taskCard-modal-activity-label'>
+          Activity
+        </h5>
       </Box>
     </>
   )

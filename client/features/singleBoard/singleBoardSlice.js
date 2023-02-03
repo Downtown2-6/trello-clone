@@ -15,13 +15,9 @@ export const fetchSingleBoard = createAsyncThunk(
 
 export const addList = createAsyncThunk(
   'addList',
-  async ({boardId, listName, position}) => {
+  async (listValues) => {
     try {
-      const {data} = await axios.post(`/api/lists/${boardId}`, {
-        listName,
-        position,
-        boardId
-      });
+      const {data} = await axios.post(`/api/lists/${listValues.boardId}`, listValues);
       return data;
     } catch (err) {
       console.log(err);
@@ -31,28 +27,9 @@ export const addList = createAsyncThunk(
 
 export const addTaskCard = createAsyncThunk(
   'addTaskCard',
-  async ({boardId, listId, title, position}) => {
+  async (taskCardValues) => {
     try {
-      const { data } = await axios.post(`/api/tasks/${boardId}`, {
-        title,
-        position,
-        listId,
-        boardId
-      });
-      return data;
-    } catch (err) {
-      console.log(err);
-    }
-  }
-);
-
-export const updateTaskCardTitle = createAsyncThunk(
-  'updateTaskCardTitle',
-  async ({boardId, taskCardId, title}) => {
-    try {
-      const { data } = await axios.put(`/api/tasks/${boardId}/${taskCardId}`, {
-        title,
-      });
+      const { data } = await axios.post(`/api/tasks/${taskCardValues.boardId}`, taskCardValues);
       return data;
     } catch (err) {
       console.log(err);
@@ -62,10 +39,11 @@ export const updateTaskCardTitle = createAsyncThunk(
 
 export const updateTaskCard = createAsyncThunk(
   'updateTaskCard',
-  async ({boardId, taskCard}) => {
+  async ({boardId, taskCardId, description, title}) => {
     try {
-      const { data } = await axios.put(`/api/tasks/${boardId}/${taskCard.id}`, {
-        ...taskCard,
+      const { data } = await axios.put(`/api/tasks/${boardId}/${taskCardId}`, {
+        description,
+        title
       });
       return data;
     } catch (err) {
@@ -74,11 +52,28 @@ export const updateTaskCard = createAsyncThunk(
   }
 );
 
+export const updateTaskCardPosition = createAsyncThunk(
+  'updateTaskCard',
+  async ({boardId, taskCard}) => {
+    try {
+      const { data } = await axios.put(`/api/tasks/${boardId}/${taskCard.id}`, taskCard);
+      console.log("***THUNK ",data)
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
+
+export const persistList = createAsyncThunk(
+  'persistList', ({listId, taskcards}) => {
+    return {listId, taskcards};
+  }
+);
+
 const singleBoardSlice = createSlice({
   name: 'singleBoard',
-  initialState: {
-
-  },
+  initialState: {},
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchSingleBoard.fulfilled, (state, action) => {
@@ -87,39 +82,22 @@ const singleBoardSlice = createSlice({
 
     builder.addCase(addList.fulfilled, (state, action) => {
       state.lists.push(action.payload);
-    })
+    });
 
     builder.addCase(addTaskCard.fulfilled, (state, action) => {
       const listIdx = state.lists.findIndex((list) => list.id === action.payload.listId);
       state.lists[listIdx].taskcards.push(action.payload);
     });
 
-    builder.addCase(updateTaskCardTitle.fulfilled, (state, action) => {
+    builder.addCase(updateTaskCard.fulfilled, (state, action) => {
       const listIdx = state.lists.findIndex((list) => list.id === action.payload.listId);
       const taskcardIdx = state.lists[listIdx].taskcards.findIndex((taskcard) => taskcard.id === action.payload.id);
       state.lists[listIdx].taskcards[taskcardIdx] = action.payload;
     });
 
-    builder.addCase(updateTaskCard.fulfilled, (state, action) => {
+    builder.addCase(persistList.fulfilled, (state, action) => {
       const listIdx = state.lists.findIndex((list) => list.id === action.payload.listId);
-      const taskcardIdx = state.lists[listIdx].taskcards.findIndex((taskcard) => taskcard.id === action.payload.id);
-      state.lists[listIdx].taskcards[taskcardIdx] = action.payload;
-      // state.lists[listIdx].taskcards = state.lists[listIdx].taskcards.sort((a, b) => {
-      //   // a = state.lists[listIdx].taskcards[a]
-      //   // b = state.lists[listIdx].taskcards[b]
-      //   if(state.lists[listIdx].taskcards[a] > state.lists[listIdx].taskcards[b]){
-      //     return state.lists[listIdx].taskcards[b]
-      //   } else {
-      //     return state.lists[listIdx].taskcards[a]
-      //   }
-      // let newArray =[]
-      // for (let i = 0; i < state.lists[listIdx].taskcards.length; i++){
-      //   if(state.lists[listIdx].taskcards[i].position === i){
-      //     newArray.push(state.lists[listIdx].taskcards[i])
-      //   }
-      // }
-      // state.lists[listIdx].taskcards = newArray
-      // console.log(newArray)
+      state.lists[listIdx].taskcards = action.payload.taskcards;
     });
   }
 });
