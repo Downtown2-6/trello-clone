@@ -10,12 +10,13 @@ const ListContainer = styled.div``
 const SingleList = (props) => {
   const { boardId, list } = props;
   const listId = list.id;
-  console.log(list);
+
   const numTaskCards = list.taskcards ? list.taskcards.length + 1 : 1;
 
   const dispatch = useDispatch();
 
   const [taskCardTitle, setTaskCardTitle] = useState('');
+
 
   const handleSubmitTaskCard = async (evt) => {
     evt.preventDefault();
@@ -50,6 +51,7 @@ const SingleList = (props) => {
               )) : null}
 
             </div>
+            {provided.placeholder}
             <div className='list-bottom-container'>
               <form className='add-taskCard-form' onSubmit={handleSubmitTaskCard}>
                 <input
