@@ -49,11 +49,32 @@ router.get("/specificBoard/:userId/:boardId", async (req, res, next) => {
   }
 });
 
-// PUT /api/users/grantAccess/:boardId/:userId
-router.put("/grantAccess/:boardId/:userId", async (req, res, next) => {
+// PUT /api/users/grantAccess/:boardId
+// This creates a user/board association
+// Generally want to user /grantAccess/boards/:boardId
+// The above is to avoid route conflicts
+router.post("/grantAccess/:boardId", async (req, res, next) => {
   try {
-    const { boardId, userId } = req.params;
+    const { boardId } = req.params;
+    const { userEmail:email } = req.body;
+    console.log(
+      `***
+    ***
+    ***
+    Logging:inside the API
+    ***
+    ***
+    ***
+    `,
+      boardId,
+      email
+    );
+    const findUser = await User.findOne({ where: { email } });
+    if (!findUser) {
+      res.status(404).json({ message: "User Not found" });
+    }
     const privilege = "USER";
+    const userId = findUser.id;
     const boards = await UserBoard.findAll({
       where: { userId: userId, boardId: boardId },
     });
@@ -79,7 +100,7 @@ router.put(
   "/modifyPrivilege/:userIssuingRequestId/:boardId",
   async (req, res, next) => {
     try {
-      const { userIssuingRequestId: issuer, boardId,  } = req.params;
+      const { userIssuingRequestId: issuer, boardId } = req.params;
       const theIssuer = await UserBoard.findOne({
         where: { boardId, userId: issuer },
       });
@@ -90,13 +111,13 @@ router.put(
           .json({ message: "You need to be an admin to do this." });
       }
       const { privilege, email } = req.body;
-      const findUser = await User.findOne({where:{email}});
-      if (!findUser){
-            return res
-              .status(404)
-              .json({ message: "This email isn't registered to a user." });
+      const findUser = await User.findOne({ where: { email } });
+      if (!findUser) {
+        return res
+          .status(404)
+          .json({ message: "This email isn't registered to a user." });
       }
-      const userId = findUser.id
+      const userId = findUser.id;
       const userBoard = await UserBoard.findOne({ where: { boardId, userId } });
       if (!userBoard) {
         return res.status(404).json({ message: "User not found in the board" });

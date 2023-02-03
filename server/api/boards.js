@@ -16,8 +16,8 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-// GET /api/boards/allBoards/:boardId
-router.get("/allBoards/:boardId", async (req, res, next) => {
+// GET /api/boards/allUsers/:boardId
+router.get("/allUsers/:boardId", async (req, res, next) => {
   try {
     const { boardId } = req.params;
     const users = await UserBoard.findAll({
