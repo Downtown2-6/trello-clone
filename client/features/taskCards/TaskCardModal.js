@@ -1,11 +1,15 @@
-import React, { useState, Fragment } from 'react';
-import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import ContentEditable from 'react-contenteditable';
-import sanitizeHtml from 'sanitize-html';
-import { Modal, Box, TextField } from "@mui/material";
+import React, { useState, Fragment } from "react";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
+import ContentEditable from "react-contenteditable";
+import sanitizeHtml from "sanitize-html";
+import { Modal, Box, TextField, Typography, Input } from "@mui/material";
 // import { Textarea } from '@mui/joy/Textarea';
-import { updateTaskCard } from '../singleBoard/singleBoardSlice';
+import { updateTaskCard } from "../singleBoard/singleBoardSlice";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from 'dayjs';
 
 function ChildModal() {
   const [open, setOpen] = useState(false);
@@ -24,20 +28,18 @@ function ChildModal() {
         hideBackdrop
         open={open}
         onClose={handleClose}
-        aria-labelledby='child-modal-title'
-        aria-describedby='child-modal-description'
+        aria-labelledby="child-modal-title"
+        aria-describedby="child-modal-description"
       >
         <Box sx={{ ...style, width: 200 }}>
-          <h4 id='child-modal-title'>Text in a child modal</h4>
-          <p id='child-modal-description'>
-            Description
-          </p>
+          <h4 id="child-modal-title">Text in a child modal</h4>
+          <p id="child-modal-description">Description</p>
           <Button onClick={handleClose}>Close Child Modal</Button>
         </Box>
       </Modal>
     </Fragment>
-  )
-};
+  );
+}
 
 const TaskCardModal = (props) => {
   const { list, taskCard, style } = props;
@@ -45,43 +47,53 @@ const TaskCardModal = (props) => {
 
   const [title, setTitle] = useState(taskCard.title);
   const [description, setDescription] = useState(taskCard.description);
+  const [date, setDate] = useState(taskCard.start);
   const dispatch = useDispatch();
 
+
+  console.log("This is the date", date)
+
+
   var titleHtml = `<h3 class='taskCard-modal-item'>${title}</h3>`;
-  var descriptionHtml = `<p class='taskCard-modal-item'>${description}</p>`
+  var descriptionHtml = `<p class='taskCard-modal-item'>${description}</p>`;
 
   const handleTitleChange = (evt) => {
     setTitle(sanitizeHtml(evt.target.value, sanitizeConf));
-  }
+  };
 
   const handleDescriptionChange = (evt) => {
     setDescription(sanitizeHtml(evt.target.value, sanitizeConf));
-  }
+  };
 
   const sanitizeConf = {
-    allowedTags: ['b', 'i', 'em', 'strong', 'a'],
-    allowedAttributes: { a: ['href'] },
-  }
+    allowedTags: ["b", "i", "em", "strong", "a"],
+    allowedAttributes: { a: ["href"] },
+  };
 
   const handleTaskCardUpdate = async () => {
-    await dispatch(updateTaskCard({
-      boardId, 
-      taskCardId: taskCard.id, 
-      description,
-      title
-    }));
+    await dispatch(
+      updateTaskCard({
+        boardId,
+        taskCardId: taskCard.id,
+        description,
+        title,
+        start
+      })
+    );
   };
 
   return (
     <>
       <Box>
-        <ContentEditable
-          className='editable'
-          tagName='pre'
+      <Typography variant="h5" id="taskCard-modal-activity-label"> 
+      <Input
+          defaultValue={title}
           html={titleHtml}
           onChange={handleTitleChange}
           onBlur={handleTaskCardUpdate}
         />
+        </Typography>
+        <Typography variant="subtitle1" id="taskCard-modal-activity-label"> 
         {/* <Textarea
           className='editable'
           value={title}
@@ -89,40 +101,56 @@ const TaskCardModal = (props) => {
           onBlur={handleTaskCardUpdate}
         /> */}
         <small>in list {list.listName}</small>
+        </Typography>
       </Box>
       <Box>
-        <h5 id='taskCard-modal-description-label'>
-          Description
-        </h5>
+       <br/>
+      <Typography variant="h5" id="taskCard-modal-activity-label"> Description</Typography>
 
-        {taskCard.description && taskCard.description.length ? 
-        <ContentEditable
-          className='editable'
-          tagName='pre'
-          html={descriptionHtml}
-          onChange={handleDescriptionChange}
-          onBlur={handleTaskCardUpdate}
-        />
-        : 
-        <TextField 
-          placeholder='Add a more detailed description...' 
-          multiline
-          variant='filled' 
-          size='small'
-          fullWidth
-          onChange={(evt) => setDescription(evt.target.value)}
-          onBlur={handleTaskCardUpdate}
-        />
-        }
-
+        {taskCard.description && taskCard.description.length ? (
+          <ContentEditable
+            className="editable"
+            tagName="pre"
+            html={descriptionHtml}
+            onChange={handleDescriptionChange}
+            onBlur={handleTaskCardUpdate}
+          />
+        ) : (
+          <Typography variant="body1" id="taskCard-modal-activity-label">
+          <TextField
+            placeholder="Add a more detailed description..."
+            multiline
+            variant="filled"
+            size="small"
+            fullWidth
+            onChange={(evt) => setDescription(evt.target.value)}
+            onBlur={handleTaskCardUpdate}
+          />
+          </Typography>
+        )}
       </Box>
+      <br/>
       <Box>
-        <h5 id='taskCard-modal-activity-label'>
-          Activity
-        </h5>
+        <Typography variant="h6" id="taskCard-modal-activity-label">Activity</Typography>
+      </Box>
+      <br/>
+      <Box>
+      <Typography variant="h6" id="taskCard-modal-activity-label">Due Date</Typography>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            label="Due Date"
+            value={date}
+            onChange={(newValue) => {
+              setDate(newValue);
+            }}
+            renderInput={(params) => <TextField {...params} />}
+            size="small"
+            onBlur={handleTaskCardUpdate}
+          />
+        </LocalizationProvider>
       </Box>
     </>
-  )
-}
+  );
+};
 
 export default TaskCardModal;
