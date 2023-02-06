@@ -105,7 +105,7 @@ const TaskCardModal = (props) => {
           onChange={handleTitleChange}
           onBlur={handleTaskCardUpdate}
         /> */}
-        <small>in list {list.listName}</small>
+        <Typography variant="subtitle1" id="taskCard-modal-activity-label">in list {list.listName}</Typography>
       </Box>
       <Box>
         <h5 id="taskCard-modal-description-label">Description</h5>
@@ -131,7 +131,7 @@ const TaskCardModal = (props) => {
         )}
       </Box>
       <Box>
-        <h5 id="taskCard-modal-activity-label">Activity</h5>
+      <Typography variant="h6" id="taskCard-modal-activity-label">Activity</Typography>
       </Box>
       <Box>
         <Typography variant="h6" id="taskCard-modal-activity-label">
