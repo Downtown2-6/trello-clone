@@ -106,39 +106,38 @@ const TaskCardModal = (props) => {
           onBlur={handleTaskCardUpdate}
         /> */}
         <small>in list {list.listName}</small>
-        </Typography>
       </Box>
       <Box>
-       <br/>
-      <Typography variant="h5" id="taskCard-modal-activity-label"> Description</Typography>
+        <h5 id='taskCard-modal-description-label'>
+          Description
+        </h5>
 
-        {taskCard.description && taskCard.description.length ? (
-          <ContentEditable
-            className="editable"
-            tagName="pre"
-            html={descriptionHtml}
-            onChange={handleDescriptionChange}
-            onBlur={handleTaskCardUpdate}
-          />
-        ) : (
-          <Typography variant="body1" id="taskCard-modal-activity-label">
-          <TextField
-            placeholder="Add a more detailed description..."
-            multiline
-            variant="filled"
-            size="small"
-            fullWidth
-            onChange={(evt) => setDescription(evt.target.value)}
-            onBlur={handleTaskCardUpdate}
-          />
-          </Typography>
-        )}
+        {taskCard.description && taskCard.description.length ? 
+        <ContentEditable
+          className='editable'
+          tagName='pre'
+          html={descriptionHtml}
+          onChange={handleDescriptionChange}
+          onBlur={handleTaskCardUpdate}
+        />
+        : 
+        <TextField 
+          placeholder='Add a more detailed description...' 
+          multiline
+          variant='filled' 
+          size='small'
+          fullWidth
+          onChange={(evt) => setDescription(evt.target.value)}
+          onBlur={handleTaskCardUpdate}
+        />
+        }
+
       </Box>
-      <br/>
       <Box>
-        <Typography variant="h6" id="taskCard-modal-activity-label">Activity</Typography>
+        <h5 id='taskCard-modal-activity-label'>
+          Activity
+        </h5>
       </Box>
-      <br/>
       <Box>
         <Typography variant="h6" id="taskCard-modal-activity-label">Due Date</Typography>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -155,7 +154,7 @@ const TaskCardModal = (props) => {
           </LocalizationProvider>
       </Box>
     </>
-  );
+  )
 };
 
 export default TaskCardModal;
