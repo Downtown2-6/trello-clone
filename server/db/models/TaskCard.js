@@ -33,6 +33,14 @@ const TaskCard = db.define("taskcard", {
       notEmpty: true,
     },
   },
+      allDay: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: true,
+    validate: {
+      notEmpty: true,
+    },
+  },
 });
 
 module.exports = TaskCard;
