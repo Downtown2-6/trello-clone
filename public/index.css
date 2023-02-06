@@ -58,3 +58,16 @@ nav {
 .taskCard-modal-item {
   margin: 0;
 }
+
+.taskCard-modal-title {
+  font-weight: bold;
+  background-color: gainsboro;
+  font-size: 1.5em;
+  border-style: hidden;
+}
+
+.inline-editing:focus {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
