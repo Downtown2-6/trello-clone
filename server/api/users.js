@@ -49,6 +49,49 @@ router.get("/specificBoard/:userId/:boardId", async (req, res, next) => {
   }
 });
 
+// PUT /api/users/changeUser/:userId
+router.put("/changeUser/:userId", async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    console.log(
+      `***
+    ***
+    ***
+    Logging:/changeUser/:userId, userId, Req.body
+    ***
+    ***
+    ***
+    `,
+      userId,
+      req.body
+    );
+
+    const getUser = await User.findOne({ where: { id: userId } });
+    console.log(
+      `***
+    ***
+    ***
+    Logging:this is the User
+    ***
+    ***
+    ***
+    `,
+      getUser.dataValues
+    );
+
+    const putUser = await getUser.update({
+      firstName: getUser.dataValues.firstName,
+      lastName: getUser.dataValues.lastName,
+      email: getUser.dataValues.email,
+      // password: getUser.dataValues.password,
+    });
+
+    res.json(putUser);
+  } catch (error) {
+    next(error);
+  }
+});
+
 // PUT /api/users/grantAccess/:boardId
 // This creates a user/board association
 // Generally want to user /grantAccess/boards/:boardId
@@ -56,7 +99,7 @@ router.get("/specificBoard/:userId/:boardId", async (req, res, next) => {
 router.post("/grantAccess/:boardId", async (req, res, next) => {
   try {
     const { boardId } = req.params;
-    const { userEmail:email } = req.body;
+    const { userEmail: email } = req.body;
     console.log(
       `***
     ***
