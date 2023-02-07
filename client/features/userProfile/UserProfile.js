@@ -6,26 +6,31 @@ function UserProfile() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [emailVerify, setEmailVerify] = useState("");
   const [password, setPassword] = useState("");
   const [passwordVerify, setPasswordVerify] = useState("");
   const user = useSelector((state) => state.auth.me);
   const dispatch = useDispatch();
-  console.log(
-    `***
-      ***
-      ***
-      Logging:This is the event in UserProfile
-      ***
-      ***
-      ***
-      `,
-    user
-  );
 
   const handleSubmit = (event) => {
-    if (password != passwordVerify) {
-      Alert("Your passwords need to match!");
+    event.preventDefault();
+    console.log(
+      `***
+    ***
+    ***
+    Logging:We are SUBMITTING
+    ***
+    ***
+    ***
+    `,
+      password,
+      passwordVerify
+    );
+    if (!password || !passwordVerify || password != passwordVerify) {
+      alert("Your passwords need to match!");
+      return null;
     }
+
   };
 
   useEffect(() => {
@@ -59,15 +64,21 @@ function UserProfile() {
           onChange={(event) => setEmail(event.target.value)}
         />
         <input
+          type="email"
+          placeholder="Email"
+          value={emailVerify}
+          onChange={(event) => setEmailVerify(event.target.value)}
+        />
+        <input
           type="password"
           placeholder="Password"
-          value={password}
+          value={null}
           onChange={(event) => setPassword(event.target.value)}
         />
         <input
-          type="passwordVerify"
-          placeholder="PasswordVerify"
-          value={passwordVerify}
+          type="password"
+          placeholder="password"
+          value={null}
           onChange={(event) => setPasswordVerify(event.target.value)}
         />
         <button type="submit">Update User</button>
