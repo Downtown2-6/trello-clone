@@ -53,40 +53,26 @@ router.get("/specificBoard/:userId/:boardId", async (req, res, next) => {
 router.put("/changeUser/:userId", async (req, res, next) => {
   try {
     const { userId } = req.params;
-    console.log(
-      `***
-    ***
-    ***
-    Logging:/changeUser/:userId, userId, Req.body
-    ***
-    ***
-    ***
-    `,
-      userId,
-      req.body
-    );
+
 
     const getUser = await User.findOne({ where: { id: userId } });
-    console.log(
-      `***
-    ***
-    ***
-    Logging:this is the User
-    ***
-    ***
-    ***
-    `,
-      getUser.dataValues
-    );
+
 
     const putUser = await getUser.update({
-      firstName: getUser.dataValues.firstName,
-      lastName: getUser.dataValues.lastName,
-      email: getUser.dataValues.email,
-      // password: getUser.dataValues.password,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      password: req.body.password,
     });
 
-    res.json(putUser);
+    // const putUser = await getUser.update({
+    //   firstName: getUser.dataValues.firstName,
+    //   lastName: getUser.dataValues.lastName,
+    //   email: getUser.dataValues.email,
+    //   password: getUser.dataValues.password,
+    // });
+
+    res.status(200).json(putUser);
   } catch (error) {
     next(error);
   }
