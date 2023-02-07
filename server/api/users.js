@@ -79,31 +79,21 @@ router.put("/changeUser/:userId", async (req, res, next) => {
       getUser.dataValues
     );
 
-    if (req.body.firstName) {
-      const firstNameUpdateUser = await getUser.update({
-        firstName: req.body.firstName,
-      });
-      console.log(
-        `***
-      ***
-      ***
-      Logging:firstName Updated
-      ***
-      ***
-      ***
-      `,
-        firstNameUpdateUser
-      );
-    }
+    const putUser = await getUser.update({
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      password: "12353",
+    });
 
     // const putUser = await getUser.update({
     //   firstName: getUser.dataValues.firstName,
     //   lastName: getUser.dataValues.lastName,
     //   email: getUser.dataValues.email,
-    //   // password: getUser.dataValues.password,
+    //   password: getUser.dataValues.password,
     // });
 
-    res.status(200).json(firstNameUpdateUser);
+    res.status(200).json(putUser);
   } catch (error) {
     next(error);
   }

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 
+// If page is self-contained it doesn't need to be sent to the store.
+
 function UserProfile() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -37,7 +39,7 @@ function UserProfile() {
       password,
     };
     if (firstName != "No Value Detected" || null) {
-      axios.put(`/api/users/changeUser/${user.id}`, { firstName });
+      axios.put(`/api/users/changeUser/${user.id}`, data);
     }
   };
 
