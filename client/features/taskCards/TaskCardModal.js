@@ -50,16 +50,16 @@ const TaskCardModal = (props) => {
   const [description, setDescription] = useState(taskCard.description);
   const dispatch = useDispatch();
 
-  var descriptionHtml = `<p class='taskCard-modal-item'>${description}</p>`
+  // var descriptionHtml = `<p class='taskCard-modal-item'>${description}</p>`
 
-  const handleDescriptionChange = (evt) => {
-    setDescription(sanitizeHtml(evt.target.value, sanitizeConf));
-  }
+  // const handleDescriptionChange = (evt) => {
+  //   setDescription(sanitizeHtml(evt.target.value, sanitizeConf));
+  // }
 
-  const sanitizeConf = {
-    allowedTags: ['b', 'i', 'em', 'strong', 'a'],
-    allowedAttributes: { a: ['href'] },
-  }
+  // const sanitizeConf = {
+  //   allowedTags: ['b', 'i', 'em', 'strong', 'a'],
+  //   allowedAttributes: { a: ['href'] },
+  // }
 
   const handleTaskCardUpdate = async () => {
     await dispatch(updateTaskCard({
@@ -80,7 +80,7 @@ const TaskCardModal = (props) => {
           handleTaskCardUpdate={handleTaskCardUpdate}
         >
           <input
-            className='taskCard-modal-title inline-editing'
+            className='taskCard-modal-item editable'
             ref={inputRef}
             type='text'
             name='title'
@@ -105,15 +105,33 @@ const TaskCardModal = (props) => {
         </h5>
 
         {taskCard.description && taskCard.description.length ? 
-        <ContentEditable
-          className='editable'
-          tagName='pre'
-          html={descriptionHtml}
-          onChange={handleDescriptionChange}
-          onBlur={handleTaskCardUpdate}
-        />
+        <EditableTaskCard
+          text={description}
+          childRef={inputRef}
+          type='textarea'
+          handleTaskCardUpdate={handleTaskCardUpdate}
+        >
+          <textarea
+            className='taskCard-modal-item editable'
+            ref={inputRef}
+            name='description'
+            placeholder='Add a more detailed description...'
+            rows='3'
+            value={description}
+            onChange={evt => setDescription(evt.target.value)}
+            onBlur={handleTaskCardUpdate}
+          />
+        </EditableTaskCard>
+        // <ContentEditable
+        //   className='editable'
+        //   tagName='pre'
+        //   html={descriptionHtml}
+        //   onChange={handleDescriptionChange}
+        //   onBlur={handleTaskCardUpdate}
+        // />
         : 
         <TextField 
+          className='taskCard-modal-item editable'
           placeholder='Add a more detailed description...' 
           multiline
           variant='filled' 

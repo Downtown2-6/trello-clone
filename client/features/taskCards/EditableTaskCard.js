@@ -24,18 +24,23 @@ const EditableTaskCard = ({childRef, handleTaskCardUpdate, text, type, children,
     }
   };
 
+  const handleBlur = () => {
+    text.length ? setEditing(false) : null;
+    handleTaskCardUpdate();
+  }
+
   return (
     <section {...props}>
       {isEditing ? (
         <div
-          onBlur={() => text.length ? setEditing(false) : null}
+          onBlur={handleBlur}
           onKeyDown={evt => handleKeyDown(evt, type)}
         >
           {children}
         </div>
       ) : (
         <div 
-          className='taskCard-modal-title'
+          className='taskCard-modal-item'
           onClick={() => setEditing(true)}
         >
           {text}
