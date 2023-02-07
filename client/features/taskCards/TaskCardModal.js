@@ -106,7 +106,7 @@ const TaskCardModal = (props) => {
         </EditableTaskCard>
         ) : (
           <TextField
-          className='taskCard-modal-description editable'
+            className='taskCard-modal-description editable'
             placeholder="Add a more detailed description..."
             multiline
             variant="filled"
