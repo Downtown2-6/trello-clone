@@ -44,6 +44,11 @@ function UserProfile() {
       <br></br>
       <br></br>
       <br></br>{" "}
+      {user.firstName ? (
+        <h1>Welcome to your profile, {user.firstName}</h1>
+      ) : (
+        <h1>So, what's your name?</h1>
+      )}
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -66,7 +71,7 @@ function UserProfile() {
         <input
           type="email"
           placeholder="Email"
-          value={emailVerify}
+          value={email}
           onChange={(event) => setEmailVerify(event.target.value)}
         />
         <input
@@ -81,7 +86,7 @@ function UserProfile() {
           value={null}
           onChange={(event) => setPasswordVerify(event.target.value)}
         />
-        <button type="submit">Update User</button>
+        <button type="submit">My Information</button>
       </form>
     </>
   );

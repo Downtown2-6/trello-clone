@@ -10,7 +10,7 @@ import Home from "./Home";
 import SingleBoard from "../features/singleBoard/SingleBoard";
 import Navbar from "../features/navBar/NavBar";
 import { MyCalendar } from "../features/calendar/Calendar";
-import UserProfile from "../features/userProfile/UserProfile";
+import MyUserProfile from "../features/userProfile/MyUserProfile";
 
 const Main = () => {
   const isLoggedIn = useSelector((state) => !!state.auth.me.id); // !! lets you convert a non-Boolean value to Boolean
@@ -38,7 +38,7 @@ const Main = () => {
             <Route path="/*" element={<Home />} />
             <Route path="/:user" element={<Home />} />
             <Route path="/board/:boardId" element={<SingleBoard />} />
-            <Route path="/myProfile" element={<UserProfile />} />
+            <Route path="/myProfile" element={<MyUserProfile />} />
             <Route path="/calendar" element={<MyCalendar />} />
           </Routes>
         ) : (
