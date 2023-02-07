@@ -11,6 +11,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import EditableTaskCard from "./EditableTaskCard";
+import moment from "moment"
 
 function ChildModal() {
   const [open, setOpen] = useState(false);
@@ -53,6 +54,14 @@ const TaskCardModal = (props) => {
   const [date, setDate] = useState(taskCard.start);
   const dispatch = useDispatch();
 
+  const formatDate = (e) => {
+    const dateFormat = new Date(e);
+    const isoDate = dateFormat.toISOString().split('T');
+    const sendDate = isoDate[0]
+    setDate(sendDate)
+  }
+  
+
   var descriptionHtml = `<p class='taskCard-modal-item'>${description}</p>`;
 
   console.log("This is the date", date);
@@ -73,7 +82,7 @@ const TaskCardModal = (props) => {
         taskCardId: taskCard.id,
         description,
         title,
-        start,
+        start: date,
       })
     );
   };
@@ -142,11 +151,12 @@ const TaskCardModal = (props) => {
             label="Due Date"
             value={date}
             onChange={(newValue) => {
-              setDate(newValue);
+              formatDate(newValue);
             }}
             renderInput={(params) => <TextField {...params} />}
             size="small"
-            onBlur={handleTaskCardUpdate}
+            onClose={handleTaskCardUpdate}
+            onAccept={date}
           />
         </LocalizationProvider>
       </Box>
