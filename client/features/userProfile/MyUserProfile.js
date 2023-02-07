@@ -16,31 +16,29 @@ function UserProfile() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(
-      `***
-    ***
-    ***
-    Logging:We are SUBMITTING
-    ***
-    ***
-    ***
-    `,
-      password,
-      passwordVerify
-    );
-    // if (!password || !passwordVerify || password != passwordVerify) {
-    //   alert("Your passwords need to match!");
-    //   return null;
-    // }
     const data = {
       firstName,
       lastName,
       email,
       password,
     };
-    if (firstName != "No Value Detected" || null) {
-      axios.put(`/api/users/changeUser/${user.id}`, data);
-    }
+    console.log(
+      `***
+    ***
+    ***
+    Logging:We are SUBMITTING data
+    ***
+    ***
+    ***
+    `,
+      data
+    );
+    // if (!password || !passwordVerify || password != passwordVerify) {
+    //   alert("Your passwords need to match!");
+    //   return null;
+    // }
+
+    axios.put(`/api/users/changeUser/${user.id}`, data);
   };
 
   useEffect(() => {

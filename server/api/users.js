@@ -83,7 +83,7 @@ router.put("/changeUser/:userId", async (req, res, next) => {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       email: req.body.email,
-      password: "12353",
+      password: req.body.password,
     });
 
     // const putUser = await getUser.update({
