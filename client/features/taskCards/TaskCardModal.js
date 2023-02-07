@@ -155,8 +155,8 @@ const TaskCardModal = (props) => {
             }}
             renderInput={(params) => <TextField {...params} />}
             size="small"
-            onClose={handleTaskCardUpdate}
-            onAccept={date}
+            // onClose={handleTaskCardUpdate}
+            onAccept={handleTaskCardUpdate}
           />
         </LocalizationProvider>
       </Box>
