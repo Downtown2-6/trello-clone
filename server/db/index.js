@@ -7,6 +7,7 @@ const List = require("./models/List");
 const Board = require("./models/Board");
 const UserBoard = require("./models/UserBoard");
 const UserTaskCard = require("./models/UserTaskCard");
+const Comment = require("./models/Comment");
 
 User.belongsToMany(Board, { through: UserBoard, autosave: true });
 Board.belongsTo(User, { through: UserBoard, autosave: true });
@@ -19,8 +20,12 @@ TaskCard.belongsToMany(User, { through: UserTaskCard });
 Board.hasMany(List);
 Board.belongsToMany(User, { through: UserBoard })
 List.belongsTo(Board);
-Board.hasMany(TaskCard)
-TaskCard.belongsTo(Board)
+Board.hasMany(TaskCard);
+TaskCard.belongsTo(Board);
+TaskCard.hasMany(Comment);
+Comment.belongsTo(TaskCard);
+User.hasMany(Comment);
+Comment.belongsTo(User);
 
 module.exports = {
   db,
@@ -31,5 +36,6 @@ module.exports = {
     TaskCard,
     UserTaskCard,
     UserBoard,
+    Comment,
   },
 };

@@ -54,7 +54,7 @@ nav {
   border: 1px solid orange;
 }
 
-.taskCard-modal-item {
+.taskCard-modal-title {
   font-weight: bold;
   background-color: gainsboro;
   font-size: 1.5em;

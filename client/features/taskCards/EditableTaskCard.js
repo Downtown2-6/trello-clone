@@ -42,7 +42,7 @@ const EditableTaskCard = ({childRef, handleTaskCardUpdate, text, type, children,
         </div>
       ) : (
         <div 
-          className={type === 'input' ? 'taskCard-modal-item' : 'taskCard-modal-description'}
+          className={type === 'input' ? 'taskCard-modal-title' : 'taskCard-modal-description'}
           onClick={() => setEditing(true)}
         >
           {text}

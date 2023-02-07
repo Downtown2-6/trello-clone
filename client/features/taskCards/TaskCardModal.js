@@ -66,7 +66,7 @@ const TaskCardModal = (props) => {
           handleTaskCardUpdate={handleTaskCardUpdate}
         >
           <input
-            className='taskCard-modal-item editable'
+            className='taskCard-modal-title editable'
             ref={inputRef}
             type='text'
             name='title'
