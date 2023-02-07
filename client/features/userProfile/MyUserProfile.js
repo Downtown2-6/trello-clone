@@ -33,10 +33,14 @@ function UserProfile() {
     `,
       data
     );
-    // if (!password || !passwordVerify || password != passwordVerify) {
-    //   alert("Your passwords need to match!");
-    //   return null;
-    // }
+    if (!password || !passwordVerify || password != passwordVerify) {
+      alert("You need a password and it needs to match!");
+      return null;
+    }
+    if (!email || !emailVerify || email != emailVerify) {
+      alert("Your emails need to match!");
+      return null;
+    }
 
     axios.put(`/api/users/changeUser/${user.id}`, data);
   };
@@ -79,7 +83,7 @@ function UserProfile() {
         <input
           type="email"
           placeholder="Email"
-          value={email}
+          value={null}
           onChange={(event) => setEmailVerify(event.target.value)}
         />
         <input
