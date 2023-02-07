@@ -1,10 +1,7 @@
 import React, { useState, useRef, Fragment } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import ContentEditable from 'react-contenteditable';
-import sanitizeHtml from 'sanitize-html';
 import { Modal, Box, TextField } from "@mui/material";
-// import { Textarea } from '@mui/joy/Textarea';
 import { updateTaskCard } from '../singleBoard/singleBoardSlice';
 import EditableTaskCard from './EditableTaskCard';
 
@@ -50,17 +47,6 @@ const TaskCardModal = (props) => {
   const [description, setDescription] = useState(taskCard.description);
   const dispatch = useDispatch();
 
-  // var descriptionHtml = `<p class='taskCard-modal-item'>${description}</p>`
-
-  // const handleDescriptionChange = (evt) => {
-  //   setDescription(sanitizeHtml(evt.target.value, sanitizeConf));
-  // }
-
-  // const sanitizeConf = {
-  //   allowedTags: ['b', 'i', 'em', 'strong', 'a'],
-  //   allowedAttributes: { a: ['href'] },
-  // }
-
   const handleTaskCardUpdate = async () => {
     await dispatch(updateTaskCard({
       boardId, 
@@ -89,14 +75,6 @@ const TaskCardModal = (props) => {
             onBlur={evt => !title.length ? setTitle(taskCard.title) : null}
           />
         </EditableTaskCard>
-
-        {/* <ContentEditable
-          className='editable'
-          tagName='pre'
-          html={titleHtml}
-          onChange={handleTitleChange}
-          onBlur={handleTaskCardUpdate}
-        /> */}
         <small>in list {list.listName}</small>
       </Box>
       <Box>
@@ -122,13 +100,6 @@ const TaskCardModal = (props) => {
             onBlur={handleTaskCardUpdate}
           />
         </EditableTaskCard>
-        // <ContentEditable
-        //   className='editable'
-        //   tagName='pre'
-        //   html={descriptionHtml}
-        //   onChange={handleDescriptionChange}
-        //   onBlur={handleTaskCardUpdate}
-        // />
         : 
         <TextField 
           className='taskCard-modal-item editable'
