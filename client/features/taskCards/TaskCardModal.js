@@ -1,11 +1,8 @@
-import React, { useState, Fragment, useRef } from "react";
-import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
-import ContentEditable from "react-contenteditable";
-import sanitizeHtml from "sanitize-html";
+import React, { useState, useRef, Fragment } from 'react';
+import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { Modal, Box, TextField, Typography, Input } from "@mui/material";
-// import { Textarea } from '@mui/joy/Textarea';
-import { updateTaskCard } from "../singleBoard/singleBoardSlice";
+import { updateTaskCard } from '../singleBoard/singleBoardSlice';
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -62,18 +59,8 @@ const TaskCardModal = (props) => {
   }
   
 
-  var descriptionHtml = `<p class='taskCard-modal-item'>${description}</p>`;
 
   console.log("This is the date", date);
-
-  const handleDescriptionChange = (evt) => {
-    setDescription(sanitizeHtml(evt.target.value, sanitizeConf));
-  };
-
-  const sanitizeConf = {
-    allowedTags: ["b", "i", "em", "strong", "a"],
-    allowedAttributes: { a: ["href"] },
-  };
 
   const handleTaskCardUpdate = async () => {
     await dispatch(
@@ -97,7 +84,7 @@ const TaskCardModal = (props) => {
           handleTaskCardUpdate={handleTaskCardUpdate}
         >
           <input
-            className="taskCard-modal-title inline-editing"
+            className='taskCard-modal-title editable'
             ref={inputRef}
             type="text"
             name="title"
@@ -106,29 +93,32 @@ const TaskCardModal = (props) => {
             onBlur={(evt) => (!title.length ? setTitle(taskCard.title) : null)}
           />
         </EditableTaskCard>
-
-        {/* <ContentEditable
-          className='editable'
-          tagName='pre'
-          html={titleHtml}
-          onChange={handleTitleChange}
-          onBlur={handleTaskCardUpdate}
-        /> */}
-        <Typography variant="subtitle1" id="taskCard-modal-activity-label">in list {list.listName}</Typography>
+        <small>in list {list.listName}</small>
       </Box>
       <Box>
         <h5 id="taskCard-modal-description-label">Description</h5>
 
         {taskCard.description && taskCard.description.length ? (
-          <ContentEditable
-            className="editable"
-            tagName="pre"
-            html={descriptionHtml}
-            onChange={handleDescriptionChange}
-            onBlur={handleTaskCardUpdate}
-          />
+          <EditableTaskCard
+          text={description}
+          childRef={inputRef}
+          type='textarea'
+          handleTaskCardUpdate={handleTaskCardUpdate}
+        >
+          <textarea
+              className="taskCard-modal-description editable"
+              ref={inputRef}
+            name="description"
+              placeholder='Add a more detailed description...'
+            rows='3'
+            value={description}
+              onChange={evt => setDescription(evt.target.value)}
+              onBlur={handleTaskCardUpdate}
+            />
+        </EditableTaskCard>
         ) : (
           <TextField
+          className='taskCard-modal-description editable'
             placeholder="Add a more detailed description..."
             multiline
             variant="filled"
