@@ -26,11 +26,19 @@ function UserProfile() {
       password,
       passwordVerify
     );
-    if (!password || !passwordVerify || password != passwordVerify) {
-      alert("Your passwords need to match!");
-      return null;
+    // if (!password || !passwordVerify || password != passwordVerify) {
+    //   alert("Your passwords need to match!");
+    //   return null;
+    // }
+    const data = {
+      firstName,
+      lastName,
+      email,
+      password,
+    };
+    if (firstName != "No Value Detected" || null) {
+      axios.put(`/api/users/changeUser/${user.id}`, { firstName });
     }
-
   };
 
   useEffect(() => {
@@ -86,7 +94,7 @@ function UserProfile() {
           value={null}
           onChange={(event) => setPasswordVerify(event.target.value)}
         />
-        <button type="submit">My Information</button>
+        <button type="submit">Update</button>
       </form>
     </>
   );
