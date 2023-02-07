@@ -29,6 +29,8 @@ const EditableTaskCard = ({childRef, handleTaskCardUpdate, text, type, children,
     handleTaskCardUpdate();
   }
 
+  console.log(text)
+
   return (
     <section {...props}>
       {isEditing ? (
@@ -40,7 +42,7 @@ const EditableTaskCard = ({childRef, handleTaskCardUpdate, text, type, children,
         </div>
       ) : (
         <div 
-          className='taskCard-modal-item'
+          className={type === 'input' ? 'taskCard-modal-item' : 'taskCard-modal-description'}
           onClick={() => setEditing(true)}
         >
           {text}

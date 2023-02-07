@@ -90,7 +90,7 @@ const TaskCardModal = (props) => {
           handleTaskCardUpdate={handleTaskCardUpdate}
         >
           <textarea
-            className='taskCard-modal-item editable'
+            className='taskCard-modal-description editable'
             ref={inputRef}
             name='description'
             placeholder='Add a more detailed description...'
@@ -102,7 +102,7 @@ const TaskCardModal = (props) => {
         </EditableTaskCard>
         : 
         <TextField 
-          className='taskCard-modal-item editable'
+          className='taskCard-modal-description editable'
           placeholder='Add a more detailed description...' 
           multiline
           variant='filled' 
