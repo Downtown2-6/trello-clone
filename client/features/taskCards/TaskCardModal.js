@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, useRef, Fragment } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import ContentEditable from 'react-contenteditable';
@@ -6,6 +6,7 @@ import sanitizeHtml from 'sanitize-html';
 import { Modal, Box, TextField } from "@mui/material";
 // import { Textarea } from '@mui/joy/Textarea';
 import { updateTaskCard } from '../singleBoard/singleBoardSlice';
+import EditableTaskCard from './EditableTaskCard';
 
 function ChildModal() {
   const [open, setOpen] = useState(false);
@@ -43,16 +44,13 @@ const TaskCardModal = (props) => {
   const { list, taskCard, style } = props;
   const { boardId } = useParams();
 
+  const inputRef = useRef();
+
   const [title, setTitle] = useState(taskCard.title);
   const [description, setDescription] = useState(taskCard.description);
   const dispatch = useDispatch();
 
-  var titleHtml = `<h3 class='taskCard-modal-item'>${title}</h3>`;
   var descriptionHtml = `<p class='taskCard-modal-item'>${description}</p>`
-
-  const handleTitleChange = (evt) => {
-    setTitle(sanitizeHtml(evt.target.value, sanitizeConf));
-  }
 
   const handleDescriptionChange = (evt) => {
     setDescription(sanitizeHtml(evt.target.value, sanitizeConf));
@@ -75,17 +73,28 @@ const TaskCardModal = (props) => {
   return (
     <>
       <Box>
-        <ContentEditable
+        <EditableTaskCard
+          text={title}
+          childRef={inputRef}
+          type='input'
+          handleTaskCardUpdate={handleTaskCardUpdate}
+        >
+          <input
+            className='taskCard-modal-title inline-editing'
+            ref={inputRef}
+            type='text'
+            name='title'
+            value={title}
+            onChange={evt => setTitle(evt.target.value)}
+            onBlur={evt => !title.length ? setTitle(taskCard.title) : null}
+          />
+        </EditableTaskCard>
+
+        {/* <ContentEditable
           className='editable'
           tagName='pre'
           html={titleHtml}
           onChange={handleTitleChange}
-          onBlur={handleTaskCardUpdate}
-        />
-        {/* <Textarea
-          className='editable'
-          value={title}
-          onChange={(evt) => setTitle(evt.target.value)}
           onBlur={handleTaskCardUpdate}
         /> */}
         <small>in list {list.listName}</small>
