@@ -33,7 +33,7 @@ function UserProfile() {
     `,
       data
     );
-    if (!password || !passwordVerify || password != passwordVerify) {
+    if ("" || !password || !passwordVerify || password != passwordVerify) {
       alert("You need a password and it needs to match!");
       return null;
     }
@@ -61,6 +61,7 @@ function UserProfile() {
       ) : (
         <h1>So, what's your name?</h1>
       )}
+      <br></br>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -83,19 +84,19 @@ function UserProfile() {
         <input
           type="email"
           placeholder="Email"
-          value={null}
+          value={undefined}
           onChange={(event) => setEmailVerify(event.target.value)}
         />
         <input
           type="password"
           placeholder="Password"
-          value={null}
+          value={undefined}
           onChange={(event) => setPassword(event.target.value)}
         />
         <input
           type="password"
           placeholder="password"
-          value={null}
+          value={undefined}
           onChange={(event) => setPasswordVerify(event.target.value)}
         />
         <button type="submit">Update</button>
