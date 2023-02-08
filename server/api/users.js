@@ -53,11 +53,7 @@ router.get("/specificBoard/:userId/:boardId", async (req, res, next) => {
 router.put("/changeUser/:userId", async (req, res, next) => {
   try {
     const { userId } = req.params;
-
-
     const getUser = await User.findOne({ where: { id: userId } });
-
-
     const putUser = await getUser.update({
       firstName: req.body.firstName,
       lastName: req.body.lastName,
@@ -86,18 +82,7 @@ router.post("/grantAccess/:boardId", async (req, res, next) => {
   try {
     const { boardId } = req.params;
     const { userEmail: email } = req.body;
-    console.log(
-      `***
-    ***
-    ***
-    Logging:inside the API
-    ***
-    ***
-    ***
-    `,
-      boardId,
-      email
-    );
+
     const findUser = await User.findOne({ where: { email } });
     if (!findUser) {
       res.status(404).json({ message: "User Not found" });
