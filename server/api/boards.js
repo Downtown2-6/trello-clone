@@ -46,7 +46,8 @@ router.get("/:userId/:boardId", async (req, res, next) => {
           include: {
             model: Comment,
             separate: true,
-            order: [["createdAt", "DESC"]]
+            order: [["createdAt", "DESC"]],
+            include: [User]
           }
         },
       },

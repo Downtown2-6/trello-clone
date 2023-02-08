@@ -8,6 +8,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import EditableTaskCard from './EditableTaskCard';
+import Comment from './Comment';
 
 function ChildModal() {
   const [open, setOpen] = useState(false);
@@ -118,7 +119,10 @@ const TaskCardModal = (props) => {
         )}
       </Box>
       <Box>
-      <Typography variant="h6" id="taskCard-modal-activity-label">Activity</Typography>
+        <Typography variant="h6" id="taskCard-modal-activity-label">
+          Activity
+        </Typography>
+        <Comment taskCard={taskCard} />
       </Box>
       <Box>
         <Typography variant="h6" id="taskCard-modal-activity-label">
