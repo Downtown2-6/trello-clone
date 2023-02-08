@@ -82,6 +82,22 @@ export const persistLists = createAsyncThunk(
   }
 );
 
+export const addComment = createAsyncThunk(
+  'addComment', 
+  async ({content, taskcardId, userId}) => {
+    try {
+      const { data } = await axios.post(`/api/comments`, {
+        content,
+        taskcardId,
+        userId
+      });
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+)
+
 const singleBoardSlice = createSlice({
   name: 'singleBoard',
   initialState: {},
@@ -116,6 +132,12 @@ const singleBoardSlice = createSlice({
       const destinationListIdx = state.lists.findIndex((list) => list.id === action.payload.destinationListId);
       state.lists[sourceListIdx].taskcards = action.payload.sourceListTaskCards;
       state.lists[destinationListIdx].taskcards = action.payload.destinationListTaskCards;
+    });
+
+    builder.addCase(addComment.fulfilled, (state, action) => {
+      const listIdx = state.lists.findIndex((list) => list.id === action.payload.listId);
+      const taskcardIdx = state.lists[listIdx].taskcards.findIndex((taskcard) => taskcard.id === action.payload.id);
+      state.lists[listIdx].taskcards[taskcardIdx].comments = action.payload.comments;
     });
   }
 });

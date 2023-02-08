@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { models: { List, TaskCard }} = require('../db');
+const { models: { List, TaskCard, Comment, User }} = require('../db');
 
 // GET /api/lists/:boardId
 router.get('/:boardId', async (req, res, next) => {
@@ -12,7 +12,13 @@ router.get('/:boardId', async (req, res, next) => {
       include: {
         model: TaskCard,
         separate: true,
-        order: [['position', 'ASC']]
+        order: [['position', 'ASC']],
+        include: {
+          model: Comment,
+          separate: true,
+          order: [['createdAt', 'DESC']],
+          include: [User]
+        }
       }
     });
     res.status(200).json(lists);
@@ -34,7 +40,13 @@ router.post('/:boardId', async (req, res, next) => {
       include: {
         model: TaskCard,
         separate: true,
-        order: [['position', 'ASC']]
+        order: [['position', 'ASC']],
+        include: {
+          model: Comment,
+          separate: true,
+          order: [['createdAt', 'DESC']],
+          include: [User]
+        }
       }
     });
     res.status(200).json(list);
