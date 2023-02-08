@@ -1,8 +1,8 @@
 import React, { useState, useRef, Fragment } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Modal, Box, TextField, Typography, Input } from "@mui/material";
-import { updateTaskCard } from '../singleBoard/singleBoardSlice';
+import { updateTaskCard, addComment } from '../singleBoard/singleBoardSlice';
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -43,49 +43,61 @@ function ChildModal() {
 const TaskCardModal = (props) => {
   const { list, taskCard, style } = props;
   const { boardId } = useParams();
+  const userId = useSelector((state) => state.auth.me.id);
 
   const inputRef = useRef();
 
   const [title, setTitle] = useState(taskCard.title);
   const [description, setDescription] = useState(taskCard.description);
+  const [comment, setComment] = useState('');
   const [date, setDate] = useState(taskCard.start);
   const dispatch = useDispatch();
 
   const handleTaskCardUpdate = async () => {
-    await dispatch(
-      updateTaskCard({
-        boardId,
-        taskCardId: taskCard.id,
-        description,
-        title,
-        start,
-      })
-    );
+    await dispatch(updateTaskCard({
+      boardId,
+      taskCardId: taskCard.id,
+      description,
+      title,
+      start,
+    }));
+  };
+
+  const handleSubmitComment = async () => {
+    await dispatch(addComment({
+      content: comment,
+      taskcardId: taskCard.id,
+      userId
+    }));
   };
 
   return (
     <>
-      <Box>
-        <EditableTaskCard
-          text={title}
-          childRef={inputRef}
-          type="input"
-          handleTaskCardUpdate={handleTaskCardUpdate}
-        >
-          <input
-            className='taskCard-modal-title editable'
-            ref={inputRef}
-            type="text"
-            name="title"
-            value={title}
-            onChange={(evt) => setTitle(evt.target.value)}
-            onBlur={(evt) => (!title.length ? setTitle(taskCard.title) : null)}
-          />
-        </EditableTaskCard>
+      <Box sx={{ marginBottom: '1em' }}>
+        <Typography variant='h5'>
+          <EditableTaskCard
+            text={title}
+            childRef={inputRef}
+            type="input"
+            handleTaskCardUpdate={handleTaskCardUpdate}
+          >
+            <input
+              className='taskCard-modal-title editable'
+              ref={inputRef}
+              type="text"
+              name="title"
+              value={title}
+              onChange={(evt) => setTitle(evt.target.value)}
+              onBlur={(evt) => (!title.length ? setTitle(taskCard.title) : null)}
+            />
+          </EditableTaskCard>
+        </Typography>
         <small>in list {list.listName}</small>
       </Box>
-      <Box>
-        <h5 id="taskCard-modal-description-label">Description</h5>
+      <Box sx={{ marginBottom: '1em' }}>
+        <Typography variant='h6' id="taskCard-modal-description-label">
+          Description
+        </Typography>
 
         {taskCard.description && taskCard.description.length ? (
           <EditableTaskCard
@@ -110,7 +122,6 @@ const TaskCardModal = (props) => {
             className='taskCard-modal-description editable'
             placeholder="Add a more detailed description..."
             multiline
-            variant="filled"
             size="small"
             fullWidth
             onChange={(evt) => setDescription(evt.target.value)}
@@ -118,10 +129,19 @@ const TaskCardModal = (props) => {
           />
         )}
       </Box>
-      <Box>
+      <Box sx={{ marginBottom: '1em' }}>
         <Typography variant="h6" id="taskCard-modal-activity-label">
           Activity
         </Typography>
+        <TextField
+          className='taskCard-modal-comment editable'
+          placeholder='Write a comment...'
+          multiline
+          size='small'
+          fullWidth
+          onChange={(evt) => setComment(evt.target.value)}
+          onBlur={handleSubmitComment}
+        />
         <Comment taskCard={taskCard} />
       </Box>
       <Box>
