@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const fetchAllUsersInBoard = createAsyncThunk(
-  "userBoard/fetch",
+  "boardUsers/fetch",
   async (boardId) => {
     const response = await axios.get(`/api/boards/allUsers/${boardId}`);
     console.log(
@@ -21,7 +21,7 @@ export const fetchAllUsersInBoard = createAsyncThunk(
 );
 
 export const fetchGrantUserAccess = createAsyncThunk(
-  "userBoard/put",
+  "boardUsers/put",
   async ({ userEmail, boardId }) => {
 
     const response = await axios.post(
@@ -33,7 +33,7 @@ export const fetchGrantUserAccess = createAsyncThunk(
 );
 
 export const singleBoardUsersSlice = createSlice({
-  name: "All Users In Single Board",
+  name: "boardUsers",
   initialState: [],
   reducers: {},
   extraReducers: (builder) => {

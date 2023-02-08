@@ -1,6 +1,6 @@
-import React, { useState, useRef, Fragment } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import React, { useState, useRef, Fragment, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 import { Modal, Box, TextField, Typography, Input } from "@mui/material";
 import { updateTaskCard, addComment } from '../singleBoard/singleBoardSlice';
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -9,6 +9,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import EditableTaskCard from './EditableTaskCard';
 import Comment from './Comment';
+import moment from "moment"
 
 function ChildModal() {
   const [open, setOpen] = useState(false);
@@ -53,14 +54,31 @@ const TaskCardModal = (props) => {
   const [date, setDate] = useState(taskCard.start);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    handleTaskCardUpdate();
+  }, [date]);
+
+  const formatDate = (e) => {
+    const dateFormat = new Date(e);
+    const isoDate = dateFormat.toISOString().split("T");
+    const sendDate = isoDate[0];
+    setDate(sendDate);
+    // handleTaskCardUpdate
+  };
+
+  console.log("This is the date", date);
+
   const handleTaskCardUpdate = async () => {
-    await dispatch(updateTaskCard({
-      boardId,
-      taskCardId: taskCard.id,
-      description,
-      title,
-      start,
-    }));
+    console.log("This is date in the handleTaskCardUpdate", date);
+    await dispatch(
+      updateTaskCard({
+        boardId,
+        taskCardId: taskCard.id,
+        description,
+        title,
+        start: date,
+      })
+    );
   };
 
   const handleSubmitComment = async () => {
@@ -157,11 +175,12 @@ const TaskCardModal = (props) => {
             label="Due Date"
             value={date}
             onChange={(newValue) => {
-              setDate(newValue);
+              setDate(newValue.$d);
             }}
             renderInput={(params) => <TextField {...params} />}
             size="small"
-            onBlur={handleTaskCardUpdate}
+            onClose={handleTaskCardUpdate}
+            // onAccept={handleTaskCardUpdate}
           />
         </LocalizationProvider>
       </Box>
