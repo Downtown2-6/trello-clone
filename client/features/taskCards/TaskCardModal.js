@@ -69,6 +69,7 @@ const TaskCardModal = (props) => {
       taskcardId: taskCard.id,
       userId
     }));
+    setComment('');
   };
 
   return (
@@ -139,6 +140,7 @@ const TaskCardModal = (props) => {
           multiline
           size='small'
           fullWidth
+          value={comment}
           onChange={(evt) => setComment(evt.target.value)}
           onBlur={handleSubmitComment}
         />
