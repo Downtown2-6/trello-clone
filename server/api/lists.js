@@ -55,4 +55,13 @@ router.post('/:boardId', async (req, res, next) => {
   }
 });
 
+router.put('/:boardId/:listId', async (req, res, next) => {
+  try{
+    const list = await List.findByPk(req.params.listId)
+    res.status(200).json(await list.update(req.body))
+  } catch (err){
+    next(err)
+  }
+})
+
 module.exports = router;
