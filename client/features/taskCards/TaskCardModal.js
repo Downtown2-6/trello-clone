@@ -7,8 +7,9 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
-import EditableTaskCard from "./EditableTaskCard";
-import moment from "moment";
+import EditableTaskCard from './EditableTaskCard';
+import Comment from './Comment';
+import moment from "moment"
 
 function ChildModal() {
   const [open, setOpen] = useState(false);
@@ -122,7 +123,7 @@ const TaskCardModal = (props) => {
           </EditableTaskCard>
         ) : (
           <TextField
-            className="taskCard-modal-description editable"
+            className='taskCard-modal-description editable'
             placeholder="Add a more detailed description..."
             multiline
             variant="filled"
@@ -137,6 +138,7 @@ const TaskCardModal = (props) => {
         <Typography variant="h6" id="taskCard-modal-activity-label">
           Activity
         </Typography>
+        <Comment taskCard={taskCard} />
       </Box>
       <Box>
         <Typography variant="h6" id="taskCard-modal-activity-label">

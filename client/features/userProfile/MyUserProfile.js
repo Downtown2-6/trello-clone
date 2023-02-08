@@ -4,6 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 // If page is self-contained it doesn't need to be sent to the store.
 
+document.addEventListener("paste", function (e) {
+  e.preventDefault();
+  alert("Please don't just copy paste. \n What if you made a mistake?")
+});
+
 function UserProfile() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -22,18 +27,8 @@ function UserProfile() {
       email,
       password,
     };
-    console.log(
-      `***
-    ***
-    ***
-    Logging:We are SUBMITTING data
-    ***
-    ***
-    ***
-    `,
-      data
-    );
-    if (!password || !passwordVerify || password != passwordVerify) {
+
+    if ("" || !password || !passwordVerify || password != passwordVerify) {
       alert("You need a password and it needs to match!");
       return null;
     }
@@ -46,8 +41,8 @@ function UserProfile() {
   };
 
   useEffect(() => {
-    setFirstName(user.firstName || "No Value Detected");
-    setLastName(user.lastName || "No Value Detected");
+    setFirstName(user.firstName);
+    setLastName(user.lastName);
     setEmail(user.email);
   }, [user]);
 
@@ -61,6 +56,7 @@ function UserProfile() {
       ) : (
         <h1>So, what's your name?</h1>
       )}
+      <p>First Name</p>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -68,36 +64,47 @@ function UserProfile() {
           value={firstName}
           onChange={(event) => setFirstName(event.target.value)}
         />
+        <p>Last Name</p>
         <input
           type="text"
           placeholder="Last Name"
           value={lastName}
           onChange={(event) => setLastName(event.target.value)}
         />
+        <p>Email</p>
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
         />
+        <br />
         <input
           type="email"
-          placeholder="Email"
-          value={null}
+          placeholder="Verify Email"
+          value={undefined}
           onChange={(event) => setEmailVerify(event.target.value)}
         />
+        <br />
+
+        <p>Password</p>
+
         <input
           type="password"
           placeholder="Password"
-          value={null}
+          value={undefined}
           onChange={(event) => setPassword(event.target.value)}
         />
+        <br />
+
         <input
           type="password"
-          placeholder="password"
-          value={null}
+          placeholder="verify password"
+          value={undefined}
           onChange={(event) => setPasswordVerify(event.target.value)}
         />
+        <br />
+
         <button type="submit">Update</button>
       </form>
     </>
