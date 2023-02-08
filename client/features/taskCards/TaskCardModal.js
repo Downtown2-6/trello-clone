@@ -65,7 +65,7 @@ const TaskCardModal = (props) => {
 
   const handleSubmitComment = async () => {
     if (comment.length) {
-        await dispatch(addComment({
+      await dispatch(addComment({
         content: comment,
         taskcardId: taskCard.id,
         userId
@@ -110,15 +110,15 @@ const TaskCardModal = (props) => {
           handleTaskCardUpdate={handleTaskCardUpdate}
         >
           <textarea
-              className="taskCard-modal-description editable"
-              ref={inputRef}
+            className="taskCard-modal-description editable"
+            ref={inputRef}
             name="description"
-              placeholder='Add a more detailed description...'
+            placeholder='Add a more detailed description...'
             rows='3'
             value={description}
-              onChange={evt => setDescription(evt.target.value)}
-              onBlur={handleTaskCardUpdate}
-            />
+            onChange={evt => setDescription(evt.target.value)}
+            onBlur={handleTaskCardUpdate}
+          />
         </EditableTaskCard>
         ) : (
           <TextField
