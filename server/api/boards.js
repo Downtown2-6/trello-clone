@@ -4,6 +4,7 @@ const UserBoard = require("../db/models/UserBoard");
 const List = require("../db/models/List");
 const TaskCard = require("../db/models/TaskCard");
 const User = require("../db/models/User");
+const Comment = require('../db/models/Comment');
 
 // GET /api/boards
 router.get("/", async (req, res, next) => {
@@ -45,7 +46,8 @@ router.get("/:userId/:boardId", async (req, res, next) => {
           include: {
             model: Comment,
             separate: true,
-            order: [["createdAt", "DESC"]]
+            order: [["createdAt", "DESC"]],
+            include: [User]
           }
         },
       },
