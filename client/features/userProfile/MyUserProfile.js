@@ -27,17 +27,7 @@ function UserProfile() {
       email,
       password,
     };
-    console.log(
-      `***
-    ***
-    ***
-    Logging:We are SUBMITTING data
-    ***
-    ***
-    ***
-    `,
-      data
-    );
+
     if ("" || !password || !passwordVerify || password != passwordVerify) {
       alert("You need a password and it needs to match!");
       return null;
@@ -51,8 +41,8 @@ function UserProfile() {
   };
 
   useEffect(() => {
-    setFirstName(user.firstName || "No Value Detected");
-    setLastName(user.lastName || "No Value Detected");
+    setFirstName(user.firstName);
+    setLastName(user.lastName);
     setEmail(user.email);
   }, [user]);
 
@@ -87,6 +77,13 @@ function UserProfile() {
           placeholder="Email"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
+        />
+        <br />
+        <input
+          type="email"
+          placeholder="Verify Email"
+          value={undefined}
+          onChange={(event) => setEmailVerify(event.target.value)}
         />
         <br />
 
