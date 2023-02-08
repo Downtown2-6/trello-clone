@@ -56,6 +56,16 @@ router.post(
         });
         return res.status(201).json(createTaskCard);
       }
+
+      if (!thisTaskCard.length < 1) {
+        const deleteTaskCard = await UserTaskCard.destroy({
+          where: {
+            userId: userId,
+            taskcardId: taskcardId,
+          },
+        });
+        return res.status(201).json("User / Task associaiton removed");
+      }
       res.status(406).json("Nothing was done.");
     } catch (err) {
       next(err);
