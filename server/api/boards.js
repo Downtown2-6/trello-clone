@@ -42,6 +42,11 @@ router.get("/:userId/:boardId", async (req, res, next) => {
           model: TaskCard,
           separate: true,
           order: [["position", "ASC"]],
+          include: {
+            model: Comment,
+            separate: true,
+            order: [["createdAt", "DESC"]]
+          }
         },
       },
     });
