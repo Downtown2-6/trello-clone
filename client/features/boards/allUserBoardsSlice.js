@@ -6,7 +6,7 @@ export const fetchAllUserBoards = createAsyncThunk(
   async (userId) => {
     console.log("fetchAllUserBoards\n userId", userId);
     const response = await axios.get(`/api/users/allBoards/${userId}`);
-    console.log(response.data);
+    console.log("fetchAllUserBoards thunk", response.data);
     return response.data;
   }
 );

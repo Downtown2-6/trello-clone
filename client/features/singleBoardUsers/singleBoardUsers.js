@@ -91,20 +91,6 @@ const SingleBoardUsers = () => {
         </DialogActions>
         <DialogContent>
           <DialogContentText>Current Board Users</DialogContentText>
-          {/*
-          We need to map through the users associated with the board and include a toggle to give them admin access
-
-
-          <TextField
-            autoFocus
-            margin="dense"
-            id="email"
-            label="New User Email"
-            type="email"
-            fullWidth
-            variant="standard"
-            onChange={(e) => setBoardName(e.target.value)}
-          /> */}
           {allUsersInThisBoard && allUsersInThisBoard.length
             ? allUsersInThisBoard.map((item, index) => {
                 return <li key={index}>{(item.user || {}).email}</li>;
