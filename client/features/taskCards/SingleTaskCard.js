@@ -30,11 +30,10 @@ const SingleTaskCard = (props) => {
   };
 
   return (
-    <Draggable draggableId={taskCard.id.toString()} index={props.index}>
-      
+    <Draggable key={`task-${taskCard.title}`} draggableId={taskCard.id.toString()} index={props.index}>
+
       {(provided, snapshot) => (
       <TaskContainer
-        innerRef={provided.innerRef}
         ref={provided.innerRef}
         {...provided.draggableProps}
         {...provided.dragHandleProps}
