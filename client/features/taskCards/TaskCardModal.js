@@ -64,12 +64,14 @@ const TaskCardModal = (props) => {
   };
 
   const handleSubmitComment = async () => {
-    await dispatch(addComment({
-      content: comment,
-      taskcardId: taskCard.id,
-      userId
-    }));
-    setComment('');
+    if (comment.length) {
+        await dispatch(addComment({
+        content: comment,
+        taskcardId: taskCard.id,
+        userId
+      }));
+      setComment('');
+    }
   };
 
   return (
