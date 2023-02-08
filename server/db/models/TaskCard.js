@@ -10,11 +10,7 @@ const TaskCard = db.define("taskcard", {
     },
   },
   start: {
-    type: Sequelize.DATE,
-    allowNull: true,
-  },
-  end: {
-    type: Sequelize.DATE,
+    type: Sequelize.DATEONLY,
     allowNull: true,
   },
   position: {
