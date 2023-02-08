@@ -33,7 +33,7 @@ const UserBoards = () => {
       <Grid container spacing={1}>
         {allUserBoards && allUserBoards.length
           ? allUserBoards.map(({ board }, index) => {
-              console.log("Board name", board);
+              console.log("Individual Boards", board);
               //will need to fix navigate when we have more than one board
               return (
                 <Grid item xs={4} key={index}>

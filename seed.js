@@ -2,7 +2,7 @@
 
 const {
   db,
-  models: { User, Board, List, TaskCard, UserTaskCard, UserBoard },
+  models: { User, Board, List, TaskCard, UserTaskCard, UserBoard, Comment },
 } = require("./server/db");
 
 /**
@@ -66,6 +66,12 @@ async function seed() {
     UserBoard.create({ userId: 1, boardId: 2, privilege: "USER" }),
   ]);
 
+  // Creating Comment
+  const comment = await Promise.all([
+    Comment.create({ content: 'nice job!', taskcardId: 1, userId: 1, createdAt: '2023-02-08 12:09:05.836-05' }),
+    Comment.create({ content: "what's the estimated timeline for completion?", taskcardId: 1, userId: 2, createdAt: '2023-02-08 12:09:06.836-05' }),
+    Comment.create({ content: "ping us when it's ready for code review", taskcardId: 1, userId: 1, createdAt: '2023-02-08 12:09:07.836-05' }),
+  ])
 
   console.log(`seeded ${users.length} users`);
   console.log(`seeded successfully`);

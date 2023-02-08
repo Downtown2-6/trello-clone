@@ -39,11 +39,12 @@ export const addTaskCard = createAsyncThunk(
 
 export const updateTaskCard = createAsyncThunk(
   'updateTaskCard',
-  async ({boardId, taskCardId, description, title}) => {
+  async ({boardId, taskCardId, description, title, start}) => {
     try {
       const { data } = await axios.put(`/api/tasks/${boardId}/${taskCardId}`, {
         description,
-        title
+        title,
+        start
       });
       return data;
     } catch (err) {
@@ -79,6 +80,22 @@ export const persistLists = createAsyncThunk(
     return {sourceListId, sourceListTaskCards, destinationListId, destinationListTaskCards};
   }
 );
+
+export const addComment = createAsyncThunk(
+  'addComment',
+  async ({content, taskcardId, userId}) => {
+    try {
+      const { data } = await axios.post(`/api/comments`, {
+        content,
+        taskcardId,
+        userId
+      });
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+)
 
 export const updateListPosition = createAsyncThunk(
   'updateListPosition',
@@ -135,6 +152,12 @@ const singleBoardSlice = createSlice({
       const destinationListIdx = state.lists.findIndex((list) => list.id === action.payload.destinationListId);
       state.lists[sourceListIdx].taskcards = action.payload.sourceListTaskCards;
       state.lists[destinationListIdx].taskcards = action.payload.destinationListTaskCards;
+    });
+
+    builder.addCase(addComment.fulfilled, (state, action) => {
+      const listIdx = state.lists.findIndex((list) => list.id === action.payload.listId);
+      const taskcardIdx = state.lists[listIdx].taskcards.findIndex((taskcard) => taskcard.id === action.payload.id);
+      state.lists[listIdx].taskcards[taskcardIdx].comments = action.payload.comments;
     });
 
     builder.addCase(reorderLists.fulfilled, (state, action) => {
