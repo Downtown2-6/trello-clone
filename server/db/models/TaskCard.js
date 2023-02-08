@@ -10,11 +10,7 @@ const TaskCard = db.define("taskcard", {
     },
   },
   start: {
-    type: Sequelize.DATE,
-    allowNull: true,
-  },
-  end: {
-    type: Sequelize.DATE,
+    type: Sequelize.DATEONLY,
     allowNull: true,
   },
   position: {
@@ -26,6 +22,14 @@ const TaskCard = db.define("taskcard", {
     defaultValue: '',
   },
   editable: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: true,
+    validate: {
+      notEmpty: true,
+    },
+  },
+      allDay: {
     type: Sequelize.BOOLEAN,
     allowNull: false,
     defaultValue: true,
