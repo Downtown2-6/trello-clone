@@ -1,5 +1,5 @@
 const {
-  models: { TaskCard },
+  models: { TaskCard, Comment, User },
 } = require("../db");
 const router = require("express").Router();
 
@@ -11,6 +11,12 @@ router.get("/:boardId", async (req, res, next) => {
         boardId: req.params.boardId,
       },
       order: [["position", "ASC"]],
+      include: {
+        model: Comment,
+        separate: true,
+        order: [['createdAt', 'DESC']],
+        include: [User]
+      }
     });
     res.status(200).json(tasks);
   } catch (err) {
@@ -21,7 +27,22 @@ router.get("/:boardId", async (req, res, next) => {
 // POST /api/tasks/:boardId
 router.post("/:boardId", async (req, res, next) => {
   try {
-    res.status(200).json(await TaskCard.create(req.body));
+    await TaskCard.create(req.body);
+    const taskCard = await TaskCard.findOne({
+      where: {
+        boardId: req.body.boardId,
+        listId: req.body.listId,
+        title: req.body.title,
+        position: req.body.position
+      },
+      include: {
+        model: Comment,
+        separate: true,
+        order: [['createdAt', 'DESC']],
+        include: [User]
+      }
+    });
+    res.status(200).json(taskCard);
   } catch (err) {
     next(err);
   }
@@ -30,7 +51,14 @@ router.post("/:boardId", async (req, res, next) => {
 // PUT /api/tasks/:boardId/:taskCardId
 router.put('/:boardId/:taskCardId', async (req, res, next) => {
   try {
-    const taskCard = await TaskCard.findByPk(req.params.taskCardId);
+    const taskCard = await TaskCard.findByPk(req.params.taskCardId, {
+      include: {
+        model: Comment,
+        separate: true,
+        order: [['createdAt', 'DESC']],
+        include: [User]
+      }
+    });
     res.status(200).json(await taskCard.update(req.body));
   } catch (err) {
     next(err);

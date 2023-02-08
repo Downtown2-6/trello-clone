@@ -3,6 +3,8 @@ import { Box } from "@mui/material";
 
 const Comment = (props) => {
   const { taskCard } = props;
+
+  console.log(taskCard)
   
   return (
     <Box className='comments-container'>
