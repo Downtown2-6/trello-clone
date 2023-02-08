@@ -1,5 +1,5 @@
 import React, { useState, useRef, Fragment, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { Modal, Box, TextField, Typography, Input } from "@mui/material";
 import { updateTaskCard } from "../singleBoard/singleBoardSlice";
