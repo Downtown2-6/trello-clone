@@ -25,8 +25,18 @@ router.post("/", async (req, res, next) => {
 router.delete("/comment/:commentId", async (req, res, next) => {
   try {
     const { commentId } = req.params;
-    await Comment.destroy({ where: { id: commentId } });
-    res.status(201).json({ comment: Comment, message: "Comment deleted" });
+    const theCommentBeingDestroyed = await Comment.findOne({where:{id:commentId}})
+    console.log(`***
+    ***
+    ***
+    Logging:comment Id, comment
+    ***
+    ***
+    ***
+    `, commentId, theCommentBeingDestroyed);
+    if (!theCommentBeingDestroyed) res.status(404).json("Comment not found!")
+      await Comment.destroy({ where: { id: commentId } });
+    res.status(201).json(theCommentBeingDestroyed);
   } catch (err) {
     next(err);
   }
