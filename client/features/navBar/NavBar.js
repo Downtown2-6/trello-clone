@@ -46,9 +46,6 @@ const Navbar = () => {
             >
               Trell-O
             </Typography>
-            <Button color="inherit" onClick={() => navigate(`/calendar`)}>
-              My Calendar
-            </Button>
             <Button color="inherit" onClick={() => navigate(`/myProfile`)}>
               My Profile
             </Button>

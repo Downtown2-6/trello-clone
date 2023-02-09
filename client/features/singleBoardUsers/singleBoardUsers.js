@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchAllUsersInBoard,
-  fetchGrantUserAccess,
+  grantUserAccess,
 } from "./singleBoardUsersSlice";
 import { useParams } from "react-router-dom";
 import {
@@ -46,15 +46,16 @@ const SingleBoardUsers = () => {
       `***
     ***
     ***
-    Logging:this is the handle submit
+    Logging:this is the handle submit on add singleBoardUsers
     ***
     ***
     ***
     `,
       userEmail
     );
-    Alert(dispatch(fetchGrantUserAccess({ userEmail, boardId })));
-    setOpen(false);
+    dispatch(grantUserAccess({ userEmail, boardId }));
+    setUserEmail('')
+    // setOpen(false);
   };
 
   useEffect(() => {
@@ -62,7 +63,7 @@ const SingleBoardUsers = () => {
   }, []);
 
   const allUsersInThisBoard = useSelector((state) => state.singleBoardUsers);
-
+  console.log("This is allUsersInThisBoard", allUsersInThisBoard)
   return (
     <>
       <Button variant="outlined" onClick={handleClickOpen}>
@@ -82,8 +83,9 @@ const SingleBoardUsers = () => {
             type="email"
             fullWidth
             variant="standard"
+            value={userEmail}
             onChange={(e) => setUserEmail(e.target.value)}
-            onSubmit={(boardName) => handleSubmit()}
+            onSubmit={(boardName) =>  handleSubmit() }
           />
         </DialogContent>
         <DialogActions>

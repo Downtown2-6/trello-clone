@@ -5,9 +5,12 @@ import { fetchSingleBoard, selectSingleBoard, addList, updateTaskCardPosition, p
 import SingleList from "../singleList/SingleList";
 import { DragDropContext } from "react-beautiful-dnd";
 import SingleBoardUsers from "../singleBoardUsers/singleBoardUsers";
+import Button from "@mui/material/Button";
+import { Link, useNavigate } from "react-router-dom";
 
 const SingleBoard = () => {
   const [listName, setListName] = useState('');
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.auth.me.id);
@@ -163,6 +166,10 @@ const SingleBoard = () => {
     <>
     <br/>
     <SingleBoardUsers/>
+    <Button variant="outlined" onClick={() => navigate(`/calendar`)}>
+              My Calendar
+            </Button>
+    <DragDropContext onDragEnd={onDragEnd}>
       <div>
         {board ?
           <div className='board-container'>

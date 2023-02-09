@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 const Comment = (props) => {
   const { taskCard } = props;
@@ -16,9 +16,11 @@ const Comment = (props) => {
           key={`comment#${comment.id}`} 
           sx={{ padding: '0.5em' }}
         >
+          <Typography variant="subtitle2" id="single-comment-user-label">
           <Box className='single-comment-user'>
             {comment.user.firstName} {comment.user.lastName}
           </Box>
+          </Typography>
           <Box className='single-comment-content'>
             {comment.content}
           </Box>
