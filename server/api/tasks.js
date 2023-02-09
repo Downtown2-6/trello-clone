@@ -15,9 +15,9 @@ router.get("/:boardId", async (req, res, next) => {
       include: {
         model: Comment,
         separate: true,
-        order: [['createdAt', 'DESC']],
-        include: [User]
-      }
+        order: [["createdAt", "DESC"]],
+        include: [User],
+      },
     });
     res.status(200).json(tasks);
   } catch (err) {
@@ -34,14 +34,14 @@ router.post("/:boardId", async (req, res, next) => {
         boardId: req.body.boardId,
         listId: req.body.listId,
         title: req.body.title,
-        position: req.body.position
+        position: req.body.position,
       },
       include: {
         model: Comment,
         separate: true,
-        order: [['createdAt', 'DESC']],
-        include: [User]
-      }
+        order: [["createdAt", "DESC"]],
+        include: [User],
+      },
     });
     res.status(200).json(taskCard);
   } catch (err) {
@@ -56,9 +56,9 @@ router.put("/:boardId/:taskCardId", async (req, res, next) => {
       include: {
         model: Comment,
         separate: true,
-        order: [['createdAt', 'DESC']],
-        include: [User]
-      }
+        order: [["createdAt", "DESC"]],
+        include: [User],
+      },
     });
     res.status(200).json(await taskCard.update(req.body));
   } catch (err) {
@@ -67,6 +67,8 @@ router.put("/:boardId/:taskCardId", async (req, res, next) => {
 });
 
 // POST /api/tasks/thisTask/:thisTaskCardId/thisUser/:userId
+// If the taskcard doesn't exist, create it
+// if it does exist, delete it
 router.post(
   `/thisTask/:thisTaskCardId/thisUser/:userId`,
   async (req, res, next) => {

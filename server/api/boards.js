@@ -4,7 +4,7 @@ const UserBoard = require("../db/models/UserBoard");
 const List = require("../db/models/List");
 const TaskCard = require("../db/models/TaskCard");
 const User = require("../db/models/User");
-const Comment = require('../db/models/Comment');
+const Comment = require("../db/models/Comment");
 
 // GET /api/boards
 router.get("/", async (req, res, next) => {
@@ -31,6 +31,26 @@ router.get("/allUsers/:boardId", async (req, res, next) => {
   }
 });
 
+//DELETE /api/boards/thisUser/:userId/thisBoard/:boardId
+router.delete(
+  "/thisUser/:userId/thisBoard/:boardId",
+  async (req, res, next) => {
+    try {
+      const deleteUserBoard = UserBoard.destroy({
+        where: { userId: req.params.userId, boardId: req.params.boardId },
+      });
+      res
+        .status(201)
+        .json({
+          associationRemoved: deleteUserBoard,
+          message: "The association was removed. ",
+        });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 // GET /api/boards/:userId/:boardId
 router.get("/:userId/:boardId", async (req, res, next) => {
   try {
@@ -47,8 +67,8 @@ router.get("/:userId/:boardId", async (req, res, next) => {
             model: Comment,
             separate: true,
             order: [["createdAt", "DESC"]],
-            include: [User]
-          }
+            include: [User],
+          },
         },
       },
     });
@@ -58,9 +78,6 @@ router.get("/:userId/:boardId", async (req, res, next) => {
   }
 });
 
-// --------------------------
-//#region This works
-// --------------------------
 router.post("/", async (req, res, next) => {
   try {
     console.log(`The\npost\nthing\nis\nhere\n HAHA`, req.body);
