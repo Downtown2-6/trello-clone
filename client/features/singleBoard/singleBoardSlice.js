@@ -93,9 +93,9 @@ export const addComment = createAsyncThunk(
       return data;
     } catch (err) {
       console.log(err);
-    }
+    };
   }
-)
+);
 
 export const updateListPosition = createAsyncThunk(
   'updateListPosition',
@@ -105,9 +105,9 @@ export const updateListPosition = createAsyncThunk(
       return data
     } catch (err){
       console.log(err)
-    }
+    };
   }
-)
+);
 
 export const reorderLists = createAsyncThunk(
   'reorderLists', ({
