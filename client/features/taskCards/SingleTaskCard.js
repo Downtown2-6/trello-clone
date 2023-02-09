@@ -22,9 +22,6 @@ const SingleTaskCard = (props) => {
   const { list, taskCard } = props;
   const [open, setOpen] = useState(false);
 
-  console.log("This is list", list)
-  console.log("This is taskcard", taskCard)
-
   const handleOpen = () => {
     setOpen(true);
   };

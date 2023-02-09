@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { fetchSingleBoard, selectSingleBoard, addList, updateTaskCardPosition, persistList, persistLists, updateListPosition, reorderLists } from "./singleBoardSlice";
+import { fetchSingleBoard, selectSingleBoard, addList, updateTaskCardPosition, persistList, persistLists, updateListPosition, reorderLists, addListSocket } from "./singleBoardSlice";
 import SingleList from "../singleList/SingleList";
 import { DragDropContext } from "react-beautiful-dnd";
 import SingleBoardUsers from "../singleBoardUsers/singleBoardUsers";
@@ -23,8 +23,11 @@ const SingleBoard = () => {
   useEffect(() => {
     dispatch(fetchSingleBoard({userId, boardId}));
 
+    socket.off('add-list').on('add-list', (newList) => {
+      dispatch(addListSocket(newList));
+    });
+
     socket.off('move-list').on('move-list', ({newList, newOtherList}) => {
-      console.log('client socket: move-list');
       dispatch(reorderLists({
         list: newList,
         otherList: newOtherList,
@@ -36,11 +39,12 @@ const SingleBoard = () => {
     evt.preventDefault();
     const position = board.lists.length ? board.lists.length : 0;
     if (listName.length) {
-      await dispatch(addList({
+      const newList = await dispatch(addList({
         boardId: board.id,
         listName,
         position
       }));
+      socket.emit('add-list', newList.payload);
       setListName('');
     }
   };
