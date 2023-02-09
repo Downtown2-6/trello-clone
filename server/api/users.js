@@ -53,11 +53,7 @@ router.get("/specificBoard/:userId/:boardId", async (req, res, next) => {
 router.put("/changeUser/:userId", async (req, res, next) => {
   try {
     const { userId } = req.params;
-
-
     const getUser = await User.findOne({ where: { id: userId } });
-
-
     const putUser = await getUser.update({
       firstName: req.body.firstName,
       lastName: req.body.lastName,

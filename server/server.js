@@ -6,6 +6,29 @@ require('dotenv').config();
 
 const app = express();
 
+//****** begin socket.io implementation *******
+const http = require("http").Server(app)
+//cors enables communication across domains
+const cors = require("cors")
+
+app.use(cors())
+
+const socketIo = require('socket.io')(http, {
+  cors: {
+    origin: 'http://localhost:3000'
+  }
+})
+
+socketIo.on('connection', (socket) => {
+  console.log(`User: ${socket.id} just connected!`)
+  socket.on('disconnect', () => {
+    socket.disconnect()
+    console.log('a user disconnected')
+  })
+})
+
+//***** end socket.io implementation ******
+
 // logging middleware
 app.use(morgan('dev'));
 
