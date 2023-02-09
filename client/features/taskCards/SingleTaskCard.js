@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Box } from "@mui/material";
+import { Modal, Box, Dialog } from "@mui/material";
 import { Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import TaskCardModal from './TaskCardModal';
@@ -12,7 +12,7 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: '90vw',
-  bgcolor: 'gainsboro',
+  bgcolor: '#fafafa',
   outline: 'none',
   borderRadius: 0.5,
   boxshadow: 24,
@@ -52,8 +52,8 @@ const SingleTaskCard = (props) => {
           aria-labelledby='taskCard-modal-title'
           aria-describedby='taskCard-modal-description'
         >
-          <Box sx={{ ...style, width: '90vw', maxHeight: '90vh', height: '90vh', overflowY: 'auto', padding: 2 }}>
-            <TaskCardModal list={list} taskCard={taskCard} style={style} />
+          <Box sx={{ ...style, width: '50vw', maxHeight: '90vh', height: '90vh', overflowY: 'auto', padding: 2, borderRadius: 2.5 }}>
+            <TaskCardModal list={list} taskCard={taskCard} />
           </Box>
         </Modal>
       </TaskContainer>

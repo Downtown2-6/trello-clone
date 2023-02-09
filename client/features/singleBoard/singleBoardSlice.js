@@ -97,6 +97,20 @@ export const addComment = createAsyncThunk(
   }
 )
 
+export const deleteComment = createAsyncThunk(
+  'deleteComment',
+  async ({commentId}) => {
+    try {
+      const { data } = await axios.delete(`/api/comments`, {
+        commentId
+      });
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+)
+
 export const updateListPosition = createAsyncThunk(
   'updateListPosition',
   async ({boardId, list}) => {
