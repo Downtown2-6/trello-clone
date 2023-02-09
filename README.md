@@ -25,7 +25,7 @@ Trello-Clone is a web-based project management tool that aims to replicate the f
 ## Getting Started
 To run Trello-Clone on your local machine, follow these steps:
 
-1. Clone the repository: `git clone https://github.com/<username>/Trello-Clone.git`
+1. Clone the repository: `git clone git@github.com:Capstone-group-b/trello-clone.git`
 2. Install dependencies: `npm install`
 3. Seed: `npm run seed`
 4. Start the development server: `npm run start:dev`
