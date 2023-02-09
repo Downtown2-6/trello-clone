@@ -5,6 +5,9 @@ import { fetchSingleBoard, selectSingleBoard, addList, updateTaskCardPosition, p
 import SingleList from "../singleList/SingleList";
 import { DragDropContext } from "react-beautiful-dnd";
 import SingleBoardUsers from "../singleBoardUsers/singleBoardUsers";
+import io from 'socket.io-client';
+
+const socket = io();
 
 const SingleBoard = () => {
   const [listName, setListName] = useState('');
@@ -16,7 +19,25 @@ const SingleBoard = () => {
 
   useEffect(() => {
     dispatch(fetchSingleBoard({userId, boardId}));
+
+    socket.off('move-list-left').on('move-list-left', ({newList, newOtherList}) => {
+      console.log('client socket: move-list-left');
+      dispatch(reorderLists({
+        list: newList,
+        otherList: newOtherList,
+      }));
+    });
   }, [dispatch]);
+
+  // useEffect(() => {
+  //   socket.off('move-list-left').on('move-list-left', (newList, newOtherList) => {
+  //     console.log('client socket')
+  //     dispatch(reorderLists({
+  //       list: newList,
+  //       otherList: newOtherList
+  //     }));
+  //   }, []);
+  // }, []);
 
   const handleSubmitList = async (evt) => {
     evt.preventDefault();
@@ -73,6 +94,16 @@ const SingleBoard = () => {
       list: newList,
       otherList: newOtherList
     }));
+
+    socket.emit('move-list-left', newList, newOtherList);
+
+    // socket.on('move-list-left', (newList, newOtherList) => {
+    //   dispatch(reorderLists({
+    //     list: newList,
+    //     otherList: newOtherList
+    //   }));
+    //   socket.emit('list-moved-left', newList, newOtherList);
+    // });
   };
 
   const onDragEnd = (result) => {
