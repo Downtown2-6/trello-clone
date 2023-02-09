@@ -225,23 +225,15 @@ const singleBoardSlice = createSlice({
       state.lists[action.payload.otherList.position] = action.payload.otherList;
     });
 
-    builder.addCase(deleteThisTaskCard.fulfilled, (state, action) => {
-      const listIdx = state.lists.findIndex(
-        (list) => list.id === action.payload.listId
-      );
+builder.addCase(deleteThisTaskCard.fulfilled, (state, action) => {
+  const listIdx = state.lists.findIndex(
+    (list) => list.id === action.payload.listId
+  );
 
-      console.log(
-        `***
-      ***
-      ***
-      Logging:listIdx at extra builder
-      ***
-      ***
-      ***
-      `,
-        listIdx
-      );
-    });
+  state.lists[listIdx].taskcards = state.lists[listIdx].taskcards.filter(
+    (taskcard) => taskcard.id !== action.payload.id
+  );
+});
   },
 });
 
