@@ -22,9 +22,6 @@ const SingleTaskCard = (props) => {
   const { list, taskCard } = props;
   const [open, setOpen] = useState(false);
 
-  console.log("This is list", list)
-  console.log("This is taskcard", taskCard)
-
   const handleOpen = () => {
     setOpen(true);
   };
@@ -52,8 +49,8 @@ const SingleTaskCard = (props) => {
           aria-labelledby='taskCard-modal-title'
           aria-describedby='taskCard-modal-description'
         >
-          <Box sx={{ ...style, width: '50vw', maxHeight: '90vh', height: '90vh', overflowY: 'auto', padding: 2, borderRadius: 2.5 }}>
-            <TaskCardModal list={list} taskCard={taskCard} />
+          <Box sx={{ ...style, width: '90vw', maxHeight: '90vh', height: '90vh', maxWidth: '800px', overflowY: 'auto', padding: 2 }}>
+            <TaskCardModal list={list} taskCard={taskCard} style={style} />
           </Box>
         </Modal>
       </TaskContainer>

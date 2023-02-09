@@ -20,7 +20,6 @@ const Navbar = () => {
     navigate("/signup");
   };
 
-  const id = useSelector((state) => state.auth.me.cartId);
   const user = useSelector((state) => state.auth.me);
   const email = useSelector((state) => state.auth.me.email);
 

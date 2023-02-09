@@ -15,9 +15,9 @@ router.get("/:boardId", async (req, res, next) => {
       include: {
         model: Comment,
         separate: true,
-        order: [['createdAt', 'DESC']],
-        include: [User]
-      }
+        order: [["createdAt", "DESC"]],
+        include: [User],
+      },
     });
     res.status(200).json(tasks);
   } catch (err) {
@@ -34,14 +34,14 @@ router.post("/:boardId", async (req, res, next) => {
         boardId: req.body.boardId,
         listId: req.body.listId,
         title: req.body.title,
-        position: req.body.position
+        position: req.body.position,
       },
       include: {
         model: Comment,
         separate: true,
-        order: [['createdAt', 'DESC']],
-        include: [User]
-      }
+        order: [["createdAt", "DESC"]],
+        include: [User],
+      },
     });
     res.status(200).json(taskCard);
   } catch (err) {
@@ -56,9 +56,9 @@ router.put("/:boardId/:taskCardId", async (req, res, next) => {
       include: {
         model: Comment,
         separate: true,
-        order: [['createdAt', 'DESC']],
-        include: [User]
-      }
+        order: [["createdAt", "DESC"]],
+        include: [User],
+      },
     });
     res.status(200).json(await taskCard.update(req.body));
   } catch (err) {
@@ -67,6 +67,8 @@ router.put("/:boardId/:taskCardId", async (req, res, next) => {
 });
 
 // POST /api/tasks/thisTask/:thisTaskCardId/thisUser/:userId
+// If the taskcard doesn't exist, create it
+// if it does exist, delete it
 router.post(
   `/thisTask/:thisTaskCardId/thisUser/:userId`,
   async (req, res, next) => {
@@ -85,15 +87,6 @@ router.post(
         return res.status(201).json(createTaskCard);
       }
 
-      if (!thisTaskCard.length < 1) {
-        const deleteTaskCard = await UserTaskCard.destroy({
-          where: {
-            userId: userId,
-            taskcardId: taskcardId,
-          },
-        });
-        return res.status(201).json("User / Task associaiton removed");
-      }
       res.status(406).json("Nothing was done.");
     } catch (err) {
       next(err);
@@ -101,6 +94,32 @@ router.post(
   }
 );
 
+// DELETE /api/tasks/thisTask/:thisTaskCardId/thisUser/:userId
+router.delete(
+  `/thisTask/:thisTaskCardId/thisUser/:userId`,
+  async (req, res, next) => {
+    try {
+      const { userId, thisTaskCardId: taskcardId } = req.params;
+
+      const thisTaskCard = await UserTaskCard.findAll({
+        where: { userId: userId, taskcardId: taskcardId },
+      });
+
+      if (!thisTaskCard.length < 1) {
+        const deleteTaskCard = await UserTaskCard.destroy({
+          where: {
+            userId: userId,
+            taskcardId: taskcardId,
+          },
+        });
+        return res.status(201).json(thisTaskCard);
+      }
+      res.status(404).json("Association not found.");
+    } catch (err) {
+      next(err);
+    }
+  }
+);
 // the above put request should suffice
 // PUT /api/tasks/:taskId
 // router.put("/:taskId", async (req, res, next) => {
