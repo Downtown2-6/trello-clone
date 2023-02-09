@@ -1,6 +1,7 @@
 const {
   models: { TaskCard, Comment, User },
 } = require("../db");
+const UserBoard = require("../db/models/UserBoard");
 const UserTaskCard = require("../db/models/UserTaskCard");
 const router = require("express").Router();
 
@@ -94,26 +95,36 @@ router.post(
   }
 );
 
-// DELETE /api/tasks/thisTask/:thisTaskCardId/thisUser/:userId
+// DELETE /api/tasks/thisTask/:thisTaskCardId/thisUser/:userId/thisBoard/:boardId,
+// here we delete a TaskCard
 router.delete(
-  `/thisTask/:thisTaskCardId/thisUser/:userId`,
+  `/thisTask/:thisTaskCardId/thisUser/:userId/thisBoard/:boardId`,
   async (req, res, next) => {
     try {
-      const { userId, thisTaskCardId: taskcardId } = req.params;
+      const {
+        boardId: thisBoard,
+        userId,
+        thisTaskCardId: taskcardId,
+      } = req.params;
 
-      const thisTaskCard = await UserTaskCard.findAll({
-        where: { userId: userId, taskcardId: taskcardId },
+
+      const isUserAdmin = await UserBoard.findOne({
+        where: { userId: userId, boardId: thisBoard },
+      });
+serAdmin
+      );
+
+      if (isUserAdmin.dataValues.privilege != "ADMIN")
+        return res.status(406).res.json("lol");
+
+      const taskCardBeingDeleted = await TaskCard.findOne({
+        where: { id: taskcardId },
       });
 
-      if (!thisTaskCard.length < 1) {
-        const deleteTaskCard = await UserTaskCard.destroy({
-          where: {
-            userId: userId,
-            taskcardId: taskcardId,
-          },
-        });
-        return res.status(201).json(thisTaskCard);
-      }
+      const deleteTaskCard = await TaskCard.destroy({where:{id:taskcardId}});
+
+
+
       res.status(404).json("Association not found.");
     } catch (err) {
       next(err);

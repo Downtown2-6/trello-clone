@@ -65,6 +65,15 @@ router.delete(
       const theListBeingDeleted = await List.findOne({
         where: { id: req.params.listId },
       });
+
+      console.log(`***
+      ***
+      ***
+      Logging:here we are in the delete route
+      ***
+      ***
+      ***
+      `, req.params);
       const userRequesting = await UserBoard.findOne({
         where: { userId: req.params.userId, boardId: req.params.boardId },
       });
