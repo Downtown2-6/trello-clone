@@ -25,6 +25,17 @@ export const addList = createAsyncThunk(
   }
 );
 
+export const addListSocket = createAsyncThunk(
+  'addListSocket', 
+  async (newList) => {
+    try {
+      return newList;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
+
 export const addTaskCard = createAsyncThunk(
   'addTaskCard',
   async (taskCardValues) => {
@@ -130,6 +141,10 @@ const singleBoardSlice = createSlice({
     builder.addCase(addList.fulfilled, (state, action) => {
       state.lists.push(action.payload);
     });
+
+    builder.addCase(addListSocket.fulfilled, (state, action) => {
+      state.lists.push(action.payload);
+    })
 
     builder.addCase(addTaskCard.fulfilled, (state, action) => {
       const listIdx = state.lists.findIndex((list) => list.id === action.payload.listId);
