@@ -4,7 +4,7 @@ const {
 } = require("../db");
 const UserBoard = require("../db/models/UserBoard");
 
-// matches GET requests to /api/users/
+// GET requests to /api/users/ - all users - not currently in use
 router.get("/", async (req, res, next) => {
   try {
     const users = await User.findAll({
@@ -18,7 +18,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-// GET /api/users/allBoards/:userId
+// GET /api/users/allBoards/:userId - all of an individual user's boards
 router.get("/allBoards/:userId", async (req, res, next) => {
   try {
     const { userId } = req.params;
@@ -32,7 +32,7 @@ router.get("/allBoards/:userId", async (req, res, next) => {
   }
 });
 
-// GET /api/users/specificBoard/:userId/:boardId
+// GET /api/users/specificBoard/:userId/:boardId - a specific board belonging to a specific user
 router.get("/specificBoard/:userId/:boardId", async (req, res, next) => {
   try {
     console.log(
@@ -49,7 +49,7 @@ router.get("/specificBoard/:userId/:boardId", async (req, res, next) => {
   }
 });
 
-// PUT /api/users/changeUser/:userId
+// PUT /api/users/changeUser/:userId - User updates their profile
 router.put("/changeUser/:userId", async (req, res, next) => {
   try {
     const { userId } = req.params;
@@ -78,7 +78,7 @@ router.put("/changeUser/:userId", async (req, res, next) => {
   }
 });
 
-// PUT /api/users/grantAccess/:boardId
+// POST /api/users/grantAccess/:boardId
 // This creates a user/board association
 // Generally want to user /grantAccess/boards/:boardId
 // The above is to avoid route conflicts
@@ -86,18 +86,7 @@ router.post("/grantAccess/:boardId", async (req, res, next) => {
   try {
     const { boardId } = req.params;
     const { userEmail: email } = req.body;
-    console.log(
-      `***
-    ***
-    ***
-    Logging:inside the API
-    ***
-    ***
-    ***
-    `,
-      boardId,
-      email
-    );
+
     const findUser = await User.findOne({ where: { email } });
     if (!findUser) {
       res.status(404).json({ message: "User Not found" });
@@ -110,8 +99,15 @@ router.post("/grantAccess/:boardId", async (req, res, next) => {
 
     if (!boards.length) {
       const userBoard = await UserBoard.create({ boardId, userId, privilege });
-      res.status(201).json({ message: "User added to board successfully" });
-      res.status(200).json(boards);
+      
+      const users = await UserBoard.findAll({
+        where: { boardId },
+        include: { model: User },
+      });
+
+      // res.json(formatedResponse)
+      // res.status(201).json({ message: "User added to board successfully" });
+      res.status(200).json(users);
     } else {
       res
         .status(400)
