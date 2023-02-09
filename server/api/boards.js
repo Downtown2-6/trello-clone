@@ -39,12 +39,10 @@ router.delete(
       const deleteUserBoard = await UserBoard.destroy({
         where: { userId: req.params.userId, boardId: req.params.boardId },
       });
-      res
-        .status(201)
-        .json({
-          associationRemoved: deleteUserBoard,
-          message: "The association was removed. ",
-        });
+      res.status(201).json({
+        associationRemoved: deleteUserBoard,
+        message: "The association was removed. ",
+      });
     } catch (error) {
       next(error);
     }
