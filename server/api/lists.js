@@ -60,10 +60,12 @@ router.post("/:boardId", async (req, res, next) => {
 // DELETE /api/lists/thisList/:listId
 router.delete("/thisList/:listId", async (req, res, next) => {
   try {
-    const deletedList = List.destroy({ where: { id: req.params.listId } });
+    const theListBeingDeleted = await List.findOne({where:{id:req.params.listId}})
+    if(!theListBeingDeleted) res.status(404).json("List not found!")
+    const deletedList = await List.destroy({ where: { id: req.params.listId } });
     res
       .status(201)
-      .json({ deletedList: deletedList, message: "List successfully removed" });
+      .json(theListBeingDeleted);
   } catch (err) {
     next(err);
   }
