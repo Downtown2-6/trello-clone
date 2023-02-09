@@ -20,24 +20,14 @@ const SingleBoard = () => {
   useEffect(() => {
     dispatch(fetchSingleBoard({userId, boardId}));
 
-    socket.off('move-list-left').on('move-list-left', ({newList, newOtherList}) => {
-      console.log('client socket: move-list-left');
+    socket.off('move-list').on('move-list', ({newList, newOtherList}) => {
+      console.log('client socket: move-list');
       dispatch(reorderLists({
         list: newList,
         otherList: newOtherList,
       }));
     });
   }, [dispatch]);
-
-  // useEffect(() => {
-  //   socket.off('move-list-left').on('move-list-left', (newList, newOtherList) => {
-  //     console.log('client socket')
-  //     dispatch(reorderLists({
-  //       list: newList,
-  //       otherList: newOtherList
-  //     }));
-  //   }, []);
-  // }, []);
 
   const handleSubmitList = async (evt) => {
     evt.preventDefault();
@@ -72,6 +62,8 @@ const SingleBoard = () => {
       list: newList,
       otherList: newOtherList
     }));
+
+    socket.emit('move-list', newList, newOtherList);
   };
 
   const moveLeft = async (list) => {
@@ -95,15 +87,7 @@ const SingleBoard = () => {
       otherList: newOtherList
     }));
 
-    socket.emit('move-list-left', newList, newOtherList);
-
-    // socket.on('move-list-left', (newList, newOtherList) => {
-    //   dispatch(reorderLists({
-    //     list: newList,
-    //     otherList: newOtherList
-    //   }));
-    //   socket.emit('list-moved-left', newList, newOtherList);
-    // });
+    socket.emit('move-list', newList, newOtherList);
   };
 
   const onDragEnd = (result) => {

@@ -38,12 +38,12 @@ app.use('/auth', require('./auth')); // matches all requests to /auth
 io.on('connection', (socket) => {
   console.log(`User: ${socket.id} just connected!`);
 
-  socket.on('move-list-left', (newList, newOtherList) => {
-    console.log('move-list-left New List: ', newList);
-    console.log('move-list-left New Other List: ', newOtherList);
+  socket.on('move-list', (newList, newOtherList) => {
+    console.log('move-list New List: ', newList);
+    console.log('move-list New Other List: ', newOtherList);
 
-    socket.broadcast.emit('move-list-left', {newList, newOtherList});
-  })
+    socket.broadcast.emit('move-list', {newList, newOtherList});
+  });
   
   socket.on('disconnect', () => {
     socket.disconnect()
