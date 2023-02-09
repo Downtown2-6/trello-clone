@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { fetchSingleBoard, selectSingleBoard, addList, updateTaskCardPosition, persistList, persistLists, updateListPosition, reorderLists } from "./singleBoardSlice";
 import SingleList from "../singleList/SingleList";
 import { DragDropContext } from "react-beautiful-dnd";
 import SingleBoardUsers from "../singleBoardUsers/singleBoardUsers";
+import Button from "@mui/material/Button";
 import io from 'socket.io-client';
 
 const socket = io();
 
+
 const SingleBoard = () => {
   const [listName, setListName] = useState('');
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.auth.me.id);
@@ -152,54 +155,55 @@ const SingleBoard = () => {
 
   return (
     <>
-    <br/>
-    <SingleBoardUsers/>
-      <div>
-        {board ?
-          <div className='board-container'>
-            <h2>{board.boardName}</h2>
-              <DragDropContext onDragEnd={onDragEnd}>
-                <div className='board-lists-container'>
-                  {board.lists && board.lists.length ?board.lists.map((list) => (
-                    <div key={`list#${list.id}`} className='list-container'>
-                      <span>
-                        {list.position > 0 ?
-                          <button 
-                            value='moveLeft' 
-                            onClick={(evt) => moveList(evt.target.value, list)}>
-                              {'<'}
-                          </button>
-                        : null}
-                        {list.position < board.lists.length - 1 ?
-                          <button 
-                            value='moveRight' 
-                            onClick={(evt) => moveList(evt.target.value, list)}>
-                              {'>'}
-                          </button>
-                        : null}
-                      </span>
-                      <SingleList boardId={board.id} list={list} />
-                    </div>
-                  )) : null}
-                  <div className='list-container'>
-                    <form className='add-list-form' onSubmit={handleSubmitList}>
-                      <input
-                        className='add-list'
-                        name='listName'
-                        type='text'
-                        value={listName}
-                        onChange={(evt) => setListName(evt.target.value)}
-                      />
-                      <button className='add-list-button' type='submit'>
-                        Add another list
+      <br/>
+      <SingleBoardUsers />
+      <Button variant="outlined" onClick={() => navigate(`/calendar`)}>
+        My Calendar
+      </Button>
+      {board ?
+        <div className='board-container'>
+          <h2>{board.boardName}</h2>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <div className='board-lists-container'>
+              {board.lists && board.lists.length ?board.lists.map((list) => (
+                <div key={`list#${list.id}`} className='list-container'>
+                  <span>
+                    {list.position > 0 ?
+                      <button 
+                        value='moveLeft' 
+                        onClick={(evt) => moveList(evt.target.value, list)}>
+                          {'<'}
                       </button>
-                    </form>
-                  </div>
+                    : null}
+                    {list.position < board.lists.length - 1 ?
+                      <button 
+                        value='moveRight' 
+                        onClick={(evt) => moveList(evt.target.value, list)}>
+                          {'>'}
+                      </button>
+                    : null}
+                  </span>
+                  <SingleList boardId={board.id} list={list} />
                 </div>
-              </DragDropContext>
-          </div>
-        : null}
+              )) : null}
+              <div className='list-container'>
+                <form className='add-list-form' onSubmit={handleSubmitList}>
+                  <input
+                    className='add-list'
+                    name='listName'
+                    type='text'
+                    value={listName}
+                    onChange={(evt) => setListName(evt.target.value)}
+                  />
+                  <button className='add-list-button' type='submit'>
+                    Add another list
+                  </button>
+                </form>
+              </div>
+            </div>
+          </DragDropContext>
         </div>
+      : null}
     </>
   )
 }
