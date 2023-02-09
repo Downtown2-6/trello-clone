@@ -56,14 +56,14 @@ export const updateTaskCard = createAsyncThunk(
   }
 );
 
-export const deleteThisList = createAsyncThunk(
-  "deleteThisList",
+export const deleteThisTaskCard = createAsyncThunk(
+  "deleteThisTaskCard",
   async ({ taskCardId, userId, boardId }) => {
     console.log(
       `***
     ***
     ***
-    Logging:This is the deleteThisList thunk
+    Logging:This is the deleteThisTaskCard thunk
     ***
     ***
     ***
@@ -130,7 +130,7 @@ export const addComment = createAsyncThunk(
       return data;
     } catch (err) {
       console.log(err);
-    };
+    }
   }
 );
 
@@ -138,10 +138,13 @@ export const updateListPosition = createAsyncThunk(
   "updateListPosition",
   async ({ boardId, list }) => {
     try {
-      const { data } = await axios.put(`/api/lists/${boardId}/${list.id}`, list)
-      return data
-    } catch (err){
-      console.log(err)
+      const { data } = await axios.put(
+        `/api/lists/${boardId}/${list.id}`,
+        list
+      );
+      return data;
+    } catch (err) {
+      console.log(err);
     }
   }
 );
@@ -166,9 +169,9 @@ const singleBoardSlice = createSlice({
       state.lists.push(action.payload);
     });
 
-    builder.addCase(addListSocket.fulfilled, (state, action) => {
-      state.lists.push(action.payload);
-    })
+    // builder.addCase(addListSocket.fulfilled, (state, action) => {
+    //   state.lists.push(action.payload);
+    // })
 
     builder.addCase(addTaskCard.fulfilled, (state, action) => {
       const listIdx = state.lists.findIndex(
@@ -222,18 +225,22 @@ const singleBoardSlice = createSlice({
       state.lists[action.payload.otherList.position] = action.payload.otherList;
     });
 
-    builder.addCase(deleteThisList.fulfilled, (state, action) => {
+    builder.addCase(deleteThisTaskCard.fulfilled, (state, action) => {
       const listIdx = state.lists.findIndex(
         (list) => list.id === action.payload.listId
       );
-      console.log(`***
+
+      console.log(
+        `***
       ***
       ***
       Logging:listIdx at extra builder
       ***
       ***
       ***
-      `);
+      `,
+        listIdx
+      );
     });
   },
 });

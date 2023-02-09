@@ -96,7 +96,7 @@ router.post(
 );
 
 // DELETE /api/tasks/thisTask/:thisTaskCardId/thisUser/:userId/thisBoard/:boardId,
-// here we delete a TaskCard
+// here we delete
 router.delete(
   `/thisTask/:thisTaskCardId/thisUser/:userId/thisBoard/:boardId`,
   async (req, res, next) => {
@@ -107,12 +107,9 @@ router.delete(
         thisTaskCardId: taskcardId,
       } = req.params;
 
-
       const isUserAdmin = await UserBoard.findOne({
         where: { userId: userId, boardId: thisBoard },
       });
-serAdmin
-      );
 
       if (isUserAdmin.dataValues.privilege != "ADMIN")
         return res.status(406).res.json("lol");
@@ -121,11 +118,11 @@ serAdmin
         where: { id: taskcardId },
       });
 
-      const deleteTaskCard = await TaskCard.destroy({where:{id:taskcardId}});
+      const deleteTaskCard = await TaskCard.destroy({
+        where: { id: taskcardId },
+      });
 
-
-
-      res.status(404).json("Association not found.");
+      res.status(201).json(taskCardBeingDeleted);
     } catch (err) {
       next(err);
     }

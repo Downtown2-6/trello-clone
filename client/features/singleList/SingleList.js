@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addTaskCard, deleteThisList } from "../singleBoard/singleBoardSlice";
+import {
+  addTaskCard,
+  deleteThisTaskCard,
+} from "../singleBoard/singleBoardSlice";
 import SingleTaskCard from "../taskCards/SingleTaskCard";
 import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
@@ -45,7 +48,7 @@ const SingleList = (props) => {
     ***
     `, evt);
     const deleteTaskCard = await dispatch(
-      deleteThisList({
+      deleteThisTaskCard({
         taskCardId: evt,
         userId: userId,
         boardId: boardId,
