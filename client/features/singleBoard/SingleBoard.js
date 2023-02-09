@@ -42,32 +42,8 @@ const SingleBoard = () => {
     }
   };
 
-  const moveRight = async (list) => {
-    const newPosition = list.position + 1;
-    const otherList = board.lists.find((list) => list.position === newPosition);
-    const newOtherList = {...otherList, position: list.position};
-    const newList = {...list, position: newPosition};
-
-    await dispatch(updateListPosition({boardId, list: {
-      id: list.id,
-      position: newPosition
-    }}));
-
-    await dispatch(updateListPosition({boardId, list: {
-      id: otherList.id,
-      position: list.position
-    }}));
-
-    await dispatch(reorderLists({
-      list: newList,
-      otherList: newOtherList
-    }));
-
-    socket.emit('move-list', newList, newOtherList);
-  };
-
-  const moveLeft = async (list) => {
-    const newPosition = list.position - 1;
+  const moveList = async (btnValue, list) => {
+    const newPosition = btnValue === 'moveRight' ? list.position + 1 : list.position - 1;
     const otherList = board.lists.find((list) => list.position === newPosition);
     const newOtherList = {...otherList, position: list.position};
     const newList = {...list, position: newPosition};
@@ -188,10 +164,18 @@ const SingleBoard = () => {
                     <div key={`list#${list.id}`} className='list-container'>
                       <span>
                         {list.position > 0 ?
-                          <button onClick={() => moveLeft(list)}>{'<'}</button>
+                          <button 
+                            value='moveLeft' 
+                            onClick={(evt) => moveList(evt.target.value, list)}>
+                              {'<'}
+                          </button>
                         : null}
                         {list.position < board.lists.length - 1 ?
-                          <button onClick={() => moveRight(list)}>{'>'}</button>
+                          <button 
+                            value='moveRight' 
+                            onClick={(evt) => moveList(evt.target.value, list)}>
+                              {'>'}
+                          </button>
                         : null}
                       </span>
                       <SingleList boardId={board.id} list={list} />
