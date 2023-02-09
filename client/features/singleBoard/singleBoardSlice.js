@@ -169,9 +169,9 @@ const singleBoardSlice = createSlice({
       state.lists.push(action.payload);
     });
 
-    // builder.addCase(addListSocket.fulfilled, (state, action) => {
-    //   state.lists.push(action.payload);
-    // })
+    builder.addCase(addListSocket.fulfilled, (state, action) => {
+      state.lists.push(action.payload);
+    })
 
     builder.addCase(addTaskCard.fulfilled, (state, action) => {
       const listIdx = state.lists.findIndex(
