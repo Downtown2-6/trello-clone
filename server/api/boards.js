@@ -36,7 +36,7 @@ router.delete(
   "/thisUser/:userId/thisBoard/:boardId",
   async (req, res, next) => {
     try {
-      const deleteUserBoard = UserBoard.destroy({
+      const deleteUserBoard = await UserBoard.destroy({
         where: { userId: req.params.userId, boardId: req.params.boardId },
       });
       res
