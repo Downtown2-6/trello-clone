@@ -53,6 +53,11 @@ export const updateTaskCard = createAsyncThunk(
   }
 );
 
+export const deleteTaskCard = createAsyncThunk('deleteTaskCard', async ({listId, userId})=>{
+
+    const {data} =await axios.delete(`/api/lists/thisList/:listId`)
+})
+
 export const updateTaskCardPosition = createAsyncThunk(
   'updateTaskCardPosition',
   async ({boardId, taskCard}) => {
