@@ -20,7 +20,6 @@ const Navbar = () => {
     navigate("/signup");
   };
 
-  const id = useSelector((state) => state.auth.me.cartId);
   const user = useSelector((state) => state.auth.me);
   const email = useSelector((state) => state.auth.me.email);
 
@@ -46,9 +45,6 @@ const Navbar = () => {
             >
               Trell-O
             </Typography>
-            <Button color="inherit" onClick={() => navigate(`/calendar`)}>
-              My Calendar
-            </Button>
             <Button color="inherit" onClick={() => navigate(`/myProfile`)}>
               My Profile
             </Button>

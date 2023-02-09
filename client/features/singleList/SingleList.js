@@ -4,6 +4,9 @@ import { addTaskCard, deleteThisList } from "../singleBoard/singleBoardSlice";
 import SingleTaskCard from "../taskCards/SingleTaskCard";
 import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
+import io from 'socket.io-client';
+
+const socket = io();
 
 const ListContainer = styled.div``;
 

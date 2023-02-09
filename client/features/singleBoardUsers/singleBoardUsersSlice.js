@@ -20,9 +20,10 @@ export const fetchAllUsersInBoard = createAsyncThunk(
   }
 );
 
-export const fetchGrantUserAccess = createAsyncThunk(
-  "boardUsers/put",
+export const grantUserAccess = createAsyncThunk(
+  "boardUsers/post",
   async ({ userEmail, boardId }) => {
+    console.log("userEmail in grantUserAccess thunk", userEmail)
 
     const response = await axios.post(
       `/api/users/grantAccess/${boardId}`,
@@ -38,7 +39,15 @@ export const singleBoardUsersSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchAllUsersInBoard.fulfilled, (state, action) => {
-      return action.payload;
+        return action.payload
+    });
+    builder.addCase(grantUserAccess.fulfilled, (state, action) => {
+      console.log("State in grantUserAccess Builder", state)
+        // const userBoard = action.payload.userBoard
+        // const newUser = action.payload.findUser
+        // userBoard.push(newUser) 
+        return action.payload
+        console.log("The action.payload of grantUserAccess builder", action.payload)
     });
   },
 });

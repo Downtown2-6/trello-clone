@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { fetchSingleBoard, selectSingleBoard, addList, updateTaskCardPosition, persistList, persistLists, updateListPosition, reorderLists } from "./singleBoardSlice";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { fetchSingleBoard, selectSingleBoard, addList, updateTaskCardPosition, persistList, persistLists, updateListPosition, reorderLists, addListSocket } from "./singleBoardSlice";
 import SingleList from "../singleList/SingleList";
 import { DragDropContext } from "react-beautiful-dnd";
 import SingleBoardUsers from "../singleBoardUsers/singleBoardUsers";
+import Button from "@mui/material/Button";
+import io from 'socket.io-client';
+
+const socket = io();
+
 
 const SingleBoard = () => {
   const [listName, setListName] = useState('');
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.auth.me.id);
@@ -16,23 +22,35 @@ const SingleBoard = () => {
 
   useEffect(() => {
     dispatch(fetchSingleBoard({userId, boardId}));
+
+    socket.off('add-list').on('add-list', (newList) => {
+      dispatch(addListSocket(newList));
+    });
+
+    socket.off('move-list').on('move-list', ({newList, newOtherList}) => {
+      dispatch(reorderLists({
+        list: newList,
+        otherList: newOtherList,
+      }));
+    });
   }, [dispatch]);
 
   const handleSubmitList = async (evt) => {
     evt.preventDefault();
     const position = board.lists.length ? board.lists.length : 0;
     if (listName.length) {
-      await dispatch(addList({
+      const newList = await dispatch(addList({
         boardId: board.id,
         listName,
         position
       }));
+      socket.emit('add-list', newList.payload);
       setListName('');
     }
   };
 
-  const moveRight = async (list) => {
-    const newPosition = list.position + 1;
+  const moveList = async (btnValue, list) => {
+    const newPosition = btnValue === 'moveRight' ? list.position + 1 : list.position - 1;
     const otherList = board.lists.find((list) => list.position === newPosition);
     const newOtherList = {...otherList, position: list.position};
     const newList = {...list, position: newPosition};
@@ -51,28 +69,8 @@ const SingleBoard = () => {
       list: newList,
       otherList: newOtherList
     }));
-  };
 
-  const moveLeft = async (list) => {
-    const newPosition = list.position - 1;
-    const otherList = board.lists.find((list) => list.position === newPosition);
-    const newOtherList = {...otherList, position: list.position};
-    const newList = {...list, position: newPosition};
-
-    await dispatch(updateListPosition({boardId, list: {
-      id: list.id,
-      position: newPosition
-    }}));
-
-    await dispatch(updateListPosition({boardId, list: {
-      id: otherList.id,
-      position: list.position
-    }}));
-
-    await dispatch(reorderLists({
-      list: newList,
-      otherList: newOtherList
-    }));
+    socket.emit('move-list', newList, newOtherList);
   };
 
   const onDragEnd = (result) => {
@@ -161,46 +159,55 @@ const SingleBoard = () => {
 
   return (
     <>
-    <br/>
-    <SingleBoardUsers/>
-      <div>
-        {board ?
-          <div className='board-container'>
-            <h2>{board.boardName}</h2>
-              <DragDropContext onDragEnd={onDragEnd}>
-                <div className='board-lists-container'>
-                  {board.lists && board.lists.length ?board.lists.map((list) => (
-                    <div key={`list#${list.id}`} className='list-container'>
-                      <span>
-                        {list.position > 0 ?
-                          <button onClick={() => moveLeft(list)}>{'<'}</button>
-                        : null}
-                        {list.position < board.lists.length - 1 ?
-                          <button onClick={() => moveRight(list)}>{'>'}</button>
-                        : null}
-                      </span>
-                      <SingleList boardId={board.id} list={list} />
-                    </div>
-                  )) : null}
-                  <div className='list-container'>
-                    <form className='add-list-form' onSubmit={handleSubmitList}>
-                      <input
-                        className='add-list'
-                        name='listName'
-                        type='text'
-                        value={listName}
-                        onChange={(evt) => setListName(evt.target.value)}
-                      />
-                      <button className='add-list-button' type='submit'>
-                        Add another list
+      <br/>
+      <SingleBoardUsers />
+      <Button variant="outlined" onClick={() => navigate(`/calendar`)}>
+        My Calendar
+      </Button>
+      {board ?
+        <div className='board-container'>
+          <h2>{board.boardName}</h2>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <div className='board-lists-container'>
+              {board.lists && board.lists.length ?board.lists.map((list) => (
+                <div key={`list#${list.id}`} className='list-container'>
+                  <span>
+                    {list.position > 0 ?
+                      <button 
+                        value='moveLeft' 
+                        onClick={(evt) => moveList(evt.target.value, list)}>
+                          {'<'}
                       </button>
-                    </form>
-                  </div>
+                    : null}
+                    {list.position < board.lists.length - 1 ?
+                      <button 
+                        value='moveRight' 
+                        onClick={(evt) => moveList(evt.target.value, list)}>
+                          {'>'}
+                      </button>
+                    : null}
+                  </span>
+                  <SingleList boardId={board.id} list={list} />
                 </div>
-              </DragDropContext>
-          </div>
-        : null}
+              )) : null}
+              <div className='list-container'>
+                <form className='add-list-form' onSubmit={handleSubmitList}>
+                  <input
+                    className='add-list'
+                    name='listName'
+                    type='text'
+                    value={listName}
+                    onChange={(evt) => setListName(evt.target.value)}
+                  />
+                  <button className='add-list-button' type='submit'>
+                    Add another list
+                  </button>
+                </form>
+              </div>
+            </div>
+          </DragDropContext>
         </div>
+      : null}
     </>
   )
 }

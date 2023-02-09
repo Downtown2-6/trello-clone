@@ -130,7 +130,7 @@ export const addComment = createAsyncThunk(
       return data;
     } catch (err) {
       console.log(err);
-    }
+    };
   }
 );
 
@@ -138,13 +138,10 @@ export const updateListPosition = createAsyncThunk(
   "updateListPosition",
   async ({ boardId, list }) => {
     try {
-      const { data } = await axios.put(
-        `/api/lists/${boardId}/${list.id}`,
-        list
-      );
-      return data;
-    } catch (err) {
-      console.log(err);
+      const { data } = await axios.put(`/api/lists/${boardId}/${list.id}`, list)
+      return data
+    } catch (err){
+      console.log(err)
     }
   }
 );
@@ -168,6 +165,10 @@ const singleBoardSlice = createSlice({
     builder.addCase(addList.fulfilled, (state, action) => {
       state.lists.push(action.payload);
     });
+
+    builder.addCase(addListSocket.fulfilled, (state, action) => {
+      state.lists.push(action.payload);
+    })
 
     builder.addCase(addTaskCard.fulfilled, (state, action) => {
       const listIdx = state.lists.findIndex(

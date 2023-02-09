@@ -49,7 +49,7 @@ const SingleTaskCard = (props) => {
           aria-labelledby='taskCard-modal-title'
           aria-describedby='taskCard-modal-description'
         >
-          <Box sx={{ ...style, width: '90vw', maxHeight: '90vh', height: '90vh', overflowY: 'auto', padding: 2 }}>
+          <Box sx={{ ...style, width: '90vw', maxHeight: '90vh', height: '90vh', maxWidth: '800px', overflowY: 'auto', padding: 2 }}>
             <TaskCardModal list={list} taskCard={taskCard} style={style} />
           </Box>
         </Modal>
