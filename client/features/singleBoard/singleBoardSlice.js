@@ -2,10 +2,10 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const fetchSingleBoard = createAsyncThunk(
-  'fetchSingleBoard',
-  async ({userId, boardId}) => {
+  "fetchSingleBoard",
+  async ({ userId, boardId }) => {
     try {
-      const {data} = await axios.get(`/api/boards/${userId}/${boardId}`);
+      const { data } = await axios.get(`/api/boards/${userId}/${boardId}`);
       return data;
     } catch (error) {
       console.log(error);
@@ -13,34 +13,26 @@ export const fetchSingleBoard = createAsyncThunk(
   }
 );
 
-export const addList = createAsyncThunk(
-  'addList',
-  async (listValues) => {
-    try {
-      const {data} = await axios.post(`/api/lists/${listValues.boardId}`, listValues);
-      return data;
-    } catch (err) {
-      console.log(err);
-    }
+export const addList = createAsyncThunk("addList", async (listValues) => {
+  try {
+    const { data } = await axios.post(
+      `/api/lists/${listValues.boardId}`,
+      listValues
+    );
+    return data;
+  } catch (err) {
+    console.log(err);
   }
-);
-
-export const addListSocket = createAsyncThunk(
-  'addListSocket', 
-  async (newList) => {
-    try {
-      return newList;
-    } catch (err) {
-      console.log(err);
-    }
-  }
-);
+});
 
 export const addTaskCard = createAsyncThunk(
-  'addTaskCard',
+  "addTaskCard",
   async (taskCardValues) => {
     try {
-      const { data } = await axios.post(`/api/tasks/${taskCardValues.boardId}`, taskCardValues);
+      const { data } = await axios.post(
+        `/api/tasks/${taskCardValues.boardId}`,
+        taskCardValues
+      );
       return data;
     } catch (err) {
       console.log(err);
@@ -49,13 +41,13 @@ export const addTaskCard = createAsyncThunk(
 );
 
 export const updateTaskCard = createAsyncThunk(
-  'updateTaskCard',
-  async ({boardId, taskCardId, description, title, start}) => {
+  "updateTaskCard",
+  async ({ boardId, taskCardId, description, title, start }) => {
     try {
       const { data } = await axios.put(`/api/tasks/${boardId}/${taskCardId}`, {
         description,
         title,
-        start
+        start,
       });
       return data;
     } catch (err) {
@@ -64,11 +56,37 @@ export const updateTaskCard = createAsyncThunk(
   }
 );
 
+export const deleteThisTaskCard = createAsyncThunk(
+  "deleteThisTaskCard",
+  async ({ taskCardId, userId, boardId }) => {
+    console.log(
+      `***
+    ***
+    ***
+    Logging:This is the deleteThisTaskCard thunk
+    ***
+    ***
+    ***
+    `,
+      taskCardId,
+      userId,
+      boardId
+    );
+    const { data } = await axios.delete(
+      `/api/tasks/thisTask/${taskCardId}/thisUser/${userId}/thisBoard/${boardId}`
+    );
+    return data;
+  }
+);
+
 export const updateTaskCardPosition = createAsyncThunk(
-  'updateTaskCardPosition',
-  async ({boardId, taskCard}) => {
+  "updateTaskCardPosition",
+  async ({ boardId, taskCard }) => {
     try {
-      const { data } = await axios.put(`/api/tasks/${boardId}/${taskCard.id}`, taskCard);
+      const { data } = await axios.put(
+        `/api/tasks/${boardId}/${taskCard.id}`,
+        taskCard
+      );
       return data;
     } catch (err) {
       console.log(err);
@@ -77,60 +95,69 @@ export const updateTaskCardPosition = createAsyncThunk(
 );
 
 export const persistList = createAsyncThunk(
-  'persistList', ({listId, taskcards}) => {
-    return {listId, taskcards};
+  "persistList",
+  ({ listId, taskcards }) => {
+    return { listId, taskcards };
   }
 );
 
 export const persistLists = createAsyncThunk(
-  'persistLists', ({
+  "persistLists",
+  ({
     sourceListId,
     sourceListTaskCards,
     destinationListId,
-    destinationListTaskCards}) => {
-    return {sourceListId, sourceListTaskCards, destinationListId, destinationListTaskCards};
+    destinationListTaskCards,
+  }) => {
+    return {
+      sourceListId,
+      sourceListTaskCards,
+      destinationListId,
+      destinationListTaskCards,
+    };
   }
 );
 
 export const addComment = createAsyncThunk(
-  'addComment',
-  async ({content, taskcardId, userId}) => {
+  "addComment",
+  async ({ content, taskcardId, userId }) => {
     try {
       const { data } = await axios.post(`/api/comments`, {
         content,
         taskcardId,
-        userId
+        userId,
       });
       return data;
     } catch (err) {
       console.log(err);
-    };
+    }
   }
 );
 
 export const updateListPosition = createAsyncThunk(
-  'updateListPosition',
-  async ({boardId, list}) => {
+  "updateListPosition",
+  async ({ boardId, list }) => {
     try {
-      const { data } = await axios.put(`/api/lists/${boardId}/${list.id}`, list)
-      return data
-    } catch (err){
-      console.log(err)
-    };
+      const { data } = await axios.put(
+        `/api/lists/${boardId}/${list.id}`,
+        list
+      );
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
   }
 );
 
 export const reorderLists = createAsyncThunk(
-  'reorderLists', ({
-    list,
-    otherList
-  }) => {
-    return {list, otherList};
+  "reorderLists",
+  ({ list, otherList }) => {
+    return { list, otherList };
   }
 );
 
 const singleBoardSlice = createSlice({
-  name: 'singleBoard',
+  name: "singleBoard",
   initialState: {},
   reducers: {},
   extraReducers: (builder) => {
@@ -147,39 +174,67 @@ const singleBoardSlice = createSlice({
     });
 
     builder.addCase(addTaskCard.fulfilled, (state, action) => {
-      const listIdx = state.lists.findIndex((list) => list.id === action.payload.listId);
+      const listIdx = state.lists.findIndex(
+        (list) => list.id === action.payload.listId
+      );
       state.lists[listIdx].taskcards.push(action.payload);
     });
 
     builder.addCase(updateTaskCard.fulfilled, (state, action) => {
-      const listIdx = state.lists.findIndex((list) => list.id === action.payload.listId);
-      const taskcardIdx = state.lists[listIdx].taskcards.findIndex((taskcard) => taskcard.id === action.payload.id);
+      const listIdx = state.lists.findIndex(
+        (list) => list.id === action.payload.listId
+      );
+      const taskcardIdx = state.lists[listIdx].taskcards.findIndex(
+        (taskcard) => taskcard.id === action.payload.id
+      );
       state.lists[listIdx].taskcards[taskcardIdx] = action.payload;
     });
 
     builder.addCase(persistList.fulfilled, (state, action) => {
-      const listIdx = state.lists.findIndex((list) => list.id === action.payload.listId);
+      const listIdx = state.lists.findIndex(
+        (list) => list.id === action.payload.listId
+      );
       state.lists[listIdx].taskcards = action.payload.taskcards;
     });
 
     builder.addCase(persistLists.fulfilled, (state, action) => {
-      const sourceListIdx = state.lists.findIndex((list) => list.id === action.payload.sourceListId);
-      const destinationListIdx = state.lists.findIndex((list) => list.id === action.payload.destinationListId);
+      const sourceListIdx = state.lists.findIndex(
+        (list) => list.id === action.payload.sourceListId
+      );
+      const destinationListIdx = state.lists.findIndex(
+        (list) => list.id === action.payload.destinationListId
+      );
       state.lists[sourceListIdx].taskcards = action.payload.sourceListTaskCards;
-      state.lists[destinationListIdx].taskcards = action.payload.destinationListTaskCards;
+      state.lists[destinationListIdx].taskcards =
+        action.payload.destinationListTaskCards;
     });
 
     builder.addCase(addComment.fulfilled, (state, action) => {
-      const listIdx = state.lists.findIndex((list) => list.id === action.payload.listId);
-      const taskcardIdx = state.lists[listIdx].taskcards.findIndex((taskcard) => taskcard.id === action.payload.id);
-      state.lists[listIdx].taskcards[taskcardIdx].comments = action.payload.comments;
+      const listIdx = state.lists.findIndex(
+        (list) => list.id === action.payload.listId
+      );
+      const taskcardIdx = state.lists[listIdx].taskcards.findIndex(
+        (taskcard) => taskcard.id === action.payload.id
+      );
+      state.lists[listIdx].taskcards[taskcardIdx].comments =
+        action.payload.comments;
     });
 
     builder.addCase(reorderLists.fulfilled, (state, action) => {
       state.lists[action.payload.list.position] = action.payload.list;
       state.lists[action.payload.otherList.position] = action.payload.otherList;
     });
-  }
+
+builder.addCase(deleteThisTaskCard.fulfilled, (state, action) => {
+  const listIdx = state.lists.findIndex(
+    (list) => list.id === action.payload.listId
+  );
+
+  state.lists[listIdx].taskcards = state.lists[listIdx].taskcards.filter(
+    (taskcard) => taskcard.id !== action.payload.id
+  );
+});
+  },
 });
 
 export const selectSingleBoard = (state) => state.singleBoard;
