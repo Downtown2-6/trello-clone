@@ -156,19 +156,11 @@ const TaskCardModal = (props) => {
           <DatePicker
             label="Due Date"
             value={date}
-            clearable
             onChange={(newValue) => {
-              if (newValue.$d) {
+              if (newValue) {
                 setDate(newValue.$d);
               } else {
-                return console.log(`***
-                ***
-                ***
-                Logging:no
-                ***
-                ***
-                ***
-                `);
+                setDate(null);
               }
             }}
             renderInput={(params) => <TextField {...params} />}
