@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Typography, IconButton } from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch } from "react-redux";
 import { deleteComment } from "../singleBoard/singleBoardSlice";
 import { useParams } from "react-router-dom";
@@ -42,23 +42,29 @@ const Comment = (props) => {
               </Box> */}
 
               <Box className="single-comment-content">
-                {comment.content} 
-                <Typography variant="caption" id="single-comment-user-label">
-                  <Box className="single-comment-user" sx={{float: "right",}}>
-                    {comment.user.firstName} {comment.user.lastName}{" "}
-                    <IconButton
-                      aria-label="close"
-                      onClick={() => removeComment(comment.id)}
+                {comment.content}
+                <Box className="single-comment-detail">
+                  <Typography variant="caption" id="single-comment-user-label">
+                    <Box
+                      className="single-comment-user"
+                      // sx={{ float: "right" }}
                     >
-                      <DeleteIcon
-                        sx={{
-                          fontSize: 12,
-                          color: (theme) => theme.palette.grey[500],
-                        }}
-                      />
-                    </IconButton>
-                  </Box>
-                </Typography></Box>
+                      {comment.user.firstName} {comment.user.lastName}{" "}
+                      <IconButton
+                        aria-label="close"
+                        onClick={() => removeComment(comment.id)}
+                      >
+                        <DeleteIcon
+                          sx={{
+                            fontSize: 12,
+                            color: (theme) => theme.palette.grey[500],
+                          }}
+                        />
+                      </IconButton>
+                    </Box>
+                  </Typography>
+                </Box>
+              </Box>
             </Box>
           ))
         : null}
