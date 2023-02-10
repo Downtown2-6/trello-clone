@@ -9,10 +9,7 @@ const Comment = (props) => {
   const { taskCard } = props;
   const dispatch = useDispatch();
 
-  // console.log("These are the taskcard props on Comment", taskCard);
-
   const removeComment = (commentId) => {
-    console.log("this is comment in handleDelete", commentId);
     dispatch(deleteComment(commentId));
   };
 
