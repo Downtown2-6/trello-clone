@@ -277,7 +277,9 @@ const singleBoardSlice = createSlice({
     });
 
     builder.addCase(deleteThisList.fulfilled, (state, action) => {
-      state.lists = state.lists.filter((list) => list.id === action.payload.id);
+      console.log("this is action.payload in deleteThisList builder", action.payload)
+      const listIdx = state.lists.findIndex((list) => list.id === action.payload.id);
+      state.lists.splice(listIdx, 1);
     });
   },
 });
