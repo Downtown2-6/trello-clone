@@ -210,15 +210,15 @@ const SingleBoard = () => {
                 <div key={`list#${list.id}`} className='list-container'>
                   <span>
                     {list.position > 0 ?
-                      <button 
-                        value='moveLeft' 
+                      <button
+                        value='moveLeft'
                         onClick={(evt) => moveList(evt.target.value, list)}>
                           {'<'}
                       </button>
                     : null}
                     {list.position < board.lists.length - 1 ?
-                      <button 
-                        value='moveRight' 
+                      <button
+                        value='moveRight'
                         onClick={(evt) => moveList(evt.target.value, list)}>
                           {'>'}
                       </button>
