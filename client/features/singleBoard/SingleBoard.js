@@ -141,10 +141,6 @@ const SingleBoard = () => {
 
       socket.emit('drop-taskCard-sameList', sourceListTasksUpdated, sourceListId)
 
-      const sourceListId = sourceList.id
-
-      socket.emit('drop-taskCard-sameList', sourceListTasksUpdated, sourceListId)
-
       dispatch(
         persistList({
           listId: sourceList.id,
