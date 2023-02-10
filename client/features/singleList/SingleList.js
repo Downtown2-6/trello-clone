@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addTaskCard,
   deleteThisTaskCard,
   deleteThisList,
+  addTaskCardSocket
 } from "../singleBoard/singleBoardSlice";
 import SingleTaskCard from "../taskCards/SingleTaskCard";
 import { Droppable } from "react-beautiful-dnd";
@@ -24,10 +25,16 @@ const SingleList = (props) => {
 
   const [taskCardTitle, setTaskCardTitle] = useState("");
 
+  useEffect(() => {
+    socket.off('add-taskCard').on('add-taskCard', (newTaskCard) => {
+      dispatch(addTaskCardSocket(newTaskCard));
+    });
+  }, [dispatch]);
+
   const handleSubmitTaskCard = async (evt) => {
     evt.preventDefault();
     if (taskCardTitle.length) {
-      await dispatch(
+      const newTaskCard = await dispatch(
         addTaskCard({
           boardId,
           listId,
@@ -35,6 +42,7 @@ const SingleList = (props) => {
           position: numTaskCards,
         })
       );
+      socket.emit('add-taskCard', newTaskCard.payload);
       setTaskCardTitle("");
     }
   };
