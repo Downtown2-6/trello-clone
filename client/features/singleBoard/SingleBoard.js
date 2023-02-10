@@ -33,6 +33,24 @@ const SingleBoard = () => {
         otherList: newOtherList,
       }));
     });
+
+    socket.off('drop-taskCard-sameList').on('drop-taskCard-sameList',
+      ({taskcards, listId}) => {
+        dispatch(persistList({
+          listId,
+          taskcards,
+        }));
+      });
+
+    // socket.off('drop-taskCard-differentList').on('drop-taskCard-differentList',
+    // ({ sourceListId, sourceListTaskCards, destinationListId, destinationListTaskCards }) => {
+    //   dispatch(persistLists({
+    //     sourceListId,
+    //     sourceListTaskCards,
+    //     destinationListId,
+    //     destinationListTaskCards,
+    //   }));
+    // });
   }, [dispatch]);
 
   const handleSubmitList = async (evt) => {
@@ -119,6 +137,10 @@ const SingleBoard = () => {
         position: index,
       }));
 
+      const sourceListId = sourceList.id
+
+      socket.emit('drop-taskCard-sameList', sourceListTasksUpdated, sourceListId)
+
       dispatch(
         persistList({
           listId: sourceList.id,
@@ -168,29 +190,43 @@ const SingleBoard = () => {
         })
       );
 
-      sourceListTasks.forEach((task, index) => {
-        dispatch(
-          updateTaskCardPosition({
-            boardId,
-            taskCard: {
-              ...task,
-              position: index,
-            },
-          })
-        );
-      });
-      destinationListTasks.forEach((task, index) => {
-        dispatch(
-          updateTaskCardPosition({
-            boardId,
-            taskCard: {
-              ...task,
-              position: index,
-              listId: parseInt(destination.droppableId),
-            },
-          })
-        );
-      });
+      const sourceListId = sourceList.id
+      const destinationListId = destinationList.id
+
+      // socket.emit('drop-taskCard-differentList', {
+      //   sourceListId,
+      //   sourceListTasksUpdated,
+      //   destinationListId,
+      //   destinationListTasksUpdated
+      // })
+
+      console.log("**SOURCELIST-ID",sourceListId,
+        "**SourceLIstUpdated",sourceListTasksUpdated,
+        "**DEST>ID",destinationListId,
+        "**DEST_TASKS",destinationListTasksUpdated)
+
+      sourceListTasks.forEach((task, index )=> {
+        dispatch(updateTaskCardPosition({
+          boardId,
+          taskCard: {
+            ...task,
+            position: index
+          }
+        }));
+      })
+
+      destinationListTasks.forEach((task, index )=> {
+        dispatch(updateTaskCardPosition({
+          boardId,
+          taskCard: {
+            ...task,
+            position: index,
+            listId: parseInt(destination.droppableId)
+          }
+        }));
+      })
+
+
     }
   };
 

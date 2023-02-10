@@ -25,6 +25,17 @@ export const addList = createAsyncThunk("addList", async (listValues) => {
   }
 });
 
+export const addListSocket = createAsyncThunk(
+  'addListSocket',
+  async (newList) => {
+    try {
+      return newList;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
+
 export const addTaskCard = createAsyncThunk(
   "addTaskCard",
   async (taskCardValues) => {
