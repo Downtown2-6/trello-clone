@@ -162,7 +162,7 @@ export const deleteThisList = createAsyncThunk(
     const { data } = await axios.delete(
       `/api/lists/thisList/${listId}/userRequesting/${userId}/boardId/${boardId}`
     );
-    return "True";
+    return data;
   }
 );
 
