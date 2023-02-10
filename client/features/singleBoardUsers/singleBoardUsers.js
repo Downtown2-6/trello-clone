@@ -42,17 +42,7 @@ const SingleBoardUsers = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(
-      `***
-    ***
-    ***
-    Logging:this is the handle submit on add singleBoardUsers
-    ***
-    ***
-    ***
-    `,
-      userEmail
-    );
+
     dispatch(grantUserAccess({ userEmail, boardId }));
     setUserEmail('')
     // setOpen(false);

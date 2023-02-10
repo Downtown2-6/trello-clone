@@ -159,19 +159,6 @@ export const reorderLists = createAsyncThunk(
 export const deleteThisList = createAsyncThunk(
   "deleteThisList",
   async ({ listId, userId, boardId }) => {
-    console.log(
-      `***
-  ***
-  ***
-  Logging:This is inside of the deleteThisList  THUNK
-  ***
-  ***
-  ***
-  `,
-      listId,
-      userId,
-      boardId
-    );
     const { data } = await axios.delete(
       `/api/lists/thisList/${listId}/userRequesting/${userId}/boardId/${boardId}`
     );
@@ -256,6 +243,10 @@ const singleBoardSlice = createSlice({
       state.lists[listIdx].taskcards = state.lists[listIdx].taskcards.filter(
         (taskcard) => taskcard.id !== action.payload.id
       );
+    });
+
+    builder.addCase(deleteThisList.fulfilled, (state, action) => {
+      state.lists = state.lists.filter((list) => list === action.payload);
     });
   },
 });
