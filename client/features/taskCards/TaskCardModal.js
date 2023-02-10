@@ -65,10 +65,10 @@ const TaskCardModal = (props) => {
     handleTaskCardUpdate();
   }, [date]);
 
-  console.log("This is the date", date);
+  // console.log("This is the date", date);
 
   const handleTaskCardUpdate = async () => {
-    console.log("This is date in the handleTaskCardUpdate", date);
+    // console.log("This is date in the handleTaskCardUpdate", date);
     await dispatch(
       updateTaskCard({
         boardId,

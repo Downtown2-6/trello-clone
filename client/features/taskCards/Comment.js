@@ -3,17 +3,18 @@ import { Box, Typography, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch } from "react-redux";
 import { deleteComment } from "../singleBoard/singleBoardSlice";
+import { useParams } from "react-router-dom";
 
 const Comment = (props) => {
   const { taskCard } = props;
   const dispatch = useDispatch();
 
-  console.log(taskCard);
+  // console.log("These are the taskcard props on Comment", taskCard);
 
-  const deleteComment = (commentId) => {
-    console.log("This is the id of the comment", commentId)
-    // dispatch(deleteComment(commentId))
-  }
+  const removeComment = (commentId) => {
+    console.log("this is comment in handleDelete", commentId);
+    dispatch(deleteComment(commentId));
+  };
 
   return (
     <Box className="comments-container">
@@ -30,7 +31,7 @@ const Comment = (props) => {
                     {comment.user.firstName} {comment.user.lastName}{" "}
                     <IconButton
                       aria-label="close"
-                      onClick={() => deleteComment(comment.id)}
+                      onClick={() => removeComment(comment.id)}
                     >
                       <CloseIcon
                         sx={{
