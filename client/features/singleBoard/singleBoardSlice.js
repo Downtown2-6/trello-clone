@@ -144,7 +144,7 @@ const singleBoardSlice = createSlice({
 
     builder.addCase(addListSocket.fulfilled, (state, action) => {
       state.lists.push(action.payload);
-    })
+    });
 
     builder.addCase(addTaskCard.fulfilled, (state, action) => {
       const listIdx = state.lists.findIndex((list) => list.id === action.payload.listId);
