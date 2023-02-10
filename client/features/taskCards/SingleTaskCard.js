@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Box } from "@mui/material";
+import { Modal, Box, Dialog } from "@mui/material";
 import { Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import TaskCardModal from './TaskCardModal';
@@ -12,7 +12,7 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: '90vw',
-  bgcolor: 'gainsboro',
+  bgcolor: '#fafafa',
   outline: 'none',
   borderRadius: 0.5,
   boxshadow: 24,
