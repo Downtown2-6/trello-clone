@@ -246,7 +246,7 @@ const singleBoardSlice = createSlice({
     });
 
     builder.addCase(deleteThisList.fulfilled, (state, action) => {
-      state.lists = state.lists.filter((list) => list === action.payload);
+      state.lists = state.lists.filter((list) => list.id === action.payload.id);
     });
   },
 });
