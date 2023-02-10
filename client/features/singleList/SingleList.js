@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addTaskCard,
   deleteThisTaskCard,
+  deleteThisList,
 } from "../singleBoard/singleBoardSlice";
 import SingleTaskCard from "../taskCards/SingleTaskCard";
 import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
-import io from 'socket.io-client';
+import io from "socket.io-client";
 
 const socket = io();
 
@@ -38,15 +39,33 @@ const SingleList = (props) => {
     }
   };
 
-  const handleDelete = async (evt) => {
-    console.log(`***
+  const handleDeleteList = async (evt) => {
+    console.log(
+      `***
+    ***
+    ***
+    Logging:handleDeleteList
+    ***
+    ***
+    ***
+    `,
+      evt
+    );
+    await dispatch(deleteThisList({ listId, userId, boardId }));
+  };
+
+  const handleDeleteSingleTaskCard = async (evt) => {
+    console.log(
+      `***
     ***
     ***
     Logging:handleDelete
     ***
     ***
     ***
-    `, evt);
+    `,
+      evt
+    );
     const deleteTaskCard = await dispatch(
       deleteThisTaskCard({
         taskCardId: evt,
@@ -54,12 +73,17 @@ const SingleList = (props) => {
         boardId: boardId,
       })
     );
-    console.log(deleteTaskCard)
+    console.log(deleteTaskCard);
   };
-
 
   return (
     <div className="list-container-content">
+      <button
+        onClick={() => handleDeleteList(list.id)}
+        style={{ float: "right" }}
+      >
+        X
+      </button>
       <h4>{list.listName}</h4>
       <Droppable droppableId={listId.toString()}>
         {(provided) => (
@@ -71,17 +95,23 @@ const SingleList = (props) => {
           >
             {list.taskcards && list.taskcards.length
               ? list.taskcards.map((taskCard, index) => (
-
-                    <div key={`taskCard#${taskCard.id}`} className="taskCard">
-                      <SingleTaskCard
-                        list={list}
-                        taskCard={taskCard}
-                        index={index}
-                      />
-                      <button onClick={() => handleDelete(taskCard.id)}>
-                        X
-                      </button>
-                    </div>
+                  <div
+                    style={{ display: "flex" }}
+                    key={`taskCard#${taskCard.id}`}
+                    className="taskCard"
+                  >
+                    <SingleTaskCard
+                      list={list}
+                      taskCard={taskCard}
+                      index={index}
+                    />
+                    <button
+                      style={{ float: "right" }}
+                      onClick={() => handleDeleteSingleTaskCard(taskCard.id)}
+                    >
+                      X
+                    </button>
+                  </div>
                 ))
               : null}
             {provided.placeholder}
