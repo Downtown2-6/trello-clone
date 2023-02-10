@@ -9,7 +9,7 @@ import {
   Input,
   Dialog,
 } from "@mui/material";
-import { updateTaskCard, addComment } from "../singleBoard/singleBoardSlice";
+import { updateTaskCard, addComment, deleteThisTaskCard } from "../singleBoard/singleBoardSlice";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -93,9 +93,39 @@ const TaskCardModal = (props) => {
     }
   };
 
+    const handleDeleteSingleTaskCard = async (evt) => {
+      console.log(
+        `***
+    ***
+    ***
+    Logging:handleDelete
+    ***
+    ***
+    ***
+    `,
+        evt
+      );
+      const deleteTaskCard = await dispatch(
+        deleteThisTaskCard({
+          taskCardId: evt,
+          userId: userId,
+          boardId: boardId,
+        })
+      );
+      console.log(deleteTaskCard);
+    };
+
+
+
   return (
     <>
       <Box sx={{ marginBottom: "1em" }}>
+        <button
+          style={{ float: "right" }}
+          onClick={() => handleDeleteSingleTaskCard(taskCard.id)}
+        >
+          X
+        </button>
         <Typography variant="h5">
           <EditableTaskCard
             text={title}

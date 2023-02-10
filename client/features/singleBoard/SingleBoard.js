@@ -10,7 +10,6 @@ import io from 'socket.io-client';
 
 const socket = io();
 
-
 const SingleBoard = () => {
   const [listName, setListName] = useState("");
   const navigate = useNavigate();
@@ -42,15 +41,15 @@ const SingleBoard = () => {
         }));
       });
 
-    // socket.off('drop-taskCard-differentList').on('drop-taskCard-differentList',
-    // ({ sourceListId, sourceListTaskCards, destinationListId, destinationListTaskCards }) => {
-    //   dispatch(persistLists({
-    //     sourceListId,
-    //     sourceListTaskCards,
-    //     destinationListId,
-    //     destinationListTaskCards,
-    //   }));
-    // });
+    socket.off('drop-taskCard-differentList').on('drop-taskCard-differentList',
+    ({ sourceListId, sourceListTaskCards, destinationListId, destinationListTaskCards }) => {
+      dispatch(persistLists({
+        sourceListId,
+        sourceListTaskCards,
+        destinationListId,
+        destinationListTaskCards,
+      }));
+    });
   }, [dispatch]);
 
   const handleSubmitList = async (evt) => {
@@ -193,17 +192,12 @@ const SingleBoard = () => {
       const sourceListId = sourceList.id
       const destinationListId = destinationList.id
 
-      // socket.emit('drop-taskCard-differentList', {
-      //   sourceListId,
-      //   sourceListTasksUpdated,
-      //   destinationListId,
-      //   destinationListTasksUpdated
-      // })
-
-      console.log("**SOURCELIST-ID",sourceListId,
-        "**SourceLIstUpdated",sourceListTasksUpdated,
-        "**DEST>ID",destinationListId,
-        "**DEST_TASKS",destinationListTasksUpdated)
+      socket.emit('drop-taskCard-differentList',
+        sourceListId,
+        sourceListTasksUpdated,
+        destinationListId,
+        destinationListTasksUpdated
+      )
 
       sourceListTasks.forEach((task, index )=> {
         dispatch(updateTaskCardPosition({
