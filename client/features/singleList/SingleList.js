@@ -71,8 +71,7 @@ const SingleList = (props) => {
           >
             {list.taskcards && list.taskcards.length
               ? list.taskcards.map((taskCard, index) => (
-                  <>
-                    {" "}
+
                     <div key={`taskCard#${taskCard.id}`} className="taskCard">
                       <SingleTaskCard
                         list={list}
@@ -83,7 +82,6 @@ const SingleList = (props) => {
                         X
                       </button>
                     </div>
-                  </>
                 ))
               : null}
             {provided.placeholder}
