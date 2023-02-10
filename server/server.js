@@ -50,20 +50,23 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('drop-taskCard-sameList', {taskcards, listId})
   })
 
-  // socket.on('drop-taskCard-differentList', ({
-  //   sourceListId,
-  //   sourceTaskcards,
-  //   destinationListId,
-  //   destinationTaskcards}) => {
-  //     socket.broadcast.emit('drop-taskCard-differentList', {
-  //       sourceListId,
-  //       sourceTaskcards,
-  //       destinationListId,
-  //       destinationTaskcards
-  //     });
-  //   }
-  // );
+  socket.on('drop-taskCard-differentList', (
+    sourceListId,
+    sourceListTaskCards,
+    destinationListId,
+    destinationListTaskCards) => {
+      socket.broadcast.emit('drop-taskCard-differentList', {
+        sourceListId,
+        sourceListTaskCards,
+        destinationListId,
+        destinationListTaskCards
+      });
+    }
+  );
 
+  socket.on('add-taskCard', (newTaskCard) => {
+    socket.broadcast.emit('add-taskCard', newTaskCard);
+  })
 
   socket.on('disconnect', () => {
     socket.disconnect()
