@@ -63,7 +63,6 @@ const SingleBoardUsers = () => {
   }, []);
 
   const allUsersInThisBoard = useSelector((state) => state.singleBoardUsers);
-  console.log("This is allUsersInThisBoard", allUsersInThisBoard)
   return (
     <>
       <Button variant="outlined" onClick={handleClickOpen}>

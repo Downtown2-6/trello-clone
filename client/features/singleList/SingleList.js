@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addTaskCard,
   deleteThisTaskCard,
+  deleteThisList,
 } from "../singleBoard/singleBoardSlice";
 import SingleTaskCard from "../taskCards/SingleTaskCard";
 import { Droppable } from "react-beautiful-dnd";
@@ -38,7 +39,22 @@ const SingleList = (props) => {
     }
   };
 
-  const handleDelete = async (evt) => {
+  const handleDeleteList = async (evt) => {
+    console.log(
+      `***
+    ***
+    ***
+    Logging:handleDeleteList
+    ***
+    ***
+    ***
+    `,
+      evt
+    );
+    await dispatch(deleteThisList({ listId, userId, boardId }));
+  };
+
+  const handleDeleteSingleTaskCard = async (evt) => {
     console.log(
       `***
     ***
@@ -62,7 +78,12 @@ const SingleList = (props) => {
 
   return (
     <div className="list-container-content">
-      <button style={{ float: "right" }}>X</button>
+      <button
+        onClick={() => handleDeleteList(list.id)}
+        style={{ float: "right" }}
+      >
+        X
+      </button>
       <h4>{list.listName}</h4>
       <Droppable droppableId={listId.toString()}>
         {(provided) => (
@@ -86,7 +107,7 @@ const SingleList = (props) => {
                     />
                     <button
                       style={{ float: "right" }}
-                      onClick={() => handleDelete(taskCard.id)}
+                      onClick={() => handleDeleteSingleTaskCard(taskCard.id)}
                     >
                       X
                     </button>
