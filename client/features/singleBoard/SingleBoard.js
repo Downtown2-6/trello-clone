@@ -33,6 +33,24 @@ const SingleBoard = () => {
         otherList: newOtherList,
       }));
     });
+
+    socket.off('drop-taskCard-sameList').on('drop-taskCard-sameList',
+      ({taskcards, listId}) => {
+        dispatch(persistList({
+          listId,
+          taskcards,
+        }));
+      });
+
+    // socket.off('drop-taskCard-differentList').on('drop-taskCard-differentList',
+    // ({ sourceListId, sourceListTaskCards, destinationListId, destinationListTaskCards }) => {
+    //   dispatch(persistLists({
+    //     sourceListId,
+    //     sourceListTaskCards,
+    //     destinationListId,
+    //     destinationListTaskCards,
+    //   }));
+    // });
   }, [dispatch]);
 
   const handleSubmitList = async (evt) => {
@@ -105,6 +123,10 @@ const SingleBoard = () => {
         taskcards: sourceListTasksUpdated
       }));
 
+      const sourceListId = sourceList.id
+
+      socket.emit('drop-taskCard-sameList', sourceListTasksUpdated, sourceListId)
+
       sourceListTasks.forEach(async (task, index )=> {
         await dispatch(updateTaskCardPosition({
           boardId,
@@ -134,6 +156,21 @@ const SingleBoard = () => {
         destinationListTaskCards: destinationListTasksUpdated,
       }));
 
+      const sourceListId = sourceList.id
+      const destinationListId = destinationList.id
+
+      // socket.emit('drop-taskCard-differentList', {
+      //   sourceListId,
+      //   sourceListTasksUpdated,
+      //   destinationListId,
+      //   destinationListTasksUpdated
+      // })
+
+      console.log("**SOURCELIST-ID",sourceListId,
+        "**SourceLIstUpdated",sourceListTasksUpdated,
+        "**DEST>ID",destinationListId,
+        "**DEST_TASKS",destinationListTasksUpdated)
+
       sourceListTasks.forEach((task, index )=> {
         dispatch(updateTaskCardPosition({
           boardId,
@@ -142,8 +179,8 @@ const SingleBoard = () => {
             position: index
           }
         }));
-
       })
+
       destinationListTasks.forEach((task, index )=> {
         dispatch(updateTaskCardPosition({
           boardId,
@@ -154,6 +191,8 @@ const SingleBoard = () => {
           }
         }));
       })
+
+
     }
   }
 
@@ -173,15 +212,15 @@ const SingleBoard = () => {
                 <div key={`list#${list.id}`} className='list-container'>
                   <span>
                     {list.position > 0 ?
-                      <button 
-                        value='moveLeft' 
+                      <button
+                        value='moveLeft'
                         onClick={(evt) => moveList(evt.target.value, list)}>
                           {'<'}
                       </button>
                     : null}
                     {list.position < board.lists.length - 1 ?
-                      <button 
-                        value='moveRight' 
+                      <button
+                        value='moveRight'
                         onClick={(evt) => moveList(evt.target.value, list)}>
                           {'>'}
                       </button>

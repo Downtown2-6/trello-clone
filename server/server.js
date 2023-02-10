@@ -45,7 +45,26 @@ io.on('connection', (socket) => {
   socket.on('move-list', (newList, newOtherList) => {
     socket.broadcast.emit('move-list', {newList, newOtherList});
   });
-  
+
+  socket.on('drop-taskCard-sameList', (taskcards, listId) => {
+    socket.broadcast.emit('drop-taskCard-sameList', {taskcards, listId})
+  })
+
+  // socket.on('drop-taskCard-differentList', ({
+  //   sourceListId,
+  //   sourceTaskcards,
+  //   destinationListId,
+  //   destinationTaskcards}) => {
+  //     socket.broadcast.emit('drop-taskCard-differentList', {
+  //       sourceListId,
+  //       sourceTaskcards,
+  //       destinationListId,
+  //       destinationTaskcards
+  //     });
+  //   }
+  // );
+
+
   socket.on('disconnect', () => {
     socket.disconnect()
     console.log('a user disconnected')
