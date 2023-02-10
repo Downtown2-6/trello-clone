@@ -95,22 +95,12 @@ const SingleList = (props) => {
           >
             {list.taskcards && list.taskcards.length
               ? list.taskcards.map((taskCard, index) => (
-                  <div
-                    style={{ display: "flex" }}
-                    key={`taskCard#${taskCard.id}`}
-                    className="taskCard"
-                  >
+                  <div key={`taskCard#${taskCard.id}`} className="taskCard">
                     <SingleTaskCard
                       list={list}
                       taskCard={taskCard}
                       index={index}
                     />
-                    <button
-                      style={{ float: "right" }}
-                      onClick={() => handleDeleteSingleTaskCard(taskCard.id)}
-                    >
-                      X
-                    </button>
                   </div>
                 ))
               : null}
