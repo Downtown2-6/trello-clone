@@ -29,7 +29,7 @@ const EditableTaskCard = ({childRef, handleTaskCardUpdate, text, type, children,
     handleTaskCardUpdate();
   }
 
-  console.log(text)
+  // console.log(text)
 
   return (
     <section {...props}>

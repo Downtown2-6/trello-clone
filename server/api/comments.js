@@ -21,22 +21,23 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-// DELETE /api/comments/comment/:commentId
-router.delete("/comment/:commentId", async (req, res, next) => {
+// DELETE /api/comments/:commentId
+router.delete("/:commentId", async (req, res, next) => {
   try {
     const { commentId } = req.params;
     const theCommentBeingDestroyed = await Comment.findOne({where:{id:commentId}})
     console.log(`***
     ***
     ***
-    Logging:comment Id, comment
+    Logging:comment.taskcardId
     ***
     ***
     ***
-    `, commentId, theCommentBeingDestroyed);
+    `, theCommentBeingDestroyed.dataValues.taskcardId);
     if (!theCommentBeingDestroyed) res.status(404).json("Comment not found!")
       await Comment.destroy({ where: { id: commentId } });
-    res.status(201).json(theCommentBeingDestroyed);
+      const taskCard = await TaskCard.findByPk(theCommentBeingDestroyed.taskcardId); 
+    res.status(201).json({theCommentBeingDestroyed, taskCard});
   } catch (err) {
     next(err);
   }

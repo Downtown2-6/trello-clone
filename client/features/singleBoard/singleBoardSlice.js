@@ -25,6 +25,17 @@ export const addList = createAsyncThunk("addList", async (listValues) => {
   }
 });
 
+export const addListSocket = createAsyncThunk(
+  'addListSocket',
+  async (newList) => {
+    try {
+      return newList;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
+
 export const addTaskCard = createAsyncThunk(
   "addTaskCard",
   async (taskCardValues) => {
@@ -134,6 +145,19 @@ export const addComment = createAsyncThunk(
   }
 );
 
+export const deleteComment = createAsyncThunk(
+  'deleteComment',
+  async (commentId) => {
+    try {
+      const { data} = await axios.delete(`/api/comments/${commentId}`);
+      console.log("This is data in the deleteComment thunk", data)
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+)
+
 export const updateListPosition = createAsyncThunk(
   "updateListPosition",
   async ({ boardId, list }) => {
@@ -153,6 +177,16 @@ export const reorderLists = createAsyncThunk(
   "reorderLists",
   ({ list, otherList }) => {
     return { list, otherList };
+  }
+);
+
+export const deleteThisList = createAsyncThunk(
+  "deleteThisList",
+  async ({ listId, userId, boardId }) => {
+    const { data } = await axios.delete(
+      `/api/lists/thisList/${listId}/userRequesting/${userId}/boardId/${boardId}`
+    );
+    return data;
   }
 );
 
@@ -220,20 +254,31 @@ const singleBoardSlice = createSlice({
         action.payload.comments;
     });
 
+    builder.addCase(deleteComment.fulfilled, (state, action) => {
+      const listIdx = state.lists.findIndex((list) => list.id === action.payload.taskCard.listId);
+      const taskcardIdx = state.lists[listIdx].taskcards.findIndex((taskcard) => taskcard.id === action.payload.taskCard.id);
+      const commentIdx = state.lists[listIdx].taskcards[taskcardIdx].comments.findIndex((comment) => comment.id === action.payload.theCommentBeingDestroyed.id);
+        state.lists[listIdx].taskcards[taskcardIdx].comments.splice(commentIdx, 1);
+    });
+
     builder.addCase(reorderLists.fulfilled, (state, action) => {
       state.lists[action.payload.list.position] = action.payload.list;
       state.lists[action.payload.otherList.position] = action.payload.otherList;
     });
 
-builder.addCase(deleteThisTaskCard.fulfilled, (state, action) => {
-  const listIdx = state.lists.findIndex(
-    (list) => list.id === action.payload.listId
-  );
+    builder.addCase(deleteThisTaskCard.fulfilled, (state, action) => {
+      const listIdx = state.lists.findIndex(
+        (list) => list.id === action.payload.listId
+      );
 
-  state.lists[listIdx].taskcards = state.lists[listIdx].taskcards.filter(
-    (taskcard) => taskcard.id !== action.payload.id
-  );
-});
+      state.lists[listIdx].taskcards = state.lists[listIdx].taskcards.filter(
+        (taskcard) => taskcard.id !== action.payload.id
+      );
+    });
+
+    builder.addCase(deleteThisList.fulfilled, (state, action) => {
+      state.lists = state.lists.filter((list) => list.id === action.payload.id);
+    });
   },
 });
 

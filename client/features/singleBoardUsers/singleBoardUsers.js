@@ -42,17 +42,7 @@ const SingleBoardUsers = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(
-      `***
-    ***
-    ***
-    Logging:this is the handle submit on add singleBoardUsers
-    ***
-    ***
-    ***
-    `,
-      userEmail
-    );
+
     dispatch(grantUserAccess({ userEmail, boardId }));
     setUserEmail('')
     // setOpen(false);
@@ -63,7 +53,6 @@ const SingleBoardUsers = () => {
   }, []);
 
   const allUsersInThisBoard = useSelector((state) => state.singleBoardUsers);
-  console.log("This is allUsersInThisBoard", allUsersInThisBoard)
   return (
     <>
       <Button variant="outlined" onClick={handleClickOpen}>

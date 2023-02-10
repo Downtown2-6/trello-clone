@@ -12,7 +12,7 @@ const socket = io();
 
 
 const SingleBoard = () => {
-  const [listName, setListName] = useState('');
+  const [listName, setListName] = useState("");
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -33,6 +33,24 @@ const SingleBoard = () => {
         otherList: newOtherList,
       }));
     });
+
+    socket.off('drop-taskCard-sameList').on('drop-taskCard-sameList',
+      ({taskcards, listId}) => {
+        dispatch(persistList({
+          listId,
+          taskcards,
+        }));
+      });
+
+    // socket.off('drop-taskCard-differentList').on('drop-taskCard-differentList',
+    // ({ sourceListId, sourceListTaskCards, destinationListId, destinationListTaskCards }) => {
+    //   dispatch(persistLists({
+    //     sourceListId,
+    //     sourceListTaskCards,
+    //     destinationListId,
+    //     destinationListTaskCards,
+    //   }));
+    // });
   }, [dispatch]);
 
   const handleSubmitList = async (evt) => {
@@ -52,18 +70,28 @@ const SingleBoard = () => {
   const moveList = async (btnValue, list) => {
     const newPosition = btnValue === 'moveRight' ? list.position + 1 : list.position - 1;
     const otherList = board.lists.find((list) => list.position === newPosition);
-    const newOtherList = {...otherList, position: list.position};
-    const newList = {...list, position: newPosition};
+    const newOtherList = { ...otherList, position: list.position };
+    const newList = { ...list, position: newPosition };
 
-    await dispatch(updateListPosition({boardId, list: {
-      id: list.id,
-      position: newPosition
-    }}));
+    await dispatch(
+      updateListPosition({
+        boardId,
+        list: {
+          id: list.id,
+          position: newPosition,
+        },
+      })
+    );
 
-    await dispatch(updateListPosition({boardId, list: {
-      id: otherList.id,
-      position: list.position
-    }}));
+    await dispatch(
+      updateListPosition({
+        boardId,
+        list: {
+          id: otherList.id,
+          position: list.position,
+        },
+      })
+    );
 
     await dispatch(reorderLists({
       list: newList,
@@ -74,65 +102,108 @@ const SingleBoard = () => {
   };
 
   const onDragEnd = (result) => {
-    const { destination, source, draggableId } = result
+    const { destination, source, draggableId } = result;
 
-    const { index: sourceIndex } = source
-    const { index: destinationIndex } = destination
+    const { index: sourceIndex } = source;
+    const { index: destinationIndex } = destination;
 
     //if no destination in result object return
-    if(!destination) return
+    if (!destination) return;
 
     //if destination is same as source && index is the same, return
-    if (destination.droppableId === source.droppableId
-      && destination.index === source.index) {
-        return
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
     }
 
     //reorder taskIds for the column
-    const sourceList = board.lists.find((list) => list.id === parseInt(source.droppableId, 10))
+    const sourceList = board.lists.find(
+      (list) => list.id === parseInt(source.droppableId, 10)
+    );
 
     //if the taskcard is grabbed and then dropped within the same list this logic fires
-    if (source.droppableId === destination.droppableId){
-      const sourceListTasks = Array.from(sourceList.taskcards)
-      const taskToMove = sourceListTasks.find((task) => task.id === parseInt(draggableId, 10))
-      sourceListTasks.splice(sourceIndex, 1)
-      sourceListTasks.splice(destinationIndex, 0, taskToMove)
+    if (source.droppableId === destination.droppableId) {
+      const sourceListTasks = Array.from(sourceList.taskcards);
+      const taskToMove = sourceListTasks.find(
+        (task) => task.id === parseInt(draggableId, 10)
+      );
+      sourceListTasks.splice(sourceIndex, 1);
+      sourceListTasks.splice(destinationIndex, 0, taskToMove);
 
-      const sourceListTasksUpdated = sourceListTasks.map((task, index)=> ({ ...task, position: index }));
-
-      dispatch(persistList({
-        listId: sourceList.id,
-        taskcards: sourceListTasksUpdated
+      const sourceListTasksUpdated = sourceListTasks.map((task, index) => ({
+        ...task,
+        position: index,
       }));
 
-      sourceListTasks.forEach(async (task, index )=> {
-        await dispatch(updateTaskCardPosition({
-          boardId,
-          taskCard: {
-            ...task,
-            position: index
-          }
-        }));
+      const sourceListId = sourceList.id
+
+      socket.emit('drop-taskCard-sameList', sourceListTasksUpdated, sourceListId)
+
+      dispatch(
+        persistList({
+          listId: sourceList.id,
+          taskcards: sourceListTasksUpdated,
+        })
+      );
+
+      sourceListTasks.forEach(async (task, index) => {
+        await dispatch(
+          updateTaskCardPosition({
+            boardId,
+            taskCard: {
+              ...task,
+              position: index,
+            },
+          })
+        );
       });
 
       //if the task is moved from one list to another, this logic fires
     } else {
-      const destinationList = board.lists.find((list) => list.id === parseInt(destination.droppableId, 10))
-      const sourceListTasks = Array.from(sourceList.taskcards)
-      const destinationListTasks = Array.from(destinationList.taskcards)
-      const taskToMove = sourceListTasks.find((task) => task.id === parseInt(draggableId, 10))
-      sourceListTasks.splice(sourceIndex, 1)
-      destinationListTasks.splice(destinationIndex, 0, taskToMove)
+      const destinationList = board.lists.find(
+        (list) => list.id === parseInt(destination.droppableId, 10)
+      );
+      const sourceListTasks = Array.from(sourceList.taskcards);
+      const destinationListTasks = Array.from(destinationList.taskcards);
+      const taskToMove = sourceListTasks.find(
+        (task) => task.id === parseInt(draggableId, 10)
+      );
+      sourceListTasks.splice(sourceIndex, 1);
+      destinationListTasks.splice(destinationIndex, 0, taskToMove);
 
-      const sourceListTasksUpdated = sourceListTasks.map((task, index)=> ({ ...task, position: index }));
-      const destinationListTasksUpdated = destinationListTasks.map((task, index)=> ({ ...task, position: index }));
-
-      dispatch(persistLists({
-        sourceListId: sourceList.id,
-        sourceListTaskCards: sourceListTasksUpdated,
-        destinationListId: destinationList.id,
-        destinationListTaskCards: destinationListTasksUpdated,
+      const sourceListTasksUpdated = sourceListTasks.map((task, index) => ({
+        ...task,
+        position: index,
       }));
+      const destinationListTasksUpdated = destinationListTasks.map(
+        (task, index) => ({ ...task, position: index })
+      );
+
+      dispatch(
+        persistLists({
+          sourceListId: sourceList.id,
+          sourceListTaskCards: sourceListTasksUpdated,
+          destinationListId: destinationList.id,
+          destinationListTaskCards: destinationListTasksUpdated,
+        })
+      );
+
+      const sourceListId = sourceList.id
+      const destinationListId = destinationList.id
+
+      // socket.emit('drop-taskCard-differentList', {
+      //   sourceListId,
+      //   sourceListTasksUpdated,
+      //   destinationListId,
+      //   destinationListTasksUpdated
+      // })
+
+      console.log("**SOURCELIST-ID",sourceListId,
+        "**SourceLIstUpdated",sourceListTasksUpdated,
+        "**DEST>ID",destinationListId,
+        "**DEST_TASKS",destinationListTasksUpdated)
 
       sourceListTasks.forEach((task, index )=> {
         dispatch(updateTaskCardPosition({
@@ -142,8 +213,8 @@ const SingleBoard = () => {
             position: index
           }
         }));
-
       })
+
       destinationListTasks.forEach((task, index )=> {
         dispatch(updateTaskCardPosition({
           boardId,
@@ -154,8 +225,10 @@ const SingleBoard = () => {
           }
         }));
       })
+
+
     }
-  }
+  };
 
   return (
     <>
@@ -173,15 +246,15 @@ const SingleBoard = () => {
                 <div key={`list#${list.id}`} className='list-container'>
                   <span>
                     {list.position > 0 ?
-                      <button 
-                        value='moveLeft' 
+                      <button
+                        value='moveLeft'
                         onClick={(evt) => moveList(evt.target.value, list)}>
                           {'<'}
                       </button>
                     : null}
                     {list.position < board.lists.length - 1 ?
-                      <button 
-                        value='moveRight' 
+                      <button
+                        value='moveRight'
                         onClick={(evt) => moveList(evt.target.value, list)}>
                           {'>'}
                       </button>
@@ -209,7 +282,7 @@ const SingleBoard = () => {
         </div>
       : null}
     </>
-  )
-}
+  );
+};
 
 export default SingleBoard;

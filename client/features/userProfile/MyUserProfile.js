@@ -4,11 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 // If page is self-contained it doesn't need to be sent to the store.
 
-document.addEventListener("paste", function (e) {
-  e.preventDefault();
-  alert("Please don't just copy paste. \n What if you made a mistake?")
-});
-
 function UserProfile() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -41,6 +36,10 @@ function UserProfile() {
   };
 
   useEffect(() => {
+    window.addEventListener("paste", function (e) {
+      e.preventDefault();
+      alert("Please don't just copy paste. \n What if you made a mistake?");
+    });
     setFirstName(user.firstName);
     setLastName(user.lastName);
     setEmail(user.email);
