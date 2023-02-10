@@ -170,6 +170,16 @@ export const reorderLists = createAsyncThunk(
   }
 );
 
+export const deleteThisList = createAsyncThunk(
+  "deleteThisList",
+  async ({ listId, userId, boardId }) => {
+    const { data } = await axios.delete(
+      `/api/lists/thisList/${listId}/userRequesting/${userId}/boardId/${boardId}`
+    );
+    return "True";
+  }
+);
+
 const singleBoardSlice = createSlice({
   name: "singleBoard",
   initialState: {},
@@ -239,15 +249,19 @@ const singleBoardSlice = createSlice({
       state.lists[action.payload.otherList.position] = action.payload.otherList;
     });
 
-builder.addCase(deleteThisTaskCard.fulfilled, (state, action) => {
-  const listIdx = state.lists.findIndex(
-    (list) => list.id === action.payload.listId
-  );
+    builder.addCase(deleteThisTaskCard.fulfilled, (state, action) => {
+      const listIdx = state.lists.findIndex(
+        (list) => list.id === action.payload.listId
+      );
 
-  state.lists[listIdx].taskcards = state.lists[listIdx].taskcards.filter(
-    (taskcard) => taskcard.id !== action.payload.id
-  );
-});
+      state.lists[listIdx].taskcards = state.lists[listIdx].taskcards.filter(
+        (taskcard) => taskcard.id !== action.payload.id
+      );
+    });
+
+    builder.addCase(deleteThisList.fulfilled, (state, action) => {
+      state.lists = state.lists.filter((list) => list.id === action.payload.id);
+    });
   },
 });
 
