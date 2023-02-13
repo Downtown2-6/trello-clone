@@ -4,7 +4,12 @@ import { Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import TaskCardModal from './TaskCardModal';
 
-const TaskContainer = styled.div ``
+const TaskContainer = styled.div `
+border: 1px solid orange;
+border-radius: 2px;
+padding: 8px;
+margin-bottom: 8px;
+background-color: ${props => (props.isDragging ? 'lightgreen' : 'white')};`
 
 const style = {
   position: 'absolute',

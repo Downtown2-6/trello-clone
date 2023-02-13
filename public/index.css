@@ -55,7 +55,7 @@ nav {
 
 .taskCard-draggable {
   min-width: 13em;
-  border: 1px solid orange;
+  /* border: 1px solid orange; */
 }
 
 .taskCard-modal-title {

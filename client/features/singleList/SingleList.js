@@ -91,18 +91,18 @@ const SingleList = (props) => {
     sx={{
       display: "flex",
       flexDirection: "column",
-      padding: 2, 
+      padding: 2,
       borderRadius: 1,
-     
+
     }}>
       <Box
       sx={{
         display: "flex",
         flexDirection: "row",
         paddingBottom: 1,
-       
+
       }}>
-       
+
           {/* <Input id="list-name" defaultValue={list.listName} sx={{}} />
 
           <TextField
@@ -172,7 +172,7 @@ const SingleList = (props) => {
         </form>
       </div>
 
-                      
+
     </Box>
   );
 };
