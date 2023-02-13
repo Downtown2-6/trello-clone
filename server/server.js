@@ -72,6 +72,10 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('update-taskCard', updatedTaskCard);
   });
 
+  socket.on('add-comment', (comments) => {
+    socket.broadcast.emit('add-comment', comments);
+  });
+
   socket.on('disconnect', () => {
     socket.disconnect()
     console.log('a user disconnected')

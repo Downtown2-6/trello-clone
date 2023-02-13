@@ -98,7 +98,7 @@ export const updateTaskCardSocket = createAsyncThunk(
     try {
       return updatedTaskCard;
     } catch (err) {
-      next(err);
+      console.log(err);
     };
   }
 );
@@ -178,6 +178,17 @@ export const addComment = createAsyncThunk(
     } catch (err) {
       console.log(err);
     }
+  }
+);
+
+export const addCommentSocket = createAsyncThunk(
+  "addCommentSocket",
+  async (comments) => {
+    try {
+      return comments;
+    } catch (err) {
+      console.log(err);
+    };
   }
 );
 
@@ -297,6 +308,17 @@ const singleBoardSlice = createSlice({
     });
 
     builder.addCase(addComment.fulfilled, (state, action) => {
+      const listIdx = state.lists.findIndex(
+        (list) => list.id === action.payload.listId
+      );
+      const taskcardIdx = state.lists[listIdx].taskcards.findIndex(
+        (taskcard) => taskcard.id === action.payload.id
+      );
+      state.lists[listIdx].taskcards[taskcardIdx].comments =
+        action.payload.comments;
+    });
+
+    builder.addCase(addCommentSocket.fulfilled, (state, action) => {
       const listIdx = state.lists.findIndex(
         (list) => list.id === action.payload.listId
       );

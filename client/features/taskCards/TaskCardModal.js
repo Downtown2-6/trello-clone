@@ -13,7 +13,8 @@ import {
   updateTaskCard, 
   addComment, 
   deleteThisTaskCard, 
-  updateTaskCardSocket } from "../singleBoard/singleBoardSlice";
+  updateTaskCardSocket,
+  addCommentSocket } from "../singleBoard/singleBoardSlice";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -73,7 +74,11 @@ const TaskCardModal = (props) => {
 
     socket.off('update-taskCard').on('update-taskCard', (updatedTaskCard) => {
       dispatch(updateTaskCardSocket(updatedTaskCard))
-    })
+    });
+
+    socket.off('add-comment').on('add-comment', (comments) => {
+      dispatch(addCommentSocket(comments))
+    });
   }, [date]);
 
   // console.log("This is the date", date);
@@ -94,13 +99,14 @@ const TaskCardModal = (props) => {
 
   const handleSubmitComment = async () => {
     if (comment.length) {
-      await dispatch(
+      const comments = await dispatch(
         addComment({
           content: comment,
           taskcardId: taskCard.id,
           userId,
         })
       );
+      socket.emit('add-comment', comments.payload);
       setComment("");
     }
   };
