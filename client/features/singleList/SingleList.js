@@ -10,6 +10,8 @@ import SingleTaskCard from "../taskCards/SingleTaskCard";
 import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import io from "socket.io-client";
+import { Box, Typography, IconButton, TextField, FormControl, Input, InputLabel } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const socket = io();
 
@@ -26,7 +28,7 @@ const SingleList = (props) => {
   const [taskCardTitle, setTaskCardTitle] = useState("");
 
   useEffect(() => {
-    socket.off("add-taskCard").on("add-taskCard", (newTaskCard) => {
+    socket.off('add-taskCard').on('add-taskCard', (newTaskCard) => {
       dispatch(addTaskCardSocket(newTaskCard));
     });
   }, [dispatch]);
@@ -42,7 +44,7 @@ const SingleList = (props) => {
           position: numTaskCards,
         })
       );
-      socket.emit("add-taskCard", newTaskCard.payload);
+      socket.emit('add-taskCard', newTaskCard.payload);
       setTaskCardTitle("");
     }
   };
@@ -85,14 +87,53 @@ const SingleList = (props) => {
   };
 
   return (
-    <div className="list-container-content">
-      <button
-          onClick={() => handleDeleteList(list.id)}
-        style={{ float: "right" }}
-        >
-        X
-      </button>
-      <h4>{list.listName}</h4>
+    <Box className="list-container-content"
+    sx={{
+      display: "flex",
+      flexDirection: "column",
+      padding: 2, 
+      borderRadius: 1,
+     
+    }}>
+      <Box
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        paddingBottom: 1,
+       
+      }}>
+       
+          {/* <Input id="list-name" defaultValue={list.listName} sx={{}} />
+
+          <TextField
+          // variant="standard"
+          inputProps={{style: {fontSize: 20}}}
+          outline="none"
+            className="list-name"
+            placeholder={list.listName}
+            size="small"
+            // onChange={}
+            // onBlur={}
+          /> */}
+<Typography variant="h5">{list.listName}</Typography>
+<IconButton
+                        aria-label="delete"
+                        onClick={() => handleDeleteList(list.id)}
+                        sx={{
+                          fontSize: 12,
+                          color: (theme) => theme.palette.grey[500],
+                          // float: 'right',
+                        }}
+                      >
+                        <DeleteIcon
+                          sx={{
+                            fontSize: 12,
+                            color: (theme) => theme.palette.grey[500],
+                            // float: 'right',
+                          }}
+                        />
+                      </IconButton>
+                      </Box>
       <Droppable droppableId={listId.toString()}>
         {(provided) => (
           <ListContainer
@@ -130,6 +171,8 @@ const SingleList = (props) => {
           </button>
         </form>
       </div>
+
+                      
     </Box>
   );
 };

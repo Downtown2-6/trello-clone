@@ -15,8 +15,19 @@ import {
 import SingleList from "../singleList/SingleList";
 import { DragDropContext } from "react-beautiful-dnd";
 import SingleBoardUsers from "../singleBoardUsers/singleBoardUsers";
-import Button from "@mui/material/Button";
-import io from 'socket.io-client';
+import io from "socket.io-client";
+import {
+  Modal,
+  Box,
+  TextField,
+  Typography,
+  Input,
+  Dialog,
+  IconButton,
+  Button,
+} from "@mui/material";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 const socket = io();
 
@@ -311,9 +322,9 @@ const SingleBoard = () => {
                   ))
                 : null}
                 <Box className="list-container">
-                  <Typography variant="h4">
+                  <Typography variant="h5">
                     <TextField
-                    className="list-add"
+                    className="list-title"
                     placeholder="Add another list"
                     size="small"
                     // fullWidth
