@@ -194,14 +194,25 @@ export const deleteComment = createAsyncThunk(
   'deleteComment',
   async (commentId) => {
     try {
-      const { data} = await axios.delete(`/api/comments/${commentId}`);
+      const { data } = await axios.delete(`/api/comments/${commentId}`);
       console.log("This is data in the deleteComment thunk", data)
       return data;
     } catch (err) {
       console.log(err);
     }
   }
-)
+);
+
+export const deleteCommentSocket = createAsyncThunk(
+  'deleteCommentSocket',
+  async (deletedComment) => {
+    try {
+      return deletedComment;
+    } catch (err) {
+      console.log(err);
+    };
+  }
+);
 
 export const updateListPosition = createAsyncThunk(
   "updateListPosition",
@@ -331,7 +342,14 @@ const singleBoardSlice = createSlice({
       const listIdx = state.lists.findIndex((list) => list.id === action.payload.taskCard.listId);
       const taskcardIdx = state.lists[listIdx].taskcards.findIndex((taskcard) => taskcard.id === action.payload.taskCard.id);
       const commentIdx = state.lists[listIdx].taskcards[taskcardIdx].comments.findIndex((comment) => comment.id === action.payload.theCommentBeingDestroyed.id);
-        state.lists[listIdx].taskcards[taskcardIdx].comments.splice(commentIdx, 1);
+      state.lists[listIdx].taskcards[taskcardIdx].comments = action.payload.taskCard.comments;
+    });
+
+    builder.addCase(deleteCommentSocket.fulfilled, (state, action) => {
+      const listIdx = state.lists.findIndex((list) => list.id === action.payload.taskCard.listId);
+      const taskcardIdx = state.lists[listIdx].taskcards.findIndex((taskcard) => taskcard.id === action.payload.taskCard.id);
+      const commentIdx = state.lists[listIdx].taskcards[taskcardIdx].comments.findIndex((comment) => comment.id === action.payload.theCommentBeingDestroyed.id);
+      state.lists[listIdx].taskcards[taskcardIdx].comments = action.payload.taskCard.comments;
     });
 
     builder.addCase(reorderLists.fulfilled, (state, action) => {

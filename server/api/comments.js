@@ -26,18 +26,20 @@ router.delete("/:commentId", async (req, res, next) => {
   try {
     const { commentId } = req.params;
     const theCommentBeingDestroyed = await Comment.findOne({where:{id:commentId}})
-    console.log(`***
-    ***
-    ***
-    Logging:comment.taskcardId
-    ***
-    ***
-    ***
-    `, theCommentBeingDestroyed.dataValues.taskcardId);
-    if (!theCommentBeingDestroyed) res.status(404).json("Comment not found!")
-      await Comment.destroy({ where: { id: commentId } });
-      const taskCard = await TaskCard.findByPk(theCommentBeingDestroyed.taskcardId); 
-    res.status(201).json({theCommentBeingDestroyed, taskCard});
+    if (!theCommentBeingDestroyed) {
+      res.status(404).json("Comment not found!");
+    } else {
+      await theCommentBeingDestroyed.destroy();
+      const taskCard = await TaskCard.findByPk(theCommentBeingDestroyed.taskcardId, {
+        include: {
+          model: Comment,
+          separate: true,
+          order: [["createdAt", "DESC"]],
+          include: [User],
+        },
+      }); 
+      res.status(201).json({theCommentBeingDestroyed, taskCard});
+    }
   } catch (err) {
     next(err);
   }

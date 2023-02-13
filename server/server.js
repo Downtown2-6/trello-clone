@@ -80,6 +80,10 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('add-comment', comments);
   });
 
+  socket.on('delete-comment', (deletedComment) => {
+    socket.broadcast.emit('delete-comment', deletedComment);
+  });
+
   socket.on('disconnect', () => {
     socket.disconnect()
     console.log('a user disconnected')

@@ -14,7 +14,8 @@ import {
   deleteThisTaskCard, 
   updateTaskCardSocket,
   addCommentSocket,
-  deleteTaskCardSocket } from "./singleBoardSlice";
+  deleteTaskCardSocket,
+  deleteCommentSocket } from "./singleBoardSlice";
 import SingleList from "../singleList/SingleList";
 import { DragDropContext } from "react-beautiful-dnd";
 import SingleBoardUsers from "../singleBoardUsers/singleBoardUsers";
@@ -70,12 +71,16 @@ const SingleBoard = () => {
       dispatch(updateTaskCardSocket(updatedTaskCard))
     });
 
+    socket.off('delete-taskCard').on('delete-taskCard', (deletedTaskCard) => {
+      dispatch(deleteTaskCardSocket(deletedTaskCard))
+    });
+
     socket.off('add-comment').on('add-comment', (comments) => {
       dispatch(addCommentSocket(comments))
     });
 
-    socket.off('delete-taskCard').on('delete-taskCard', (deletedTaskCard) => {
-      dispatch(deleteTaskCardSocket(deletedTaskCard))
+    socket.off('delete-comment').on('delete-comment', (deletedComment) => {
+      dispatch(deleteCommentSocket(deletedComment))
     });
   }, [dispatch]);
 
