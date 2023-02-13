@@ -9,7 +9,11 @@ import {
   Input,
   Dialog,
 } from "@mui/material";
-import { updateTaskCard, addComment, deleteThisTaskCard } from "../singleBoard/singleBoardSlice";
+import { 
+  updateTaskCard, 
+  addComment, 
+  deleteThisTaskCard, 
+  updateTaskCardSocket } from "../singleBoard/singleBoardSlice";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -17,6 +21,9 @@ import dayjs from "dayjs";
 import EditableTaskCard from "./EditableTaskCard";
 import Comment from "./Comment";
 import moment from "moment";
+import io from 'socket.io-client';
+
+const socket = io();
 
 function ChildModal() {
   const [open, setOpen] = useState(false);
@@ -63,13 +70,17 @@ const TaskCardModal = (props) => {
 
   useEffect(() => {
     handleTaskCardUpdate();
+
+    socket.off('update-taskCard').on('update-taskCard', (updatedTaskCard) => {
+      dispatch(updateTaskCardSocket(updatedTaskCard))
+    })
   }, [date]);
 
   // console.log("This is the date", date);
 
   const handleTaskCardUpdate = async () => {
     // console.log("This is date in the handleTaskCardUpdate", date);
-    await dispatch(
+    const updatedTaskCard = await dispatch(
       updateTaskCard({
         boardId,
         taskCardId: taskCard.id,
@@ -78,6 +89,7 @@ const TaskCardModal = (props) => {
         start: date,
       })
     );
+    socket.emit('update-taskCard', updatedTaskCard.payload);
   };
 
   const handleSubmitComment = async () => {

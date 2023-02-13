@@ -66,7 +66,11 @@ io.on('connection', (socket) => {
 
   socket.on('add-taskCard', (newTaskCard) => {
     socket.broadcast.emit('add-taskCard', newTaskCard);
-  })
+  });
+
+  socket.on('update-taskCard', (updatedTaskCard) => {
+    socket.broadcast.emit('update-taskCard', updatedTaskCard);
+  });
 
   socket.on('disconnect', () => {
     socket.disconnect()

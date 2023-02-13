@@ -36,6 +36,20 @@ export const addListSocket = createAsyncThunk(
   }
 );
 
+export const deleteThisList = createAsyncThunk(
+  "deleteThisList",
+  async ({ listId, userId, boardId }) => {
+    try {
+      const { data } = await axios.delete(
+        `/api/lists/${boardId}/${listId}`
+      );
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
+
 export const addTaskCard = createAsyncThunk(
   "addTaskCard",
   async (taskCardValues) => {
@@ -75,6 +89,17 @@ export const updateTaskCard = createAsyncThunk(
     } catch (err) {
       console.log(err);
     }
+  }
+);
+
+export const updateTaskCardSocket = createAsyncThunk(
+  "updateTaskCardSocket",
+  async (updatedTaskCard) => {
+    try {
+      return updatedTaskCard;
+    } catch (err) {
+      next(err);
+    };
   }
 );
 
@@ -191,15 +216,15 @@ export const reorderLists = createAsyncThunk(
   }
 );
 
-export const deleteThisList = createAsyncThunk(
-  "deleteThisList",
-  async ({ listId, userId, boardId }) => {
-    const { data } = await axios.delete(
-      `/api/lists/thisList/${listId}/userRequesting/${userId}/boardId/${boardId}`
-    );
-    return data;
-  }
-);
+// export const deleteThisList = createAsyncThunk(
+//   "deleteThisList",
+//   async ({ listId, userId, boardId }) => {
+//     const { data } = await axios.delete(
+//       `/api/lists/thisList/${listId}/userRequesting/${userId}/boardId/${boardId}`
+//     );
+//     return data;
+//   }
+// );
 
 const singleBoardSlice = createSlice({
   name: "singleBoard",
@@ -233,6 +258,16 @@ const singleBoardSlice = createSlice({
     });
 
     builder.addCase(updateTaskCard.fulfilled, (state, action) => {
+      const listIdx = state.lists.findIndex(
+        (list) => list.id === action.payload.listId
+      );
+      const taskcardIdx = state.lists[listIdx].taskcards.findIndex(
+        (taskcard) => taskcard.id === action.payload.id
+      );
+      state.lists[listIdx].taskcards[taskcardIdx] = action.payload;
+    });
+
+    builder.addCase(updateTaskCardSocket.fulfilled, (state, action) => {
       const listIdx = state.lists.findIndex(
         (list) => list.id === action.payload.listId
       );
