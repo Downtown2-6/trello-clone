@@ -26,7 +26,7 @@ export const addList = createAsyncThunk("addList", async (listValues) => {
 });
 
 export const addListSocket = createAsyncThunk(
-  'addListSocket',
+  "addListSocket",
   async (newList) => {
     try {
       return newList;
@@ -77,7 +77,7 @@ export const addTaskCard = createAsyncThunk(
 );
 
 export const addTaskCardSocket = createAsyncThunk(
-  'addTaskCardSocket',
+  "addTaskCardSocket",
   async (newTaskCard) => {
     try {
       return newTaskCard;
@@ -202,7 +202,7 @@ export const addCommentSocket = createAsyncThunk(
 );
 
 export const deleteComment = createAsyncThunk(
-  'deleteComment',
+  "deleteComment",
   async (commentId) => {
     try {
       const { data } = await axios.delete(`/api/comments/${commentId}`);
@@ -224,7 +224,6 @@ export const deleteCommentSocket = createAsyncThunk(
     };
   }
 );
-
 export const updateListPosition = createAsyncThunk(
   "updateListPosition",
   async ({ boardId, list }) => {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import { updateMyProfileImage } from "../singleBoard/singleBoardSlice";
 
 // If page is self-contained it doesn't need to be sent to the store.
 
@@ -8,11 +9,32 @@ function UserProfile() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [profilePicture, setProfilePicture] = useState("");
   const [emailVerify, setEmailVerify] = useState("");
   const [password, setPassword] = useState("");
   const [passwordVerify, setPasswordVerify] = useState("");
   const user = useSelector((state) => state.auth.me);
   const dispatch = useDispatch();
+
+  const handleImageUpdate = (event) => {
+    event.preventDefault();
+    console.log(
+      `***
+    ***
+    ***
+    Logging:this is handleimageUpdate
+    ***
+    ***
+    ***
+    `,
+      profilePicture
+    );
+    const userId = user.id;
+
+    axios.patch(`api/users/uploadProfilePicture/userId/${userId}`, {
+      url: profilePicture,
+    });
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -36,10 +58,11 @@ function UserProfile() {
   };
 
   useEffect(() => {
-    window.addEventListener("paste", function (e) {
-      e.preventDefault();
-      alert("Please don't just copy paste. \n What if you made a mistake?");
-    });
+    // window.addEventListener("paste", function (e) {
+    //   e.preventDefault();
+    //   alert("Please don't just copy paste. \n What if you made a mistake?");
+    // });
+    setProfilePicture(user.imageUrl);
     setFirstName(user.firstName);
     setLastName(user.lastName);
     setEmail(user.email);
@@ -47,6 +70,28 @@ function UserProfile() {
 
   return (
     <>
+      <br />
+      <br />
+      <div
+        style={{
+          width: "100px",
+          height: "100px",
+          overflow: "hidden",
+          borderRadius: "50%",
+        }}
+      >
+        <img style={{ width: "100%" }} src={profilePicture} />
+      </div>{" "}
+      <br />
+      <form onSubmit={handleImageUpdate}>
+        <input
+          type="text"
+          placeholder="profile image url"
+          value={profilePicture}
+          onChangeon={(event) => setProfilePicture(event.target.value)}
+        />
+        <button type="submit">Set As Profile Picture</button>
+      </form>
       <br></br>
       <br></br>
       <br></br>{" "}
