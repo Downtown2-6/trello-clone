@@ -12,8 +12,7 @@ import {
 import { 
   updateTaskCard, 
   addComment, 
-  deleteThisTaskCard,
-  updateTaskCardSocket } from "../singleBoard/singleBoardSlice";
+  deleteThisTaskCard } from "../singleBoard/singleBoardSlice";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -78,8 +77,6 @@ const TaskCardModal = (props) => {
   useEffect(() => {
     handleTaskCardUpdate();
   }, [date]);
-
-  // console.log("This is the date", date);
 
   const handleTaskCardUpdate = async () => {
     // console.log("This is date in the handleTaskCardUpdate", date);
@@ -159,11 +156,12 @@ const TaskCardModal = (props) => {
           <DatePicker
             label="Due Date"
             value={date}
-            clearable
             onChange={(newValue) => {
-              if (newValue.$d) {
+              if (newValue) {
                 setDate(newValue.$d);
-              } 
+              } else {
+                setDate(null);
+              }
             }}
             renderInput={(params) => <TextField {...params} />}
             size="small"
