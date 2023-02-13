@@ -11,14 +11,14 @@ const User = db.define("user", {
     allowNull: true,
     validate: {
       notEmpty: true,
-    }
+    },
   },
   lastName: {
     type: Sequelize.STRING,
     allowNull: true,
     validate: {
       notEmpty: true,
-    }
+    },
   },
   email: {
     type: Sequelize.STRING,
@@ -31,6 +31,13 @@ const User = db.define("user", {
   },
   password: {
     type: Sequelize.STRING,
+  },
+  imageUrl: {
+    type: Sequelize.STRING,
+    allowNull: true,
+    validate: {
+      isUrl: true,
+    },
   },
 });
 
