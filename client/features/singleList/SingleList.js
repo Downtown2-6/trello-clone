@@ -50,40 +50,8 @@ const SingleList = (props) => {
   };
 
   const handleDeleteList = async (evt) => {
-    console.log(
-      `***
-    ***
-    ***
-    Logging:handleDeleteList
-    ***
-    ***
-    ***
-    `,
-      evt
-    );
-    await dispatch(deleteThisList({ listId, userId, boardId }));
-  };
-
-  const handleDeleteSingleTaskCard = async (evt) => {
-    console.log(
-      `***
-    ***
-    ***
-    Logging:handleDelete
-    ***
-    ***
-    ***
-    `,
-      evt
-    );
-    const deleteTaskCard = await dispatch(
-      deleteThisTaskCard({
-        taskCardId: evt,
-        userId: userId,
-        boardId: boardId,
-      })
-    );
-    console.log(deleteTaskCard);
+    const deletedList = await dispatch(deleteThisList({ listId, userId, boardId }));
+    socket.emit('delete-list', deletedList.payload);
   };
 
   return (
@@ -118,7 +86,7 @@ const SingleList = (props) => {
 <Typography variant="h5">{list.listName}</Typography>
 <IconButton
                         aria-label="delete"
-                        onClick={() => handleDeleteList(list.id)}
+                        onClick={handleDeleteList}
                         sx={{
                           fontSize: 12,
                           color: (theme) => theme.palette.grey[500],
