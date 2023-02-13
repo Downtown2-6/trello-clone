@@ -71,37 +71,37 @@ const SingleList = (props) => {
        
       }}>
        
-          {/* <Input id="list-name" defaultValue={list.listName} sx={{}} />
+        {/* <Input id="list-name" defaultValue={list.listName} sx={{}} />
 
-          <TextField
-          // variant="standard"
-          inputProps={{style: {fontSize: 20}}}
-          outline="none"
-            className="list-name"
-            placeholder={list.listName}
-            size="small"
-            // onChange={}
-            // onBlur={}
-          /> */}
-<Typography variant="h5">{list.listName}</Typography>
-<IconButton
-                        aria-label="delete"
-                        onClick={handleDeleteList}
-                        sx={{
-                          fontSize: 12,
-                          color: (theme) => theme.palette.grey[500],
-                          // float: 'right',
-                        }}
-                      >
-                        <DeleteIcon
-                          sx={{
-                            fontSize: 12,
-                            color: (theme) => theme.palette.grey[500],
-                            // float: 'right',
-                          }}
-                        />
-                      </IconButton>
-                      </Box>
+        <TextField
+        // variant="standard"
+        inputProps={{style: {fontSize: 20}}}
+        outline="none"
+          className="list-name"
+          placeholder={list.listName}
+          size="small"
+          // onChange={}
+          // onBlur={}
+        /> */}
+        <Typography variant="h5">{list.listName}</Typography>
+        <IconButton
+          aria-label="delete"
+          onClick={handleDeleteList}
+          sx={{
+            fontSize: 12,
+            color: (theme) => theme.palette.grey[500],
+            // float: 'right',
+          }}
+        >
+          <DeleteIcon
+            sx={{
+              fontSize: 12,
+              color: (theme) => theme.palette.grey[500],
+              // float: 'right',
+            }}
+          />
+        </IconButton>
+      </Box>
       <Droppable droppableId={listId.toString()}>
         {(provided) => (
           <ListContainer
