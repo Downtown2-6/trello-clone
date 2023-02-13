@@ -79,7 +79,24 @@ router.patch("/uploadProfilePicture/userId/:userId", async (req, res, next) => {
   try {
     const { userId } = req.params;
     const { url } = req.body;
-
+    console.log(
+      `***
+    ***
+    ***
+    Logging:in the api
+    ***
+    ***
+    ***
+    `,
+      userId,
+      url
+    );
+    if (!userId || !url)
+      return res
+        .status(422)
+        .json(
+          "Unprocessable Entity; you need to give both an userId and an url"
+        );
     const regex = /(https?:\/\/(www\.)?)?.*\.(jpg|png)/;
     const matches = url.match(regex);
     if (!matches)

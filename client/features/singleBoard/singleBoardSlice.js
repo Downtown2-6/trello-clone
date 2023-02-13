@@ -26,7 +26,7 @@ export const addList = createAsyncThunk("addList", async (listValues) => {
 });
 
 export const addListSocket = createAsyncThunk(
-  'addListSocket',
+  "addListSocket",
   async (newList) => {
     try {
       return newList;
@@ -52,7 +52,7 @@ export const addTaskCard = createAsyncThunk(
 );
 
 export const addTaskCardSocket = createAsyncThunk(
-  'addTaskCardSocket',
+  "addTaskCardSocket",
   async (newTaskCard) => {
     try {
       return newTaskCard;
@@ -81,19 +81,6 @@ export const updateTaskCard = createAsyncThunk(
 export const deleteThisTaskCard = createAsyncThunk(
   "deleteThisTaskCard",
   async ({ taskCardId, userId, boardId }) => {
-    console.log(
-      `***
-    ***
-    ***
-    Logging:This is the deleteThisTaskCard thunk
-    ***
-    ***
-    ***
-    `,
-      taskCardId,
-      userId,
-      boardId
-    );
     const { data } = await axios.delete(
       `/api/tasks/thisTask/${taskCardId}/thisUser/${userId}/thisBoard/${boardId}`
     );
@@ -157,17 +144,17 @@ export const addComment = createAsyncThunk(
 );
 
 export const deleteComment = createAsyncThunk(
-  'deleteComment',
+  "deleteComment",
   async (commentId) => {
     try {
-      const { data} = await axios.delete(`/api/comments/${commentId}`);
-      console.log("This is data in the deleteComment thunk", data)
+      const { data } = await axios.delete(`/api/comments/${commentId}`);
+      console.log("This is data in the deleteComment thunk", data);
       return data;
     } catch (err) {
       console.log(err);
     }
   }
-)
+);
 
 export const updateListPosition = createAsyncThunk(
   "updateListPosition",
@@ -196,6 +183,29 @@ export const deleteThisList = createAsyncThunk(
   async ({ listId, userId, boardId }) => {
     const { data } = await axios.delete(
       `/api/lists/thisList/${listId}/userRequesting/${userId}/boardId/${boardId}`
+    );
+    return data;
+  }
+);
+
+export const updateMyProfileImage = createAsyncThunk(
+  "updateMyProfileImage",
+  async ({ userId, url }) => {
+    console.log(
+      `***
+    ***
+    ***
+    Logging:We are hitting updateMyProfileImage Thunk with UserId and Url
+    ***
+    ***
+    ***
+    `,
+      userId,
+      url
+    );
+    const { data } = await axios.patch(
+      `api/users/uploadProfilePicture/userId/${userId}`,
+      {url:url}
     );
     return data;
   }
@@ -273,10 +283,21 @@ const singleBoardSlice = createSlice({
     });
 
     builder.addCase(deleteComment.fulfilled, (state, action) => {
-      const listIdx = state.lists.findIndex((list) => list.id === action.payload.taskCard.listId);
-      const taskcardIdx = state.lists[listIdx].taskcards.findIndex((taskcard) => taskcard.id === action.payload.taskCard.id);
-      const commentIdx = state.lists[listIdx].taskcards[taskcardIdx].comments.findIndex((comment) => comment.id === action.payload.theCommentBeingDestroyed.id);
-        state.lists[listIdx].taskcards[taskcardIdx].comments.splice(commentIdx, 1);
+      const listIdx = state.lists.findIndex(
+        (list) => list.id === action.payload.taskCard.listId
+      );
+      const taskcardIdx = state.lists[listIdx].taskcards.findIndex(
+        (taskcard) => taskcard.id === action.payload.taskCard.id
+      );
+      const commentIdx = state.lists[listIdx].taskcards[
+        taskcardIdx
+      ].comments.findIndex(
+        (comment) => comment.id === action.payload.theCommentBeingDestroyed.id
+      );
+      state.lists[listIdx].taskcards[taskcardIdx].comments.splice(
+        commentIdx,
+        1
+      );
     });
 
     builder.addCase(reorderLists.fulfilled, (state, action) => {
@@ -295,9 +316,24 @@ const singleBoardSlice = createSlice({
     });
 
     builder.addCase(deleteThisList.fulfilled, (state, action) => {
-      console.log("this is action.payload in deleteThisList builder", action.payload)
-      const listIdx = state.lists.findIndex((list) => list.id === action.payload.id);
+      const listIdx = state.lists.findIndex(
+        (list) => list.id === action.payload.id
+      );
       state.lists.splice(listIdx, 1);
+    });
+
+    builder.addCase(updateMyProfileImage.fulfilled, (state, action) => {
+      console.log(
+        `***
+        ***
+        ***
+        Logging:This is updateMyprofileImge.fulfilled
+        ***
+        ***
+        ***
+        `,
+        action.payload
+      );
     });
   },
 });
