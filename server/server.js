@@ -40,15 +40,19 @@ io.on('connection', (socket) => {
 
   socket.on('add-list', (newList) => {
     socket.broadcast.emit('add-list', newList);
-  })
+  });
 
   socket.on('move-list', (newList, newOtherList) => {
     socket.broadcast.emit('move-list', {newList, newOtherList});
   });
 
+  socket.on('delete-list', (deletedList) => {
+    socket.broadcast.emit('delete-list', deletedList);
+  });
+
   socket.on('drop-taskCard-sameList', (taskcards, listId) => {
-    socket.broadcast.emit('drop-taskCard-sameList', {taskcards, listId})
-  })
+    socket.broadcast.emit('drop-taskCard-sameList', {taskcards, listId});
+  });
 
   socket.on('drop-taskCard-differentList', (
     sourceListId,
@@ -66,7 +70,24 @@ io.on('connection', (socket) => {
 
   socket.on('add-taskCard', (newTaskCard) => {
     socket.broadcast.emit('add-taskCard', newTaskCard);
-  })
+  });
+
+  socket.on('update-taskCard', (updatedTaskCard) => {
+    socket.broadcast.emit('update-taskCard', updatedTaskCard);
+    socket.broadcast.emit('update-taskCard-modal', updatedTaskCard);
+  });
+
+  socket.on('delete-taskCard', (deletedTaskCard) => {
+    socket.broadcast.emit('delete-taskCard', deletedTaskCard);
+  });
+
+  socket.on('add-comment', (comments) => {
+    socket.broadcast.emit('add-comment', comments);
+  });
+
+  socket.on('delete-comment', (deletedComment) => {
+    socket.broadcast.emit('delete-comment', deletedComment);
+  });
 
   socket.on('disconnect', () => {
     socket.disconnect()

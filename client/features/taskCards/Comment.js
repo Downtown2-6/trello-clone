@@ -1,16 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Typography, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch } from "react-redux";
 import { deleteComment } from "../singleBoard/singleBoardSlice";
 import { useParams } from "react-router-dom";
+import io from 'socket.io-client';
+
+const socket = io();
 
 const Comment = (props) => {
   const { taskCard } = props;
   const dispatch = useDispatch();
 
-  const removeComment = (commentId) => {
-    dispatch(deleteComment(commentId));
+  const removeComment = async (commentId) => {
+    const deletedComment = await dispatch(deleteComment(commentId));
+    socket.emit('delete-comment', deletedComment.payload);
   };
 
   return (
@@ -22,25 +26,6 @@ const Comment = (props) => {
               key={`comment#${comment.id}`}
               sx={{ padding: "0.5em" }}
             >
-              {/* <Box>
-                <Typography variant="caption" id="single-comment-user-label">
-                  <Box className="single-comment-user">
-                    {comment.user.firstName} {comment.user.lastName}{" "}
-                    <IconButton
-                      aria-label="close"
-                      onClick={() => removeComment(comment.id)}
-                    >
-                      <DeleteIcon
-                        sx={{
-                          fontSize: 12,
-                          color: (theme) => theme.palette.grey[500],
-                        }}
-                      />
-                    </IconButton>
-                  </Box>
-                </Typography>
-              </Box> */}
-
               <Box className="single-comment-content">
                 {comment.content}
                 <Box className="single-comment-detail">
@@ -51,7 +36,7 @@ const Comment = (props) => {
                     >
                       {comment.user.firstName} {comment.user.lastName}{" "}
                       <IconButton
-                        aria-label="close"
+                        aria-label="delete"
                         onClick={() => removeComment(comment.id)}
                       >
                         <DeleteIcon

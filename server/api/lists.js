@@ -57,40 +57,54 @@ router.post("/:boardId", async (req, res, next) => {
   }
 });
 
-// DELETE /api/lists/thisList/:listId/userRequesting/:userId/boardId/:boardId
+// DELETE /api/lists/:boardId/:listId
 router.delete(
-  "/thisList/:listId/userRequesting/:userId/boardId/:boardId",
+  "/:boardId/:listId",
   async (req, res, next) => {
     try {
-      const theListBeingDeleted = await List.findOne({
-        where: { id: req.params.listId },
-      });
-
-      console.log(`***
-      ***
-      ***
-      Logging:here we are in the delete route
-      ***
-      ***
-      ***
-      `, req.params);
-      const userRequesting = await UserBoard.findOne({
-        where: { userId: req.params.userId, boardId: req.params.boardId },
-      });
-
-      if (userRequesting.dataValues.privilege != "ADMIN")
-        return res.status(406).json("Need to be an admin to delete a list.");
-
-      if (!theListBeingDeleted) return res.status(404).json("List not found!");
-      const deletedList = await List.destroy({
-        where: { id: req.params.listId },
-      });
+      const theListBeingDeleted = await List.findByPk(req.params.listId);
+      await theListBeingDeleted.destroy();
       res.status(201).json(theListBeingDeleted);
     } catch (err) {
       next(err);
     }
   }
 );
+
+// // DELETE /api/lists/thisList/:listId/userRequesting/:userId/boardId/:boardId
+// router.delete(
+//   "/thisList/:listId/userRequesting/:userId/boardId/:boardId",
+//   async (req, res, next) => {
+//     try {
+//       const theListBeingDeleted = await List.findOne({
+//         where: { id: req.params.listId },
+//       });
+
+//       console.log(`***
+//       ***
+//       ***
+//       Logging:here we are in the delete route
+//       ***
+//       ***
+//       ***
+//       `, req.params);
+//       const userRequesting = await UserBoard.findOne({
+//         where: { userId: req.params.userId, boardId: req.params.boardId },
+//       });
+
+//       if (userRequesting.dataValues.privilege != "ADMIN")
+//         return res.status(406).json("Need to be an admin to delete a list.");
+
+//       if (!theListBeingDeleted) return res.status(404).json("List not found!");
+//       const deletedList = await List.destroy({
+//         where: { id: req.params.listId },
+//       });
+//       res.status(201).json(theListBeingDeleted);
+//     } catch (err) {
+//       next(err);
+//     }
+//   }
+// );
 
 // PUT /api/lists/:boardId/:listId
 router.put("/:boardId/:listId", async (req, res, next) => {
