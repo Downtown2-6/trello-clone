@@ -40,15 +40,19 @@ io.on('connection', (socket) => {
 
   socket.on('add-list', (newList) => {
     socket.broadcast.emit('add-list', newList);
-  })
+  });
 
   socket.on('move-list', (newList, newOtherList) => {
     socket.broadcast.emit('move-list', {newList, newOtherList});
   });
 
+  socket.on('delete-list', (deletedList) => {
+    socket.broadcast.emit('delete-list', deletedList);
+  });
+
   socket.on('drop-taskCard-sameList', (taskcards, listId) => {
-    socket.broadcast.emit('drop-taskCard-sameList', {taskcards, listId})
-  })
+    socket.broadcast.emit('drop-taskCard-sameList', {taskcards, listId});
+  });
 
   socket.on('drop-taskCard-differentList', (
     sourceListId,
