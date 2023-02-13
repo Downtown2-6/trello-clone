@@ -103,7 +103,7 @@ const SingleBoard = () => {
   }, [dispatch]);
 
   const handleSubmitList = async () => {
-    const position = board.lists.length ? board.lists.length : 0;
+    const position = board.lists.length ? board.lists[board.lists.length-1].position + 1 : 0;
     if (listName.length) {
       const newList = await dispatch(
         addList({
@@ -124,9 +124,11 @@ const SingleBoard = () => {
   };
 
   const moveList = async (btnValue, list) => {
+    const listIdx = board.lists.findIndex((boardlist) => boardlist.id === list.id);
     const newPosition =
-      btnValue === "moveRight" ? list.position + 1 : list.position - 1;
-    const otherList = board.lists.find((list) => list.position === newPosition);
+      btnValue === "moveRight" ? Number(list.position + 1) : Number(list.position - 1);
+    const otherList = 
+      btnValue === "moveRight" ? board.lists[listIdx+1] : board.lists[listIdx-1];
     const newOtherList = { ...otherList, position: list.position };
     const newList = { ...list, position: newPosition };
 
@@ -315,7 +317,7 @@ const SingleBoard = () => {
               ? board.lists.map((list) => (
                 <Box key={`list#${list.id}`} className="list-container">
                   <span>
-                  {list.position > 0 ? (
+                  {list.position > board.lists[0].position ? (
                     <IconButton
                       variant="outlined"
                       onClick={() => moveList("moveLeft", list)}
@@ -326,7 +328,7 @@ const SingleBoard = () => {
                       <ArrowBackIosIcon />
                     </IconButton>
                   ) : null}
-                  {list.position < board.lists.length - 1 ? (
+                  {list.position < board.lists[board.lists.length - 1].position ? (
                     <IconButton
                       variant="outlined"
                       onClick={() => moveList("moveRight", list)}
@@ -365,7 +367,7 @@ const SingleBoard = () => {
                   className="add-list-button" 
                   onClick={() => setAddingList(true)}
                   >
-                    Add another list
+                    + Add another list
                   </Button>
                 </Box>
               )}
