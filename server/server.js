@@ -70,6 +70,7 @@ io.on('connection', (socket) => {
 
   socket.on('update-taskCard', (updatedTaskCard) => {
     socket.broadcast.emit('update-taskCard', updatedTaskCard);
+    socket.broadcast.emit('update-taskCard-modal', updatedTaskCard);
   });
 
   socket.on('delete-taskCard', (deletedTaskCard) => {

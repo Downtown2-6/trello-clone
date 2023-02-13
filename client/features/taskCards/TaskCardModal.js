@@ -12,7 +12,8 @@ import {
 import { 
   updateTaskCard, 
   addComment, 
-  deleteThisTaskCard } from "../singleBoard/singleBoardSlice";
+  deleteThisTaskCard,
+  updateTaskCardSocket } from "../singleBoard/singleBoardSlice";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -68,6 +69,13 @@ const TaskCardModal = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    socket.off('update-taskCard-modal').on('update-taskCard-modal', (updatedTaskCard) => {
+      setDescription(taskCard.description);
+      setDate(taskCard.start);
+    });
+  }, [taskCard]);
+
+  useEffect(() => {
     handleTaskCardUpdate();
   }, [date]);
 
@@ -96,7 +104,6 @@ const TaskCardModal = (props) => {
       })
     );
     socket.emit('delete-taskCard', deletedTaskCard.payload);
-    // console.log(deletedTaskCard);
   };
 
   const handleSubmitComment = async () => {
@@ -160,7 +167,6 @@ const TaskCardModal = (props) => {
             }}
             renderInput={(params) => <TextField {...params} />}
             size="small"
-            onClose={handleTaskCardUpdate}
           />
         </LocalizationProvider>
       </Box>

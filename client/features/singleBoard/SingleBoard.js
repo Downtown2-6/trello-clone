@@ -11,7 +11,6 @@ import {
   updateListPosition, 
   reorderLists, 
   addListSocket,
-  deleteThisTaskCard, 
   updateTaskCardSocket,
   addCommentSocket,
   deleteTaskCardSocket,
@@ -68,19 +67,19 @@ const SingleBoard = () => {
     });
 
     socket.off('update-taskCard').on('update-taskCard', (updatedTaskCard) => {
-      dispatch(updateTaskCardSocket(updatedTaskCard))
+      dispatch(updateTaskCardSocket(updatedTaskCard));
     });
 
     socket.off('delete-taskCard').on('delete-taskCard', (deletedTaskCard) => {
-      dispatch(deleteTaskCardSocket(deletedTaskCard))
+      dispatch(deleteTaskCardSocket(deletedTaskCard));
     });
 
     socket.off('add-comment').on('add-comment', (comments) => {
-      dispatch(addCommentSocket(comments))
+      dispatch(addCommentSocket(comments));
     });
 
     socket.off('delete-comment').on('delete-comment', (deletedComment) => {
-      dispatch(deleteCommentSocket(deletedComment))
+      dispatch(deleteCommentSocket(deletedComment));
     });
   }, [dispatch]);
 
