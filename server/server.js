@@ -66,7 +66,24 @@ io.on('connection', (socket) => {
 
   socket.on('add-taskCard', (newTaskCard) => {
     socket.broadcast.emit('add-taskCard', newTaskCard);
-  })
+  });
+
+  socket.on('update-taskCard', (updatedTaskCard) => {
+    socket.broadcast.emit('update-taskCard', updatedTaskCard);
+    socket.broadcast.emit('update-taskCard-modal', updatedTaskCard);
+  });
+
+  socket.on('delete-taskCard', (deletedTaskCard) => {
+    socket.broadcast.emit('delete-taskCard', deletedTaskCard);
+  });
+
+  socket.on('add-comment', (comments) => {
+    socket.broadcast.emit('add-comment', comments);
+  });
+
+  socket.on('delete-comment', (deletedComment) => {
+    socket.broadcast.emit('delete-comment', deletedComment);
+  });
 
   socket.on('disconnect', () => {
     socket.disconnect()

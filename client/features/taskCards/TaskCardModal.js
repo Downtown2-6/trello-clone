@@ -9,7 +9,10 @@ import {
   Input,
   Dialog,
 } from "@mui/material";
-import { updateTaskCard, addComment, deleteThisTaskCard } from "../singleBoard/singleBoardSlice";
+import { 
+  updateTaskCard, 
+  addComment, 
+  deleteThisTaskCard } from "../singleBoard/singleBoardSlice";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -17,6 +20,9 @@ import dayjs from "dayjs";
 import EditableTaskCard from "./EditableTaskCard";
 import Comment from "./Comment";
 import moment from "moment";
+import io from 'socket.io-client';
+
+const socket = io();
 
 function ChildModal() {
   const [open, setOpen] = useState(false);
@@ -62,14 +68,19 @@ const TaskCardModal = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    socket.off('update-taskCard-modal').on('update-taskCard-modal', (updatedTaskCard) => {
+      setDescription(taskCard.description);
+      setDate(taskCard.start);
+    });
+  }, [taskCard]);
+
+  useEffect(() => {
     handleTaskCardUpdate();
   }, [date]);
 
-  // console.log("This is the date", date);
-
   const handleTaskCardUpdate = async () => {
     // console.log("This is date in the handleTaskCardUpdate", date);
-    await dispatch(
+    const updatedTaskCard = await dispatch(
       updateTaskCard({
         boardId,
         taskCardId: taskCard.id,
@@ -78,44 +89,33 @@ const TaskCardModal = (props) => {
         start: date,
       })
     );
+    socket.emit('update-taskCard', updatedTaskCard.payload);
+  };
+
+  const handleDeleteSingleTaskCard = async (taskCardId) => {
+    const deletedTaskCard = await dispatch(
+      deleteThisTaskCard({
+        taskCardId,
+        userId: userId,
+        boardId: boardId,
+      })
+    );
+    socket.emit('delete-taskCard', deletedTaskCard.payload);
   };
 
   const handleSubmitComment = async () => {
     if (comment.length) {
-      await dispatch(
+      const comments = await dispatch(
         addComment({
           content: comment,
           taskcardId: taskCard.id,
           userId,
         })
       );
+      socket.emit('add-comment', comments.payload);
       setComment("");
     }
   };
-
-    const handleDeleteSingleTaskCard = async (evt) => {
-      console.log(
-        `***
-    ***
-    ***
-    Logging:handleDelete
-    ***
-    ***
-    ***
-    `,
-        evt
-      );
-      const deleteTaskCard = await dispatch(
-        deleteThisTaskCard({
-          taskCardId: evt,
-          userId: userId,
-          boardId: boardId,
-        })
-      );
-      console.log(deleteTaskCard);
-    };
-
-
 
   return (
     <>
@@ -165,8 +165,6 @@ const TaskCardModal = (props) => {
             }}
             renderInput={(params) => <TextField {...params} />}
             size="small"
-            onClose={handleTaskCardUpdate}
-            // onAccept={handleTaskCardUpdate}
           />
         </LocalizationProvider>
       </Box>
