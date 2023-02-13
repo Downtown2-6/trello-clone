@@ -105,7 +105,7 @@ router.patch("/uploadProfilePicture/userId/:userId", async (req, res, next) => {
         .json(
           "Unprocessable Entity; you need to enter an url leading to a .png or .jpg"
         );
-          const theUser = await User.findOne({where:{id:userId}})
+    const theUser = await User.findOne({ where: { id: userId } });
     const updatedUser = await User.update(
       { imageUrl: matches[0] },
       { where: { id: userId } }
@@ -143,15 +143,9 @@ router.post("/grantAccess/:boardId", async (req, res, next) => {
         include: { model: User },
       });
 
-      // res.json(formatedResponse)
-      // res.status(201).json({ message: "User added to board successfully" });
       res.status(200).json(users);
     } else {
-      res
-        .status(400)
-        .json(
-          "User already in this board, you idiot — you bumbling buffoon — you peerless poopyhead."
-        );
+      res.status(400).json("User already in this board.");
     }
   } catch (err) {
     next(err);

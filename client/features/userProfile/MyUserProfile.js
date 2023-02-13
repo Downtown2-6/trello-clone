@@ -29,8 +29,11 @@ function UserProfile() {
     `,
       profilePicture
     );
-    const userId = user.id
-    dispatch(updateMyProfileImage({ userId, url:profilePicture }));
+    const userId = user.id;
+
+    axios.patch(`api/users/uploadProfilePicture/userId/${userId}`, {
+      url: profilePicture,
+    });
   };
 
   const handleSubmit = (event) => {
@@ -59,7 +62,7 @@ function UserProfile() {
     //   e.preventDefault();
     //   alert("Please don't just copy paste. \n What if you made a mistake?");
     // });
-    setProfilePicture(user.profilePicture);
+    setProfilePicture(user.imageUrl);
     setFirstName(user.firstName);
     setLastName(user.lastName);
     setEmail(user.email);
@@ -77,7 +80,7 @@ function UserProfile() {
           borderRadius: "50%",
         }}
       >
-        <img style={{ width: "100%" }} src={user.imageUrl} alt="User Image" />
+        <img style={{ width: "100%" }} src={profilePicture} />
       </div>{" "}
       <br />
       <form onSubmit={handleImageUpdate}>
@@ -85,9 +88,9 @@ function UserProfile() {
           type="text"
           placeholder="profile image url"
           value={profilePicture}
-          onChange={(event) => setProfilePicture(event.target.value)}
+          onChangeon={(event) => setProfilePicture(event.target.value)}
         />
-        <button type="submit">Send</button>
+        <button type="submit">Set As Profile Picture</button>
       </form>
       <br></br>
       <br></br>

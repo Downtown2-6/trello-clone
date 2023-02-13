@@ -334,6 +334,8 @@ const singleBoardSlice = createSlice({
         `,
         action.payload
       );
+
+      state.auth.me.imageUrl = action.payload.imageUrl;
     });
   },
 });
