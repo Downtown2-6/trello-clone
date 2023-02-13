@@ -72,6 +72,10 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('update-taskCard', updatedTaskCard);
   });
 
+  socket.on('delete-taskCard', (deletedTaskCard) => {
+    socket.broadcast.emit('delete-taskCard', deletedTaskCard);
+  });
+
   socket.on('add-comment', (comments) => {
     socket.broadcast.emit('add-comment', comments);
   });

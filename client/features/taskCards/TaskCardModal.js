@@ -12,9 +12,7 @@ import {
 import { 
   updateTaskCard, 
   addComment, 
-  deleteThisTaskCard, 
-  updateTaskCardSocket,
-  addCommentSocket } from "../singleBoard/singleBoardSlice";
+  deleteThisTaskCard } from "../singleBoard/singleBoardSlice";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -71,14 +69,6 @@ const TaskCardModal = (props) => {
 
   useEffect(() => {
     handleTaskCardUpdate();
-
-    socket.off('update-taskCard').on('update-taskCard', (updatedTaskCard) => {
-      dispatch(updateTaskCardSocket(updatedTaskCard))
-    });
-
-    socket.off('add-comment').on('add-comment', (comments) => {
-      dispatch(addCommentSocket(comments))
-    });
   }, [date]);
 
   // console.log("This is the date", date);
@@ -97,6 +87,18 @@ const TaskCardModal = (props) => {
     socket.emit('update-taskCard', updatedTaskCard.payload);
   };
 
+  const handleDeleteSingleTaskCard = async (taskCardId) => {
+    const deletedTaskCard = await dispatch(
+      deleteThisTaskCard({
+        taskCardId,
+        userId: userId,
+        boardId: boardId,
+      })
+    );
+    socket.emit('delete-taskCard', deletedTaskCard.payload);
+    // console.log(deletedTaskCard);
+  };
+
   const handleSubmitComment = async () => {
     if (comment.length) {
       const comments = await dispatch(
@@ -110,30 +112,6 @@ const TaskCardModal = (props) => {
       setComment("");
     }
   };
-
-    const handleDeleteSingleTaskCard = async (evt) => {
-      console.log(
-        `***
-    ***
-    ***
-    Logging:handleDelete
-    ***
-    ***
-    ***
-    `,
-        evt
-      );
-      const deleteTaskCard = await dispatch(
-        deleteThisTaskCard({
-          taskCardId: evt,
-          userId: userId,
-          boardId: boardId,
-        })
-      );
-      console.log(deleteTaskCard);
-    };
-
-
 
   return (
     <>
@@ -178,21 +156,11 @@ const TaskCardModal = (props) => {
             onChange={(newValue) => {
               if (newValue.$d) {
                 setDate(newValue.$d);
-              } else {
-                return console.log(`***
-                ***
-                ***
-                Logging:no
-                ***
-                ***
-                ***
-                `);
-              }
+              } 
             }}
             renderInput={(params) => <TextField {...params} />}
             size="small"
             onClose={handleTaskCardUpdate}
-            // onAccept={handleTaskCardUpdate}
           />
         </LocalizationProvider>
       </Box>

@@ -106,23 +106,21 @@ export const updateTaskCardSocket = createAsyncThunk(
 export const deleteThisTaskCard = createAsyncThunk(
   "deleteThisTaskCard",
   async ({ taskCardId, userId, boardId }) => {
-    console.log(
-      `***
-    ***
-    ***
-    Logging:This is the deleteThisTaskCard thunk
-    ***
-    ***
-    ***
-    `,
-      taskCardId,
-      userId,
-      boardId
-    );
     const { data } = await axios.delete(
       `/api/tasks/thisTask/${taskCardId}/thisUser/${userId}/thisBoard/${boardId}`
     );
     return data;
+  }
+);
+
+export const deleteTaskCardSocket = createAsyncThunk(
+  "deleteTaskCardSocket",
+  async (deletedTaskCard) => {
+    try {
+      return deletedTaskCard;
+    } catch (err) {
+      next(err);
+    };
   }
 );
 
@@ -342,6 +340,16 @@ const singleBoardSlice = createSlice({
     });
 
     builder.addCase(deleteThisTaskCard.fulfilled, (state, action) => {
+      const listIdx = state.lists.findIndex(
+        (list) => list.id === action.payload.listId
+      );
+
+      state.lists[listIdx].taskcards = state.lists[listIdx].taskcards.filter(
+        (taskcard) => taskcard.id !== action.payload.id
+      );
+    });
+
+    builder.addCase(deleteTaskCardSocket.fulfilled, (state, action) => {
       const listIdx = state.lists.findIndex(
         (list) => list.id === action.payload.listId
       );
