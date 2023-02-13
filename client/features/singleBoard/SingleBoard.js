@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import {
-  fetchSingleBoard,
-  selectSingleBoard,
-  addList,
-  updateTaskCardPosition,
-  persistList,
-  persistLists,
-  updateListPosition,
-  reorderLists,
+import { 
+  fetchSingleBoard, 
+  selectSingleBoard, 
+  addList, 
+  updateTaskCardPosition, 
+  persistList, 
+  persistLists, 
+  updateListPosition, 
+  reorderLists, 
   addListSocket,
-} from "./singleBoardSlice";
+  updateTaskCardSocket,
+  addCommentSocket,
+  deleteTaskCardSocket,
+  deleteCommentSocket } from "./singleBoardSlice";
 import SingleList from "../singleList/SingleList";
 import { DragDropContext } from "react-beautiful-dnd";
 import SingleBoardUsers from "../singleBoardUsers/singleBoardUsers";
@@ -56,37 +59,41 @@ const SingleBoard = () => {
       );
     });
 
-    socket
-      .off("drop-taskCard-sameList")
-      .on("drop-taskCard-sameList", ({ taskcards, listId }) => {
-        dispatch(
-          persistList({
-            listId,
-            taskcards,
-          })
-        );
-      });
+    socket.off('drop-taskCard-sameList').on('drop-taskCard-sameList', ({taskcards, listId}) => {
+      dispatch(persistList({
+        listId,
+        taskcards,
+      }));
+    });
 
-    socket
-      .off("drop-taskCard-differentList")
-      .on(
-        "drop-taskCard-differentList",
-        ({
-          sourceListId,
-          sourceListTaskCards,
-          destinationListId,
-          destinationListTaskCards,
-        }) => {
-          dispatch(
-            persistLists({
-              sourceListId,
-              sourceListTaskCards,
-              destinationListId,
-              destinationListTaskCards,
-            })
-          );
-        }
-      );
+    socket.off('drop-taskCard-differentList').on('drop-taskCard-differentList', ({ 
+      sourceListId, 
+      sourceListTaskCards, 
+      destinationListId, 
+      destinationListTaskCards }) => {
+      dispatch(persistLists({
+        sourceListId,
+        sourceListTaskCards,
+        destinationListId,
+        destinationListTaskCards,
+      }));
+    });
+
+    socket.off('update-taskCard').on('update-taskCard', (updatedTaskCard) => {
+      dispatch(updateTaskCardSocket(updatedTaskCard));
+    });
+
+    socket.off('delete-taskCard').on('delete-taskCard', (deletedTaskCard) => {
+      dispatch(deleteTaskCardSocket(deletedTaskCard));
+    });
+
+    socket.off('add-comment').on('add-comment', (comments) => {
+      dispatch(addCommentSocket(comments));
+    });
+
+    socket.off('delete-comment').on('delete-comment', (deletedComment) => {
+      dispatch(deleteCommentSocket(deletedComment));
+    });
   }, [dispatch]);
 
   const handleSubmitList = async (evt) => {

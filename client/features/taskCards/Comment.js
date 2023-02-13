@@ -1,16 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Typography, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch } from "react-redux";
 import { deleteComment } from "../singleBoard/singleBoardSlice";
 import { useParams } from "react-router-dom";
+import io from 'socket.io-client';
+
+const socket = io();
 
 const Comment = (props) => {
   const { taskCard } = props;
   const dispatch = useDispatch();
 
-  const removeComment = (commentId) => {
-    dispatch(deleteComment(commentId));
+  const removeComment = async (commentId) => {
+    const deletedComment = await dispatch(deleteComment(commentId));
+    socket.emit('delete-comment', deletedComment.payload);
   };
 
   return (

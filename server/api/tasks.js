@@ -112,7 +112,7 @@ router.delete(
       });
 
       if (isUserAdmin.dataValues.privilege != "ADMIN")
-        return res.status(406).res.json("lol");
+        return res.status(406).json("lol");
 
       const taskCardBeingDeleted = await TaskCard.findOne({
         where: { id: taskcardId },
