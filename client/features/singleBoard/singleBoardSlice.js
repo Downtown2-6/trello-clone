@@ -188,28 +188,6 @@ export const deleteThisList = createAsyncThunk(
   }
 );
 
-export const updateMyProfileImage = createAsyncThunk(
-  "updateMyProfileImage",
-  async ({ userId, url }) => {
-    console.log(
-      `***
-    ***
-    ***
-    Logging:We are hitting updateMyProfileImage Thunk with UserId and Url
-    ***
-    ***
-    ***
-    `,
-      userId,
-      url
-    );
-    const { data } = await axios.patch(
-      `api/users/uploadProfilePicture/userId/${userId}`,
-      {url:url}
-    );
-    return data;
-  }
-);
 
 const singleBoardSlice = createSlice({
   name: "singleBoard",
@@ -322,21 +300,6 @@ const singleBoardSlice = createSlice({
       state.lists.splice(listIdx, 1);
     });
 
-    builder.addCase(updateMyProfileImage.fulfilled, (state, action) => {
-      console.log(
-        `***
-        ***
-        ***
-        Logging:This is updateMyprofileImge.fulfilled
-        ***
-        ***
-        ***
-        `,
-        action.payload
-      );
-
-      state.auth.me.imageUrl = action.payload.imageUrl;
-    });
   },
 });
 
