@@ -26,7 +26,7 @@ const SingleList = (props) => {
   const [taskCardTitle, setTaskCardTitle] = useState("");
 
   useEffect(() => {
-    socket.off('add-taskCard').on('add-taskCard', (newTaskCard) => {
+    socket.off("add-taskCard").on("add-taskCard", (newTaskCard) => {
       dispatch(addTaskCardSocket(newTaskCard));
     });
   }, [dispatch]);
@@ -42,7 +42,7 @@ const SingleList = (props) => {
           position: numTaskCards,
         })
       );
-      socket.emit('add-taskCard', newTaskCard.payload);
+      socket.emit("add-taskCard", newTaskCard.payload);
       setTaskCardTitle("");
     }
   };
@@ -87,9 +87,9 @@ const SingleList = (props) => {
   return (
     <div className="list-container-content">
       <button
-        onClick={() => handleDeleteList(list.id)}
+          onClick={() => handleDeleteList(list.id)}
         style={{ float: "right" }}
-      >
+        >
         X
       </button>
       <h4>{list.listName}</h4>
@@ -130,7 +130,7 @@ const SingleList = (props) => {
           </button>
         </form>
       </div>
-    </div>
+    </Box>
   );
 };
 
