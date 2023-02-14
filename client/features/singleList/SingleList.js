@@ -104,61 +104,53 @@ const SingleList = (props) => {
         boxShadow: 0,
         justifyContent: "space-between",
       }}>
+        <Typography 
+        variant="h5" 
+        sx={{paddingLeft: 1, paddingRight: 1}}>
+          <EditableList
+            text={listName}
+            childRef={inputRef}
+            type="input"
+            handleListUpdate={handleListUpdate}
+          >
+            <textarea
+              className="listName editable"
+              ref={inputRef}
+              type="text"
+              name="listName"
+              value={listName}
+              onChange={(evt) => setListName(evt.target.value)}
+              onBlur={(evt) =>
+                !listName.length ? setListName(list.listName) : null
+              }
+            />
+          </EditableList>
+        </Typography>
         <Box
         sx={{
-        display: "flex",
-        flexDirection: "row",
-        paddingBottom: 1,
-        justifyContent: "space-between"
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "top"
         }}>
-          <Typography 
-          variant="h5" 
-          sx={{paddingLeft: 1, paddingRight: 1}}>
-            <EditableList
-              text={listName}
-              childRef={inputRef}
-              type="input"
-              handleListUpdate={handleListUpdate}
-            >
-              <textarea
-                className="listName editable"
-                ref={inputRef}
-                type="text"
-                name="listName"
-                value={listName}
-                onChange={(evt) => setListName(evt.target.value)}
-                onBlur={(evt) =>
-                  !listName.length ? setListName(list.listName) : null
-                }
-              />
-            </EditableList>
-          </Typography>
-          <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "top"
-          }}>
-            <IconButton
-              aria-label="delete"
-              onClick={() => handleDeleteList(list.id)}
+          <IconButton
+            aria-label="delete"
+            onClick={() => handleDeleteList(list.id)}
+            sx={{
+              fontSize: 12,
+              color: (theme) => theme.palette.grey[500],
+              float: "right",
+              "&:hover": { fontSize: 20 },
+            }}
+          >
+            <DeleteIcon
               sx={{
                 fontSize: 12,
                 color: (theme) => theme.palette.grey[500],
                 float: "right",
                 "&:hover": { fontSize: 20 },
               }}
-            >
-              <DeleteIcon
-                sx={{
-                  fontSize: 12,
-                  color: (theme) => theme.palette.grey[500],
-                  float: "right",
-                  "&:hover": { fontSize: 20 },
-                }}
-              />
-            </IconButton>
-          </Box>
+            />
+          </IconButton>
         </Box>
       </Box>
       <Droppable droppableId={listId.toString()}>
