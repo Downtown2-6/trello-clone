@@ -28,12 +28,26 @@ import {
   Input,
   Dialog,
   IconButton,
-  Button,
+  Button
 } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 const socket = io();
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#0971f1',
+      darker: '#053e85',
+    },
+    neutral: {
+      main: '#64748B',
+      contrastText: '#fff',
+    },
+  }
+})
 
 const SingleBoard = () => {
   const [listName, setListName] = useState("");
@@ -296,86 +310,98 @@ const SingleBoard = () => {
   return (
     <>
       <br />
-      <SingleBoardUsers />
-      <Button variant="outlined" onClick={() => navigate(`/calendar`)}>
-        My Calendar
-      </Button>
-      {board ? (
-        <Box className="board-container">
-          <Box
-            className="board-container-title"
-            sx={{
-              padding: 2,
-            }}
-          >
-            <Typography variant="h4">{board.boardName}</Typography>
-          </Box>
-
-          <DragDropContext onDragEnd={onDragEnd}>
-            <Box className="board-lists-container">
-              {board.lists && board.lists.length
-              ? board.lists.map((list) => (
-                <Box key={`list#${list.id}`} className="list-container">
-                  <span>
-                  {list.position > board.lists[0].position ? (
-                    <IconButton
-                      variant="outlined"
-                      onClick={() => moveList("moveLeft", list)}
-                      sx={{
-                        fontSize: "xs",
-                      }}
-                    >
-                      <ArrowBackIosIcon />
-                    </IconButton>
-                  ) : null}
-                  {list.position < board.lists[board.lists.length - 1].position ? (
-                    <IconButton
-                      variant="outlined"
-                      onClick={() => moveList("moveRight", list)}
-                    >
-                      <ArrowForwardIosIcon />
-                    </IconButton>
-                  ) : null}
-                  </span>
-                  <SingleList boardId={board.id} list={list} />
-                </Box>
-              )) : null}
-
-              {addingList ? (
-                <Box className="list-container" style={{ minWidth: '200px'}}>
-                  <Typography variant="h5">
-                    <TextField
-                    placeholder="Enter list title..."
-                    size="small"
-                    onChange={(evt) => setListName(evt.target.value)}
-                    />
-                    <Box>
-                      <Button style={{ justifyContent: 'flex-start', textTransform: 'none' }} 
-                      onClick={handleSubmitList}
-                      >
-                        Add List
-                      </Button>
-                      <Button onClick={cancelAddList}>
-                        X
-                      </Button>
-                    </Box>
-                  </Typography>
-                </Box>
-              ) : (
-                <Box className="list-container" style={{ minWidth: '200px'}}>
-                  <Button 
-                  className="add-list-button" 
-                  style={{ justifyContent: 'flex-start', textTransform: 'none' }} 
-                  onClick={() => setAddingList(true)}
-                  >
-                    + Add another list
-                  </Button>
-                </Box>
-              )}
+      <ThemeProvider theme={theme}>
+        <SingleBoardUsers />
+        <Button 
+        color='neutral' 
+        variant="contained" 
+        style={{ marginLeft: '0.25em'}}
+        onClick={() => navigate(`/calendar`)}
+        >
+          My Calendar
+        </Button>
+        {board ? (
+          <Box className="board-container">
+            <Box
+              className="board-container-title"
+              sx={{
+                padding: 2,
+              }}
+            >
+              <Typography variant="h4">{board.boardName}</Typography>
             </Box>
-          </DragDropContext>
-        </Box>
-      ) : null}
+
+            <DragDropContext onDragEnd={onDragEnd}>
+              <Box className="board-lists-container">
+                {board.lists && board.lists.length
+                ? board.lists.map((list) => (
+                  <Box 
+                  key={`list#${list.id}`} 
+                  className="list-container" 
+                  style={{ minWidth: '250px'}}>
+                    <span>
+                    {list.position > board.lists[0].position ? (
+                      <IconButton
+                        variant="outlined"
+                        onClick={() => moveList("moveLeft", list)}
+                        sx={{
+                          fontSize: "xs",
+                        }}
+                      >
+                        <ArrowBackIosIcon />
+                      </IconButton>
+                    ) : null}
+                    {list.position < board.lists[board.lists.length - 1].position ? (
+                      <IconButton
+                        variant="outlined"
+                        onClick={() => moveList("moveRight", list)}
+                      >
+                        <ArrowForwardIosIcon />
+                      </IconButton>
+                    ) : null}
+                    </span>
+                    <SingleList boardId={board.id} list={list} />
+                  </Box>
+                )) : null}
+
+                {addingList ? (
+                  <Box className="list-container" style={{ minWidth: '200px'}}>
+                    <Typography variant="h5">
+                      <TextField
+                      placeholder="Enter list title..."
+                      size="small"
+                      onChange={(evt) => setListName(evt.target.value)}
+                      />
+                      <Box>
+                        <Button style={{ justifyContent: 'flex-start', textTransform: 'none' }} 
+                        onClick={handleSubmitList}
+                        >
+                          Add List
+                        </Button>
+                        <Button onClick={cancelAddList}>
+                          X
+                        </Button>
+                      </Box>
+                    </Typography>
+                  </Box>
+                ) : (
+                  <Box 
+                  className="list-container" 
+                  style={{ minWidth: '200px'}}>
+                    <Button 
+                    className="add-list-button" 
+                    style={{ justifyContent: 'flex-start', textTransform: 'none' }} 
+                    onClick={() => setAddingList(true)}
+                    >
+                      + Add another list
+                    </Button>
+                  </Box>
+                )}
+              </Box>
+            </DragDropContext>
+          </Box>
+        ) : null}
+      </ThemeProvider>
     </>
   );
 };

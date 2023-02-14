@@ -23,6 +23,7 @@ import {
   Typography,
   Alert,
 } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
 
 const SingleBoardUsers = () => {
   const [userEmail, setUserEmail] = useState("");
@@ -55,7 +56,7 @@ const SingleBoardUsers = () => {
   const allUsersInThisBoard = useSelector((state) => state.singleBoardUsers);
   return (
     <>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button color='neutral' variant="contained" onClick={handleClickOpen}>
         Users
       </Button>
       <Dialog open={open} onClose={handleClose}>
