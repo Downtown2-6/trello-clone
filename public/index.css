@@ -58,7 +58,8 @@ nav {
 } */
 
 .listName {
-  background-color: #ced3db;
+  /* background-color: #ced3db; */
+  background-color: #f5f5f5;
   font-size: 1em;
   padding: 2px;
   border-style: hidden;

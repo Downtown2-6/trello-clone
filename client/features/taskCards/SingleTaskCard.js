@@ -48,15 +48,15 @@ const SingleTaskCard = (props) => {
             // className="taskCard-draggable"
             onClick={handleOpen}
             sx={{
-              boxShadow: 1,
+              boxShadow: 2,
               borderRadius: 1,
-              margin: 0.5,
+              marginBottom: 1,
               // minHeight: 35,
               padding: 0.5,
-              backgroundColor: "white",
+              // backgroundColor: "white",
               "&:hover": { boxShadow: 3 },
-              // bgcolor: "neutral.main", 
-              // color: "neutral.contrastText",
+              bgcolor: "neutral.main", 
+              color: "neutral.contrastText",
             }}
           >
             <Typography variant="body1">{taskCard.title}</Typography>
