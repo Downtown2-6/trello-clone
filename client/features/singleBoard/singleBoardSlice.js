@@ -36,6 +36,31 @@ export const addListSocket = createAsyncThunk(
   }
 );
 
+export const updateList = createAsyncThunk(
+  "updateList",
+  async ({ boardId, listId, listName }) => {
+    try {
+      const { data } = await axios.put(`/api/lists/${boardId}/${listId}`, {
+        listName
+      });
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
+
+export const updateListSocket = createAsyncThunk(
+  "updateListSocket",
+  async (updatedList) => {
+    try {
+      return updatedList;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
+
 export const deleteThisList = createAsyncThunk(
   "deleteThisList",
   async ({ listId, userId, boardId }) => {
@@ -261,6 +286,20 @@ const singleBoardSlice = createSlice({
 
     builder.addCase(addListSocket.fulfilled, (state, action) => {
       state.lists.push(action.payload);
+    });
+
+    builder.addCase(updateList.fulfilled, (state, action) => {
+      const listIdx = state.lists.findIndex(
+        (list) => list.id === action.payload.id
+      );
+      state.lists[listIdx] = action.payload;
+    });
+
+    builder.addCase(updateListSocket.fulfilled, (state, action) => {
+      const listIdx = state.lists.findIndex(
+        (list) => list.id === action.payload.id
+      );
+      state.lists[listIdx] = action.payload;
     });
 
     builder.addCase(addTaskCard.fulfilled, (state, action) => {

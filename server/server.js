@@ -42,6 +42,11 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('add-list', newList);
   });
 
+  socket.on('update-list', (updatedList) => {
+    socket.broadcast.emit('update-list', updatedList);
+    socket.broadcast.emit('update-list-state', updatedList);
+  });
+
   socket.on('move-list', (newList, newOtherList) => {
     socket.broadcast.emit('move-list', {newList, newOtherList});
   });

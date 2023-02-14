@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addTaskCard,
   deleteThisTaskCard,
   deleteThisList,
-  addTaskCardSocket
+  addTaskCardSocket,
+  updateList
 } from "../singleBoard/singleBoardSlice";
 import SingleTaskCard from "../taskCards/SingleTaskCard";
+import EditableList from "./EditableList";
 import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import io from "socket.io-client";
@@ -25,7 +27,9 @@ const SingleList = (props) => {
   const numTaskCards = list.taskcards ? list.taskcards.length + 1 : 1;
 
   const dispatch = useDispatch();
+  const inputRef = useRef();
 
+  const [listName, setListName] = useState(list.listName);
   const [taskCardTitle, setTaskCardTitle] = useState("");
   const [addingTaskCard, setAddingTaskCard] = useState(false);
 
@@ -34,6 +38,24 @@ const SingleList = (props) => {
       dispatch(addTaskCardSocket(newTaskCard));
     });
   }, [dispatch]);
+
+  useEffect(() => {
+    socket.off('update-list-state').on('update-list-state', 
+    (updatedList) => {
+      setListName(list.listName);
+    });
+  }, [list]);
+
+  const handleListUpdate = async () => {
+    const updatedList = await dispatch(
+      updateList({
+        boardId,
+        listId,
+        listName
+      })
+    );
+    socket.emit('update-list', updatedList.payload);
+  };
 
   const handleSubmitTaskCard = async () => {
     if (taskCardTitle.length) {
@@ -67,10 +89,7 @@ const SingleList = (props) => {
     sx={{
       display: "flex",
       flexDirection: "column",
-      paddingTop: 2, 
-      paddingBottom: 1,
-      paddingRight: 1,
-      paddingLeft: 1,
+      padding: 1,
       borderRadius: 1,
       bgcolor: "lighter.main",
       boxShadow: 1
@@ -80,43 +99,53 @@ const SingleList = (props) => {
         display: "flex",
         flexDirection: "row",
         paddingBottom: 1,
+        justifyContent: "space-between"
         
       }}>
-       
-        {/* <Input id="list-name" defaultValue={list.listName} sx={{}} />
-
-        <TextField
-        // variant="standard"
-        inputProps={{style: {fontSize: 20}}}
-        outline="none"
-          className="list-name"
-          placeholder={list.listName}
-          size="small"
-          // onChange={}
-          // onBlur={}
-        /> */}
         <Typography 
         variant="h5" 
         sx={{paddingLeft: 1, paddingRight: 1}}>
-          {list.listName}
+          <EditableList
+            text={listName}
+            childRef={inputRef}
+            type="input"
+            handleListUpdate={handleListUpdate}
+          >
+            <textarea
+              className="listName editable"
+              ref={inputRef}
+              type="text"
+              name="listName"
+              value={listName}
+              onChange={(evt) => setListName(evt.target.value)}
+              onBlur={(evt) =>
+                !listName.length ? setListName(list.listName) : null
+              }
+            />
+          </EditableList>
         </Typography>
-        <IconButton
-          aria-label="delete"
-          onClick={handleDeleteList}
-          sx={{
-            fontSize: 12,
-            color: (theme) => theme.palette.grey[500],
-            // float: 'right',
-          }}
-        >
-          <DeleteIcon
+        <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "top"
+        }}>
+          <IconButton
+            aria-label="delete"
+            onClick={handleDeleteList}
             sx={{
               fontSize: 12,
               color: (theme) => theme.palette.grey[500],
-              // float: 'right',
             }}
-          />
-        </IconButton>
+          >
+            <DeleteIcon
+              sx={{
+                fontSize: 12,
+                color: (theme) => theme.palette.grey[500],
+              }}
+            />
+          </IconButton>
+        </Box>
       </Box>
       <Droppable droppableId={listId.toString()}>
         {(provided) => (

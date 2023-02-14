@@ -57,6 +57,20 @@ nav {
   border: 1px solid green;
 } */
 
+.listName {
+  background-color: #ced3db;
+  font-size: 1em;
+  padding: 2px;
+  border-style: hidden;
+  width: 200px;
+}
+
+.listName.editable:focus {
+  padding: 2px;
+  margin: 0;
+  width: 200px;
+}
+
 .taskCard-draggable {
   min-width: 13em;
   /* border: 1px solid orange; */
@@ -80,5 +94,6 @@ nav {
   margin: 0;
   padding: 5px;
   width: 100%;
-  background-color: gainsboro;
+  resize: none;
+  overflow: hidden;
 }

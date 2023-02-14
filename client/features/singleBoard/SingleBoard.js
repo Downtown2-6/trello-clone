@@ -11,6 +11,7 @@ import {
   updateListPosition, 
   reorderLists, 
   addListSocket,
+  updateListSocket,
   deleteListSocket,
   updateTaskCardSocket,
   addCommentSocket,
@@ -50,6 +51,10 @@ const SingleBoard = () => {
 
     socket.off("add-list").on("add-list", (newList) => {
       dispatch(addListSocket(newList));
+    });
+
+    socket.off("update-list").on("update-list", (updatedList) => {
+      dispatch(updateListSocket(updatedList));
     });
 
     socket.off("move-list").on("move-list", ({ newList, newOtherList }) => {
