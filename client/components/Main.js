@@ -67,15 +67,15 @@ const roseTheme = createTheme({
       darker: '#9C2D41',
     },
     neutral: {
-      main: '#9C2D41',
+      main: '#94777C',
       contrastText: '#FAF7F4',
     },
     lighter: {
-      main: '#F6CBB7',
-      contrastText: '#FAF7F4'
+      main: '#E9DDD4',
+      contrastText: '#9C2D41'
     },
     blue: {
-      main: '#CB857C',
+      main: '#9C2D41',
       contrastText: '#FAF7F4'
     },
     eggshell: {
@@ -96,10 +96,10 @@ const sportsTheme = createTheme({
     },
     lighter: {
       main: '#FFEBB7',
-      contrastText: '#13334C'
+      contrastText: '#AD8E70'
     },
     blue: {
-      main: '#FD5F00',
+      main: '#FD7F20',
       contrastText: '#F6F6E9'
     },
     eggshell: {
@@ -123,7 +123,7 @@ const Main = () => {
   };
 
   return (
-    <ThemeProvider theme={pizzaTheme}>
+    <ThemeProvider theme={sportsTheme}>
       <Box id="main">
         <Box id="header"></Box>
         <Navbar />
