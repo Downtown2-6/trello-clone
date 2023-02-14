@@ -1,27 +1,58 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { authenticate } from '../features/auth/authSlice';
-import { Button, Stack, TextField, Paper, Grid } from "@mui/material";
-import { positions } from '@mui/system'
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { authenticate } from "../features/auth/authSlice";
+import {
+  Button,
+  Stack,
+  TextField,
+  Paper,
+  Grid,
+  Box,
+  Link,
+} from "@mui/material";
+import { positions } from "@mui/system";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { error } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogin = async (evt) => {
-    evt.preventDefault();
-    await dispatch(authenticate({email, password, method: 'login'}));
-    setEmail('');
-    setPassword('');
+    console.log("OnClick is working")
+    
+    await dispatch(authenticate({ email, password, method: "login" }));
+    setEmail("");
+    setPassword("");
   };
 
   return (
-    <Grid container spacing={2}>
-    <Grid container item xs={3} direction="row">
-      <form id="signup-form" className="form" onSubmit={handleLogin}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        float: "center",
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          float: "center",
+          width: 250,
+          padding: 2,
+          borderRadius: 1,
+          boxShadow: 1,
+          backgroundColor: "#f5f5f5",
+        }}
+      >
         <TextField
           style={{ width: "200px", margin: "5px" }}
           type="email"
@@ -38,11 +69,31 @@ const Login = () => {
           variant="outlined"
           onChange={(evt) => setPassword(evt.target.value)}
         />
-        <button type="submit" position="absolute" right="0">Log In</button>
+        <Button
+          variant="outlined"
+          onClick={handleLogin}
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            alignSelf: "right",
+          }}
+        >
+          Log In
+        </Button>
         {error && <div> {error} </div>}
-      </form>
-    </Grid>
-  </Grid>
+      </Box>
+
+      <Link
+        component="button"
+        variant="body2"
+        onClick={() => {
+          navigate(`/signup`);
+        }}
+        sx={{ fontSize: 12, padding: 1 }}
+      >
+        Don't have an account? Sign Up
+      </Link>
+    </Box>
   );
 };
 
