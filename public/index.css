@@ -66,17 +66,19 @@ nav {
   font-weight: bold;
   background-color: gainsboro;
   font-size: 1.5em;
+  padding: 5px;
   border-style: hidden;
 }
 
 .taskCard-modal-description {
   font-size: 1em;
+  padding: 5px;
   border-style: hidden;
 }
 
 .editable:focus {
   margin: 0;
-  padding: 0;
+  padding: 5px;
   width: 100%;
   background-color: gainsboro;
 }

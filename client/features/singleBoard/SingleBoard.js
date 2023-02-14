@@ -356,6 +356,7 @@ const SingleBoard = () => {
                     placeholder="Enter list title..."
                     size="small"
                     color="neutral"
+                    inputProps={{ style: { fontSize: 14 }}}
                     onChange={(evt) => setListName(evt.target.value)}
                     />
                     <Box>

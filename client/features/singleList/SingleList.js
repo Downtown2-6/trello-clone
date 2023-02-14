@@ -68,6 +68,7 @@ const SingleList = (props) => {
       display: "flex",
       flexDirection: "column",
       paddingTop: 2, 
+      paddingBottom: 1,
       paddingRight: 1,
       paddingLeft: 1,
       borderRadius: 1,
@@ -148,9 +149,11 @@ const SingleList = (props) => {
           placeholder="Enter a title for this card..."
           size="small"
           multiline
+          fullWidth
+          inputProps={{ style: { fontSize: 14 }}}
           onChange={(evt) => setTaskCardTitle(evt.target.value)}
           />
-          <Box>
+          <Box sx={{ marginTop: 0.5 }}>
             <Button 
             color="neutral"
             variant="contained"
