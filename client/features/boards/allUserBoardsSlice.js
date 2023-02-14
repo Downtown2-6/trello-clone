@@ -16,10 +16,7 @@ export const createUserBoard = createAsyncThunk(
   async (parameter) => {
     try {
       console.log("this is userboard in the add thunk", parameter);
-      const response = await axios.post(
-        "http://localhost:3000/api/boards",
-        parameter
-      );
+      const response = await axios.post("/api/boards", parameter);
       console.log("This is the Data at the CreateUserBoard", response.data);
       return response.data;
     } catch (error) {
@@ -39,7 +36,7 @@ export const allUserBoardsSlice = createSlice({
     builder.addCase(createUserBoard.fulfilled, (state, action) => {
       // have board and inside of it is a board. So we were calling board.board. However, when we pushed this, we were just pushing board.
       // So, to fix this, we are pushing into the state {board:action.payload}
-      state.push({board:action.payload});
+      state.push({ board: action.payload });
     });
   },
 });
