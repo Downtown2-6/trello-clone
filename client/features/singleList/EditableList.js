@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const EditableTaskCard = ({childRef, handleTaskCardUpdate, text, type, children, ...props}) => {
+const EditableList = ({childRef, handleListUpdate, text, type, children, ...props}) => {
   const [isEditing, setEditing] = useState(false);
 
   useEffect(() => {
@@ -20,13 +20,13 @@ const EditableTaskCard = ({childRef, handleTaskCardUpdate, text, type, children,
       (type !== 'textarea' && allKeys.indexOf(key) > -1 && text.length)
     ) {
       setEditing(false);
-      handleTaskCardUpdate();
+      handleListUpdate();
     }
   };
 
   const handleBlur = () => {
     text.length ? setEditing(false) : null;
-    handleTaskCardUpdate();
+    handleListUpdate();
   }
 
   return (
@@ -40,7 +40,7 @@ const EditableTaskCard = ({childRef, handleTaskCardUpdate, text, type, children,
         </div>
       ) : (
         <div 
-          className={type === 'input' ? 'taskCard-modal-title' : 'taskCard-modal-description'}
+          className="listName"
           onClick={() => setEditing(true)}
         >
           {text}
@@ -50,4 +50,4 @@ const EditableTaskCard = ({childRef, handleTaskCardUpdate, text, type, children,
   );
 };
 
-export default EditableTaskCard;
+export default EditableList;

@@ -11,6 +11,7 @@ import {
   updateListPosition,
   reorderLists,
   addListSocket,
+  updateListSocket,
   deleteListSocket,
   updateTaskCardSocket,
   addCommentSocket,
@@ -29,7 +30,7 @@ import {
   Input,
   Dialog,
   IconButton,
-  Button,
+  Button
 } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -51,6 +52,10 @@ const SingleBoard = () => {
 
     socket.off("add-list").on("add-list", (newList) => {
       dispatch(addListSocket(newList));
+    });
+
+    socket.off("update-list").on("update-list", (updatedList) => {
+      dispatch(updateListSocket(updatedList));
     });
 
     socket.off("move-list").on("move-list", ({ newList, newOtherList }) => {
@@ -306,7 +311,12 @@ const SingleBoard = () => {
     <>
       <br />
       <SingleBoardUsers />
-      <Button variant="outlined" onClick={() => navigate(`/calendar`)}>
+      <Button 
+      color='neutral' 
+      variant="contained" 
+      style={{ marginLeft: '0.25em'}}
+      onClick={() => navigate(`/calendar`)}
+      >
         My Calendar
       </Button>
       {board ? (
@@ -324,7 +334,10 @@ const SingleBoard = () => {
             <Box className="board-lists-container">
               {board.lists && board.lists.length
               ? board.lists.map((list) => (
-                <Box key={`list#${list.id}`} className="list-container">
+                <Box 
+                key={`list#${list.id}`} 
+                className="list-container" 
+                style={{ minWidth: '250px'}}>
                   <span>
                   {list.position > board.lists[0].position ? (
                     <IconButton
@@ -351,29 +364,40 @@ const SingleBoard = () => {
               )) : null}
 
               {addingList ? (
-                <Box className="list-container">
+                <Box className="list-container" style={{ minWidth: '200px'}}>
                   <Typography variant="h5">
                     <TextField
-                    className="list-title"
-                    placeholder="Add another list"
+                    placeholder="Enter list title..."
                     size="small"
-                    multiline
+                    color="neutral"
+                    inputProps={{ style: { fontSize: 14 }}}
                     onChange={(evt) => setListName(evt.target.value)}
                     />
                     <Box>
-                      <Button onClick={handleSubmitList}>
+                      <Button 
+                      color="neutral"
+                      variant="contained"
+                      style={{ justifyContent: 'flex-start', textTransform: 'none' }} 
+                      onClick={handleSubmitList}
+                      >
                         Add List
                       </Button>
-                      <Button onClick={cancelAddList}>
+                      <Button color="neutral" onClick={cancelAddList}>
                         X
                       </Button>
                     </Box>
                   </Typography>
                 </Box>
               ) : (
-                <Box className="list-container">
+                <Box 
+                className="list-container" 
+                style={{ minWidth: '200px'}}>
                   <Button 
                   className="add-list-button" 
+                  color="neutral"
+                  variant="contained"
+                  fullWidth
+                  style={{ justifyContent: 'flex-start', textTransform: 'none' }} 
                   onClick={() => setAddingList(true)}
                   >
                     + Add another list
