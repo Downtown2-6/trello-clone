@@ -34,7 +34,7 @@ const SingleList = (props) => {
   const [addingTaskCard, setAddingTaskCard] = useState(false);
 
   useEffect(() => {
-    socket.off('add-taskCard').on('add-taskCard', (newTaskCard) => {
+    socket.off("add-taskCard").on("add-taskCard", (newTaskCard) => {
       dispatch(addTaskCardSocket(newTaskCard));
     });
   }, [dispatch]);
@@ -84,17 +84,27 @@ const SingleList = (props) => {
   };
 
   return (
-    <Box 
-    className="list-container-content"
-    sx={{
-      display: "flex",
-      flexDirection: "column",
-      padding: 1,
-      borderRadius: 1,
-      bgcolor: "lighter.main",
-      boxShadow: 1
-    }}>
+    <Box
+      className="list-container-content"
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        padding: 2,
+        borderRadius: 1,
+        boxShadow: 1,
+        backgroundColor: "#f5f5f5",
+        // bgcolor: "lighter.main",
+      }}
+    >
       <Box
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        paddingBottom: 1,
+        boxShadow: 0,
+        justifyContent: "space-between",
+      }}>
+       <Box
       sx={{
         display: "flex",
         flexDirection: "row",
@@ -132,16 +142,20 @@ const SingleList = (props) => {
         }}>
           <IconButton
             aria-label="delete"
-            onClick={handleDeleteList}
+            onClick={() => handleDeleteList(list.id)}
             sx={{
               fontSize: 12,
               color: (theme) => theme.palette.grey[500],
+              float: "right",
+              "&:hover": { fontSize: 20 },
             }}
           >
             <DeleteIcon
               sx={{
                 fontSize: 12,
                 color: (theme) => theme.palette.grey[500],
+                float: "right",
+                "&:hover": { fontSize: 20 },
               }}
             />
           </IconButton>
