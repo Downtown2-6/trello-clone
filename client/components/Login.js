@@ -72,7 +72,7 @@ const Login = () => {
         >
           Log In
         </Button>
-        {/* {error && <div> {error} </div>} */}
+        {error && <div> {error} </div>}
         {/* </form> */}
         {/* </Grid>
   </Grid> */}
