@@ -1,8 +1,17 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { authenticate } from "../features/auth/authSlice";
-import { Button, Stack, TextField, Paper, Grid, Box } from "@mui/material";
+import {
+  Button,
+  Stack,
+  TextField,
+  Paper,
+  Grid,
+  Box,
+  Link,
+} from "@mui/material";
 import { positions } from "@mui/system";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -10,9 +19,11 @@ const Login = () => {
   const { error } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogin = async (evt) => {
-    evt.preventDefault();
+    console.log("OnClick is working")
+    
     await dispatch(authenticate({ email, password, method: "login" }));
     setEmail("");
     setPassword("");
@@ -42,9 +53,6 @@ const Login = () => {
           backgroundColor: "#f5f5f5",
         }}
       >
-        {/* <Grid container spacing={2}>
-    <Grid container item xs={3} direction="row"> */}
-        {/* <form id="signup-form" className="form" onSubmit={handleLogin}> */}
         <TextField
           style={{ width: "200px", margin: "5px" }}
           type="email"
@@ -63,7 +71,7 @@ const Login = () => {
         />
         <Button
           variant="outlined"
-          onClick={() => handleLogin}
+          onClick={handleLogin}
           sx={{
             display: "flex",
             flexDirection: "row",
@@ -73,30 +81,19 @@ const Login = () => {
           Log In
         </Button>
         {error && <div> {error} </div>}
-        {/* </form> */}
-        {/* </Grid>
-  </Grid> */}
       </Box>
+
+      <Link
+        component="button"
+        variant="body2"
+        onClick={() => {
+          navigate(`/signup`);
+        }}
+        sx={{ fontSize: 12, padding: 1 }}
+      >
+        Don't have an account? Sign Up
+      </Link>
     </Box>
-    // <form id='login-form' className='form' onSubmit={handleLogin}>
-    //   <label htmlFor='email'>Email:</label>
-    //   <input
-    //     name='email'
-    //     value={email}
-    //     onChange={(evt) => setEmail(evt.target.value)}
-    //   />
-
-    //   <label htmlFor='password'>Password:</label>
-    //   <input
-    //     type='password'
-    //     name='password'
-    //     value={password}
-    //     onChange={(evt) => setPassword(evt.target.value)}
-    //   />
-
-    //   <button type='submit'>Log In</button>
-    //   {error && <div> {error} </div>}
-    // </form>
   );
 };
 
