@@ -92,8 +92,8 @@ const SingleList = (props) => {
         padding: 2,
         borderRadius: 1,
         boxShadow: 1,
-        backgroundColor: "#f5f5f5",
-        // bgcolor: "lighter.main",
+        // backgroundColor: "#f5f5f5",
+        bgcolor: "lighter.main",
       }}
     >
       <Box

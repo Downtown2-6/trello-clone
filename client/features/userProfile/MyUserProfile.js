@@ -80,7 +80,7 @@ function UserProfile() {
           borderRadius: "50%",
         }}
       >
-        <img style={{ width: "100%" }} src={profilePicture} />
+        <img style={{ width: "100%", height: "100%" }} src={profilePicture} />
       </div>{" "}
       <br />
       <form onSubmit={handleImageUpdate}>
@@ -88,7 +88,7 @@ function UserProfile() {
           type="text"
           placeholder="profile image url"
           value={profilePicture}
-          onChangeon={(event) => setProfilePicture(event.target.value)}
+          onChange={(event) => setProfilePicture(event.target.value)}
         />
         <button type="submit">Set As Profile Picture</button>
       </form>

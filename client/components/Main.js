@@ -1,5 +1,3 @@
-/*eslint-disable no-unused-vars */
-
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Routes, Route, useNavigate } from "react-router-dom";
@@ -36,7 +34,79 @@ const theme = createTheme({
       main: '#fffcf2',
     }
   }
-})
+});
+
+const pizzaTheme = createTheme({
+  palette: {
+    primary: {
+      main: '#F7AD45',
+      darker: '#BB3E00',
+    },
+    neutral: {
+      main: '#5F8D37',
+      contrastText: '#FFF1D7',
+    },
+    lighter: {
+      main: '#F7AD45',
+      contrastText: '#FFF1D7'
+    },
+    blue: {
+      main: '#BB3E00',
+      contrastText: '#FFF1D7'
+    },
+    eggshell: {
+      main: '#FFF1D7',
+    }
+  }
+});
+
+const roseTheme = createTheme({
+  palette: {
+    primary: {
+      main: '#CB857C',
+      darker: '#9C2D41',
+    },
+    neutral: {
+      main: '#9C2D41',
+      contrastText: '#FAF7F4',
+    },
+    lighter: {
+      main: '#F6CBB7',
+      contrastText: '#FAF7F4'
+    },
+    blue: {
+      main: '#CB857C',
+      contrastText: '#FAF7F4'
+    },
+    eggshell: {
+      main: '#FAF7F4',
+    }
+  }
+});
+
+const sportsTheme = createTheme({
+  palette: {
+    primary: {
+      main: '#005792',
+      darker: '#13334C',
+    },
+    neutral: {
+      main: '#13334C',
+      contrastText: '#F6F6E9',
+    },
+    lighter: {
+      main: '#FFEBB7',
+      contrastText: '#13334C'
+    },
+    blue: {
+      main: '#FD5F00',
+      contrastText: '#F6F6E9'
+    },
+    eggshell: {
+      main: '#F6F6E9',
+    }
+  }
+});
 
 const Main = () => {
   const isLoggedIn = useSelector((state) => !!state.auth.me.id); // !! lets you convert a non-Boolean value to Boolean
@@ -53,7 +123,7 @@ const Main = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={pizzaTheme}>
       <Box id="main">
         <Box id="header"></Box>
         <Navbar />
