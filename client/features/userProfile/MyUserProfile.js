@@ -80,7 +80,7 @@ function UserProfile() {
           borderRadius: "50%",
         }}
       >
-        <img style={{ width: "100%" }} src={profilePicture} />
+        <img style={{ width: "100%", height: "100%" }} src={profilePicture} />
       </div>{" "}
       <br />
       <form onSubmit={handleImageUpdate}>
