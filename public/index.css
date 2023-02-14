@@ -62,13 +62,11 @@ nav {
   font-size: 1em;
   padding: 2px;
   border-style: hidden;
-  width: 200px;
 }
 
 .listName.editable:focus {
   padding: 2px;
   margin: 0;
-  width: 200px;
 }
 
 .taskCard-draggable {
