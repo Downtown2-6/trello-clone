@@ -74,6 +74,48 @@ router.put("/changeUser/:userId", async (req, res, next) => {
   }
 });
 
+// PATCH // api/users/uploadProfilePicture/userId/:userId
+router.patch("/uploadProfilePicture/userId/:userId", async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const { url } = req.body;
+    console.log(
+      `***
+    ***
+    ***
+    Logging:in the api
+    ***
+    ***
+    ***
+    `,
+      userId,
+      url
+    );
+    if (!userId || !url)
+      return res
+        .status(422)
+        .json(
+          "Unprocessable Entity; you need to give both an userId and an url"
+        );
+    const regex = /(https?:\/\/(www\.)?)?.*\.(jpg|png)/;
+    const matches = url.match(regex);
+    if (!matches)
+      return res
+        .status(422)
+        .json(
+          "Unprocessable Entity; you need to enter an url leading to a .png or .jpg"
+        );
+    const theUser = await User.findOne({ where: { id: userId } });
+    const updatedUser = await User.update(
+      { imageUrl: matches[0] },
+      { where: { id: userId } }
+    );
+    res.status(201).json(theUser);
+  } catch (err) {
+    next(err);
+  }
+});
+
 // POST /api/users/grantAccess/:boardId
 // This creates a user/board association
 // Generally want to user /grantAccess/boards/:boardId
@@ -95,21 +137,15 @@ router.post("/grantAccess/:boardId", async (req, res, next) => {
 
     if (!boards.length) {
       const userBoard = await UserBoard.create({ boardId, userId, privilege });
-      
+
       const users = await UserBoard.findAll({
         where: { boardId },
         include: { model: User },
       });
 
-      // res.json(formatedResponse)
-      // res.status(201).json({ message: "User added to board successfully" });
       res.status(200).json(users);
     } else {
-      res
-        .status(400)
-        .json(
-          "User already in this board, you idiot — you bumbling buffoon — you peerless poopyhead."
-        );
+      res.status(400).json("User already in this board.");
     }
   } catch (err) {
     next(err);

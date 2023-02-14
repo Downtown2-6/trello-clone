@@ -8,6 +8,7 @@ import {
   Typography,
   Input,
   Dialog,
+  IconButton
 } from "@mui/material";
 import { 
   updateTaskCard, 
@@ -21,6 +22,7 @@ import EditableTaskCard from "./EditableTaskCard";
 import Comment from "./Comment";
 import moment from "moment";
 import io from 'socket.io-client';
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const socket = io();
 
@@ -118,14 +120,24 @@ const TaskCardModal = (props) => {
   };
 
   return (
-    <>
-      <Box sx={{ marginBottom: "1em" }}>
-        <button
+    <Box
+    sx={{ 
+      padding: 1.25,
+       display: "flex",
+       flexDirection: "column",
+       }}>
+      <Box sx={{ marginBottom: "1em",
+       display: "flex",
+       flexDirection: "column",
+       }}
+      >
+        {/* <button
           style={{ float: "right" }}
           onClick={() => handleDeleteSingleTaskCard(taskCard.id)}
         >
           X
-        </button>
+        </button> */}
+
         <Typography variant="h5">
           <EditableTaskCard
             text={title}
@@ -219,8 +231,35 @@ const TaskCardModal = (props) => {
           onBlur={handleSubmitComment}
         />
         <Comment taskCard={taskCard} />
+    
       </Box>
-    </>
+      <IconButton
+          aria-label="delete"
+          oonClick={() => handleDeleteSingleTaskCard(taskCard.id)}
+          sx={{
+            fontSize: 12,
+            color: (theme) => theme.palette.grey[500],
+            float: "right",
+            "&:hover": { fontSize: 20 },
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "end",
+            justifyContent: "right",
+          }}
+        >
+          <DeleteIcon
+            sx={{
+              fontSize: 14,
+              color: (theme) => theme.palette.grey[500],
+              display: "flex",
+                flexDirection: "row",
+                alignItems: "end",
+                justifyContent: "right",
+              "&:hover": { fontSize: 20 },
+            }}
+          />
+        </IconButton>
+    </Box>
   );
 };
 
