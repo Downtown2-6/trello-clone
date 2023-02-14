@@ -11,6 +11,28 @@ import SingleBoard from "../features/singleBoard/SingleBoard";
 import Navbar from "../features/navBar/NavBar";
 import { MyCalendar } from "../features/calendar/Calendar";
 import MyUserProfile from "../features/userProfile/MyUserProfile";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#0971f1',
+      darker: '#053e85',
+    },
+    neutral: {
+      main: '#64748B',
+      contrastText: '#fff',
+    },
+    lighter: {
+      main: '#ced3db',
+      contrastText: '#fff'
+    },
+    blue: {
+      main: '#004e89',
+      contrastText: '#fff'
+    }
+  }
+})
 
 const Main = () => {
   const isLoggedIn = useSelector((state) => !!state.auth.me.id); // !! lets you convert a non-Boolean value to Boolean
@@ -27,6 +49,7 @@ const Main = () => {
   };
 
   return (
+    <ThemeProvider theme={theme}>
     <div id="main">
       <div id="header"></div>
       <Navbar />
@@ -50,6 +73,7 @@ const Main = () => {
         )}
       </div>
     </div>
+    </ThemeProvider>
   );
 };
 

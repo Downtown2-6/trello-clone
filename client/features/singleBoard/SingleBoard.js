@@ -36,22 +36,25 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 const socket = io();
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#0971f1',
-      darker: '#053e85',
-    },
-    neutral: {
-      main: '#64748B',
-      contrastText: '#fff',
-    },
-    lighter: {
-      main: '#ced3db',
-      contrastText: '#fff'
-    }
-  }
-})
+// const theme = createTheme({
+//   palette: {
+//     primary: {
+//       main: '#0971f1',
+//       darker: '#053e85',
+//     },
+//     neutral: {
+//       main: '#64748B',
+//       contrastText: '#fff',
+//     },
+//     lighter: {
+//       main: '#ced3db',
+//       contrastText: '#fff'
+//     },
+//     autumn: {
+//       main: '#ca5310'
+//     }
+//   }
+// })
 
 const SingleBoard = () => {
   const [listName, setListName] = useState("");
@@ -314,7 +317,7 @@ const SingleBoard = () => {
   return (
     <>
       <br />
-      <ThemeProvider theme={theme}>
+      {/* <ThemeProvider theme={theme}> */}
         <SingleBoardUsers />
         <Button 
         color='neutral' 
@@ -412,7 +415,7 @@ const SingleBoard = () => {
             </DragDropContext>
           </Box>
         ) : null}
-      </ThemeProvider>
+      {/* </ThemeProvider> */}
     </>
   );
 };
