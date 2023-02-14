@@ -161,7 +161,6 @@ router.put(
       const theIssuer = await UserBoard.findOne({
         where: { boardId, userId: issuer },
       });
-      console.log("Is the issuer an ADMIN?", theIssuer.privilege === "ADMIN");
       if (theIssuer.privilege != "ADMIN") {
         return res
           .status(401)
