@@ -61,6 +61,7 @@ const CreateBoardFormMUI = (props) => {
             To create a new board, enter the board name here.
           </DialogContentText>
           <TextField
+          required
             autoFocus
             margin="dense"
             id="name"
