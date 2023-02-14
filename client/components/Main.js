@@ -24,7 +24,7 @@ const theme = createTheme({
     },
     lighter: {
       main: '#ced3db',
-      contrastText: '#fff'
+      contrastText: '#64748B'
     },
     blue: {
       main: '#004e89',
@@ -123,7 +123,7 @@ const Main = () => {
   };
 
   return (
-    <ThemeProvider theme={sportsTheme}>
+    <ThemeProvider theme={theme}>
       <Box id="main">
         <Box id="header"></Box>
         <Navbar />
