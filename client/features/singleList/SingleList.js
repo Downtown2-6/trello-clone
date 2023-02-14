@@ -59,40 +59,8 @@ const SingleList = (props) => {
   };
 
   const handleDeleteList = async (evt) => {
-    console.log(
-      `***
-    ***
-    ***
-    Logging:handleDeleteList
-    ***
-    ***
-    ***
-    `,
-      evt
-    );
-    await dispatch(deleteThisList({ listId, userId, boardId }));
-  };
-
-  const handleDeleteSingleTaskCard = async (evt) => {
-    console.log(
-      `***
-    ***
-    ***
-    Logging:handleDelete
-    ***
-    ***
-    ***
-    `,
-      evt
-    );
-    const deleteTaskCard = await dispatch(
-      deleteThisTaskCard({
-        taskCardId: evt,
-        userId: userId,
-        boardId: boardId,
-      })
-    );
-    console.log(deleteTaskCard);
+    const deletedList = await dispatch(deleteThisList({ listId, userId, boardId }));
+    socket.emit('delete-list', deletedList.payload);
   };
 
   return (

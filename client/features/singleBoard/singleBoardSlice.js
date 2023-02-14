@@ -26,7 +26,7 @@ export const addList = createAsyncThunk("addList", async (listValues) => {
 });
 
 export const addListSocket = createAsyncThunk(
-  'addListSocket',
+  "addListSocket",
   async (newList) => {
     try {
       return newList;
@@ -50,6 +50,17 @@ export const deleteThisList = createAsyncThunk(
   }
 );
 
+export const deleteListSocket = createAsyncThunk(
+  "deleteListSocket",
+  async (deletedList) => {
+    try {
+      return deletedList;
+    } catch (err) {
+      console.log(err);
+    };
+  }
+);
+
 export const addTaskCard = createAsyncThunk(
   "addTaskCard",
   async (taskCardValues) => {
@@ -66,7 +77,7 @@ export const addTaskCard = createAsyncThunk(
 );
 
 export const addTaskCardSocket = createAsyncThunk(
-  'addTaskCardSocket',
+  "addTaskCardSocket",
   async (newTaskCard) => {
     try {
       return newTaskCard;
@@ -191,7 +202,7 @@ export const addCommentSocket = createAsyncThunk(
 );
 
 export const deleteComment = createAsyncThunk(
-  'deleteComment',
+  "deleteComment",
   async (commentId) => {
     try {
       const { data } = await axios.delete(`/api/comments/${commentId}`);
@@ -213,7 +224,6 @@ export const deleteCommentSocket = createAsyncThunk(
     };
   }
 );
-
 export const updateListPosition = createAsyncThunk(
   "updateListPosition",
   async ({ boardId, list }) => {
@@ -235,16 +245,6 @@ export const reorderLists = createAsyncThunk(
     return { list, otherList };
   }
 );
-
-// export const deleteThisList = createAsyncThunk(
-//   "deleteThisList",
-//   async ({ listId, userId, boardId }) => {
-//     const { data } = await axios.delete(
-//       `/api/lists/thisList/${listId}/userRequesting/${userId}/boardId/${boardId}`
-//     );
-//     return data;
-//   }
-// );
 
 const singleBoardSlice = createSlice({
   name: "singleBoard",
@@ -353,8 +353,10 @@ const singleBoardSlice = createSlice({
     });
 
     builder.addCase(reorderLists.fulfilled, (state, action) => {
-      state.lists[action.payload.list.position] = action.payload.list;
-      state.lists[action.payload.otherList.position] = action.payload.otherList;
+      const listIdx = state.lists.findIndex((list) => list.id === action.payload.list.id);
+      const otherListIdx = state.lists.findIndex((list) => list.id === action.payload.otherList.id);
+      state.lists[listIdx] = action.payload.otherList;
+      state.lists[otherListIdx] = action.payload.list;
     });
 
     builder.addCase(deleteThisTaskCard.fulfilled, (state, action) => {
@@ -378,9 +380,11 @@ const singleBoardSlice = createSlice({
     });
 
     builder.addCase(deleteThisList.fulfilled, (state, action) => {
-      console.log("this is action.payload in deleteThisList builder", action.payload)
-      const listIdx = state.lists.findIndex((list) => list.id === action.payload.id);
-      state.lists.splice(listIdx, 1);
+      state.lists = state.lists.filter((list) => list.id !== action.payload.id);
+    });
+
+    builder.addCase(deleteListSocket.fulfilled, (state, action) => {
+      state.lists = state.lists.filter((list) => list.id !== action.payload.id);
     });
   },
 });

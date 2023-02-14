@@ -11,6 +11,7 @@ import {
   updateListPosition,
   reorderLists,
   addListSocket,
+  deleteListSocket,
   updateTaskCardSocket,
   addCommentSocket,
   deleteTaskCardSocket,
@@ -37,6 +38,7 @@ const socket = io();
 
 const SingleBoard = () => {
   const [listName, setListName] = useState("");
+  const [addingList, setAddingList] = useState(false);
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -60,16 +62,16 @@ const SingleBoard = () => {
       );
     });
 
-    socket
-      .off("drop-taskCard-sameList")
-      .on("drop-taskCard-sameList", ({ taskcards, listId }) => {
-        dispatch(
-          persistList({
-            listId,
-            taskcards,
-          })
-        );
-      });
+    socket.off('delete-list').on('delete-list', (deletedList) => {
+      dispatch(deleteListSocket(deletedList));
+    });
+
+    socket.off('drop-taskCard-sameList').on('drop-taskCard-sameList', ({taskcards, listId}) => {
+      dispatch(persistList({
+        listId,
+        taskcards,
+      }));
+    });
 
     socket
       .off("drop-taskCard-differentList")
@@ -109,9 +111,8 @@ const SingleBoard = () => {
     });
   }, [dispatch]);
 
-  const handleSubmitList = async (evt) => {
-    evt.preventDefault();
-    const position = board.lists.length ? board.lists.length : 0;
+  const handleSubmitList = async () => {
+    const position = board.lists.length ? board.lists[board.lists.length-1].position + 1 : 0;
     if (listName.length) {
       const newList = await dispatch(
         addList({
@@ -121,14 +122,22 @@ const SingleBoard = () => {
         })
       );
       socket.emit("add-list", newList.payload);
+      setAddingList(false);
       setListName("");
     }
   };
 
+  const cancelAddList = () => {
+    setAddingList(false);
+    setListName("");
+  };
+
   const moveList = async (btnValue, list) => {
+    const listIdx = board.lists.findIndex((boardlist) => boardlist.id === list.id);
     const newPosition =
-      btnValue === "moveRight" ? list.position + 1 : list.position - 1;
-    const otherList = board.lists.find((list) => list.position === newPosition);
+      btnValue === "moveRight" ? Number(list.position + 1) : Number(list.position - 1);
+    const otherList = 
+      btnValue === "moveRight" ? board.lists[listIdx+1] : board.lists[listIdx-1];
     const newOtherList = { ...otherList, position: list.position };
     const newList = { ...list, position: newPosition };
 
@@ -312,53 +321,66 @@ const SingleBoard = () => {
           </Box>
 
           <DragDropContext onDragEnd={onDragEnd}>
-            <div className="board-lists-container">
+            <Box className="board-lists-container">
               {board.lists && board.lists.length
-                ? board.lists.map((list) => (
-                    <div key={`list#${list.id}`} className="list-container">
-                      <span>
-                        {list.position > 0 ? (
-                          <IconButton
-                            variant="outlined"
-                            onClick={() => moveList("moveLeft", list)}
-                          >
-                            <ArrowBackIosIcon
-                              sx={{
-                                fontSize: 12,
-                              }}
-                            />
-                          </IconButton>
-                        ) : null}
-                        {list.position < board.lists.length - 1 ? (
-                          <IconButton
-                            variant="outlined"
-                            onClick={() => moveList("moveRight", list)}
-                          >
-                            <ArrowForwardIosIcon
-                              sx={{
-                                fontSize: 12,
-                              }}
-                            />
-                          </IconButton>
-                        ) : null}
-                      </span>
-                      <SingleList boardId={board.id} list={list} />
-                    </div>
-                  ))
-                : null}
-              <Box className="list-container">
-                <Typography variant="h5">
-                  <TextField
+              ? board.lists.map((list) => (
+                <Box key={`list#${list.id}`} className="list-container">
+                  <span>
+                  {list.position > board.lists[0].position ? (
+                    <IconButton
+                      variant="outlined"
+                      onClick={() => moveList("moveLeft", list)}
+                      sx={{
+                        fontSize: "xs",
+                      }}
+                    >
+                      <ArrowBackIosIcon />
+                    </IconButton>
+                  ) : null}
+                  {list.position < board.lists[board.lists.length - 1].position ? (
+                    <IconButton
+                      variant="outlined"
+                      onClick={() => moveList("moveRight", list)}
+                    >
+                      <ArrowForwardIosIcon />
+                    </IconButton>
+                  ) : null}
+                  </span>
+                  <SingleList boardId={board.id} list={list} />
+                </Box>
+              )) : null}
+
+              {addingList ? (
+                <Box className="list-container">
+                  <Typography variant="h5">
+                    <TextField
                     className="list-title"
                     placeholder="Add another list"
                     size="small"
-                    // fullWidth
+                    multiline
                     onChange={(evt) => setListName(evt.target.value)}
-                    onBlur={handleSubmitList}
-                  />
-                </Typography>
-              </Box>
-            </div>
+                    />
+                    <Box>
+                      <Button onClick={handleSubmitList}>
+                        Add List
+                      </Button>
+                      <Button onClick={cancelAddList}>
+                        X
+                      </Button>
+                    </Box>
+                  </Typography>
+                </Box>
+              ) : (
+                <Box className="list-container">
+                  <Button 
+                  className="add-list-button" 
+                  onClick={() => setAddingList(true)}
+                  >
+                    + Add another list
+                  </Button>
+                </Box>
+              )}
+            </Box>
           </DragDropContext>
         </Box>
       ) : null}
