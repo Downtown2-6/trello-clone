@@ -4,13 +4,22 @@ import {
   addTaskCard,
   deleteThisTaskCard,
   deleteThisList,
-  addTaskCardSocket
+  addTaskCardSocket,
 } from "../singleBoard/singleBoardSlice";
 import SingleTaskCard from "../taskCards/SingleTaskCard";
 import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import io from "socket.io-client";
-import { Box, Typography, IconButton, TextField, FormControl, Input, InputLabel } from "@mui/material";
+import {
+  Box,
+  Typography,
+  IconButton,
+  TextField,
+  FormControl,
+  Input,
+  InputLabel,
+  Button,
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 const socket = io();
@@ -28,7 +37,7 @@ const SingleList = (props) => {
   const [taskCardTitle, setTaskCardTitle] = useState("");
 
   useEffect(() => {
-    socket.off('add-taskCard').on('add-taskCard', (newTaskCard) => {
+    socket.off("add-taskCard").on("add-taskCard", (newTaskCard) => {
       dispatch(addTaskCardSocket(newTaskCard));
     });
   }, [dispatch]);
@@ -44,7 +53,7 @@ const SingleList = (props) => {
           position: numTaskCards,
         })
       );
-      socket.emit('add-taskCard', newTaskCard.payload);
+      socket.emit("add-taskCard", newTaskCard.payload);
       setTaskCardTitle("");
     }
   };
@@ -55,49 +64,55 @@ const SingleList = (props) => {
   };
 
   return (
-    <Box className="list-container-content"
-    sx={{
-      display: "flex",
-      flexDirection: "column",
-      padding: 2, 
-      borderRadius: 1,
-     
-    }}>
-      <Box
+    <Box
+      className="list-container-content"
       sx={{
         display: "flex",
-        flexDirection: "row",
-        paddingBottom: 1,
-       
-      }}>
-       
+        flexDirection: "column",
+        padding: 2,
+        borderRadius: 1,
+        boxShadow: 1,
+        backgroundColor: "#f5f5f5",
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          paddingBottom: 1,
+          boxShadow: 0,
+          justifyContent: "space-between",
+        }}
+      >
         {/* <Input id="list-name" defaultValue={list.listName} sx={{}} />
 
-        <TextField
-        // variant="standard"
-        inputProps={{style: {fontSize: 20}}}
-        outline="none"
-          className="list-name"
-          placeholder={list.listName}
-          size="small"
-          // onChange={}
-          // onBlur={}
-        /> */}
+          <TextField
+          // variant="standard"
+          inputProps={{style: {fontSize: 20}}}
+          outline="none"
+            className="list-name"
+            placeholder={list.listName}
+            size="small"
+            // onChange={}
+            // onBlur={}
+          /> */}
         <Typography variant="h5">{list.listName}</Typography>
         <IconButton
           aria-label="delete"
-          onClick={handleDeleteList}
+          onClick={() => handleDeleteList(list.id)}
           sx={{
             fontSize: 12,
             color: (theme) => theme.palette.grey[500],
-            // float: 'right',
+            float: "right",
+            "&:hover": { fontSize: 20 },
           }}
         >
           <DeleteIcon
             sx={{
               fontSize: 12,
               color: (theme) => theme.palette.grey[500],
-              // float: 'right',
+              float: "right",
+              "&:hover": { fontSize: 20 },
             }}
           />
         </IconButton>
@@ -138,9 +153,14 @@ const SingleList = (props) => {
             Add card
           </button>
         </form>
+        <Button
+          variant="outlined"
+          size="small"
+          onClick={() => navigate(`/calendar`)}
+        >
+          Add card
+        </Button>
       </div>
-
-                      
     </Box>
   );
 };

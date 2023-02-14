@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { 
-  fetchSingleBoard, 
-  selectSingleBoard, 
-  addList, 
-  updateTaskCardPosition, 
-  persistList, 
-  persistLists, 
-  updateListPosition, 
-  reorderLists, 
+import {
+  fetchSingleBoard,
+  selectSingleBoard,
+  addList,
+  updateTaskCardPosition,
+  persistList,
+  persistLists,
+  updateListPosition,
+  reorderLists,
   addListSocket,
   deleteListSocket,
   updateTaskCardSocket,
   addCommentSocket,
   deleteTaskCardSocket,
-  deleteCommentSocket } from "./singleBoardSlice";
+  deleteCommentSocket,
+} from "./singleBoardSlice";
 import SingleList from "../singleList/SingleList";
 import { DragDropContext } from "react-beautiful-dnd";
 import SingleBoardUsers from "../singleBoardUsers/singleBoardUsers";
@@ -72,32 +73,40 @@ const SingleBoard = () => {
       }));
     });
 
-    socket.off('drop-taskCard-differentList').on('drop-taskCard-differentList', ({ 
-      sourceListId, 
-      sourceListTaskCards, 
-      destinationListId, 
-      destinationListTaskCards }) => {
-      dispatch(persistLists({
-        sourceListId,
-        sourceListTaskCards,
-        destinationListId,
-        destinationListTaskCards,
-      }));
-    });
+    socket
+      .off("drop-taskCard-differentList")
+      .on(
+        "drop-taskCard-differentList",
+        ({
+          sourceListId,
+          sourceListTaskCards,
+          destinationListId,
+          destinationListTaskCards,
+        }) => {
+          dispatch(
+            persistLists({
+              sourceListId,
+              sourceListTaskCards,
+              destinationListId,
+              destinationListTaskCards,
+            })
+          );
+        }
+      );
 
-    socket.off('update-taskCard').on('update-taskCard', (updatedTaskCard) => {
+    socket.off("update-taskCard").on("update-taskCard", (updatedTaskCard) => {
       dispatch(updateTaskCardSocket(updatedTaskCard));
     });
 
-    socket.off('delete-taskCard').on('delete-taskCard', (deletedTaskCard) => {
+    socket.off("delete-taskCard").on("delete-taskCard", (deletedTaskCard) => {
       dispatch(deleteTaskCardSocket(deletedTaskCard));
     });
 
-    socket.off('add-comment').on('add-comment', (comments) => {
+    socket.off("add-comment").on("add-comment", (comments) => {
       dispatch(addCommentSocket(comments));
     });
 
-    socket.off('delete-comment').on('delete-comment', (deletedComment) => {
+    socket.off("delete-comment").on("delete-comment", (deletedComment) => {
       dispatch(deleteCommentSocket(deletedComment));
     });
   }, [dispatch]);
