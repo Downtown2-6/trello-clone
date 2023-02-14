@@ -88,7 +88,7 @@ function UserProfile() {
           type="text"
           placeholder="profile image url"
           value={profilePicture}
-          onChangeon={(event) => setProfilePicture(event.target.value)}
+          onChange={(event) => setProfilePicture(event.target.value)}
         />
         <button type="submit">Set As Profile Picture</button>
       </form>
