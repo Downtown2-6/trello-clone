@@ -26,7 +26,7 @@ const Navbar = () => {
   return (
     <>
       {isLoggedIn ? (
-        <AppBar position="fixed">
+        <AppBar position="fixed" color="blue">
           <Toolbar>
             <IconButton
               size="large"
@@ -54,7 +54,7 @@ const Navbar = () => {
           </Toolbar>
         </AppBar>
       ) : (
-        <AppBar position="static">
+        <AppBar position="static" color="blue">
           <Toolbar>
             <IconButton
               size="large"

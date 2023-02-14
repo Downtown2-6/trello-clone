@@ -81,7 +81,6 @@ const TaskCardModal = (props) => {
   }, [date]);
 
   const handleTaskCardUpdate = async () => {
-    // console.log("This is date in the handleTaskCardUpdate", date);
     const updatedTaskCard = await dispatch(
       updateTaskCard({
         boardId,
@@ -160,13 +159,14 @@ const TaskCardModal = (props) => {
         </Typography>
         <small>in list {list.listName}</small>
       </Box>
-      <Box>
+      <Box sx={{marginTop: 3}}>
         {/* <Typography variant="h6" id="taskCard-modal-activity-label">
           Due Date
         </Typography> */}
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             label="Due Date"
+            inputProps={{ style: { fontSize: 14, padding: 10, paddingTop: 14, paddingRight: 0 } }}
             value={date}
             onChange={(newValue) => {
               if (newValue) {
@@ -176,9 +176,14 @@ const TaskCardModal = (props) => {
               }
             }}
             renderInput={(params) => <TextField {...params} />}
-            size="small"
           />
         </LocalizationProvider>
+        <button
+          style={{ float: "right" }}
+          onClick={() => handleDeleteSingleTaskCard(taskCard.id)}
+        >
+          X
+        </button>
       </Box>
       <br />
       <Box sx={{ marginBottom: "1em" }}>
@@ -211,6 +216,8 @@ const TaskCardModal = (props) => {
             multiline
             size="small"
             fullWidth
+            color="neutral"
+            inputProps={{ style: { fontSize: 14 }}}
             onChange={(evt) => setDescription(evt.target.value)}
             onBlur={handleTaskCardUpdate}
           />
@@ -226,6 +233,8 @@ const TaskCardModal = (props) => {
           multiline
           size="small"
           fullWidth
+          color="neutral"
+          inputProps={{ style: { fontSize: 14 }}}
           value={comment}
           onChange={(evt) => setComment(evt.target.value)}
           onBlur={handleSubmitComment}

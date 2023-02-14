@@ -26,29 +26,29 @@ const Comment = (props) => {
               key={`comment#${comment.id}`}
               sx={{ padding: "0.5em" }}
             >
+              <Box className="single-comment-detail">
+                <Typography variant="caption" id="single-comment-user-label">
+                  <Box
+                    className="single-comment-user"
+                    // sx={{ float: "right" }}
+                  >
+                    {comment.user.firstName} {comment.user.lastName}{" "}
+                    <IconButton
+                      aria-label="delete"
+                      onClick={() => removeComment(comment.id)}
+                    >
+                      <DeleteIcon
+                        sx={{
+                          fontSize: 12,
+                          color: (theme) => theme.palette.grey[500],
+                        }}
+                      />
+                    </IconButton>
+                  </Box>
+                </Typography>
+              </Box>
               <Box className="single-comment-content">
                 {comment.content}
-                <Box className="single-comment-detail">
-                  <Typography variant="caption" id="single-comment-user-label">
-                    <Box
-                      className="single-comment-user"
-                      // sx={{ float: "right" }}
-                    >
-                      {comment.user.firstName} {comment.user.lastName}{" "}
-                      <IconButton
-                        aria-label="delete"
-                        onClick={() => removeComment(comment.id)}
-                      >
-                        <DeleteIcon
-                          sx={{
-                            fontSize: 12,
-                            color: (theme) => theme.palette.grey[500],
-                          }}
-                        />
-                      </IconButton>
-                    </Box>
-                  </Typography>
-                </Box>
               </Box>
             </Box>
           ))
