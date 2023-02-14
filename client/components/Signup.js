@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { authenticate } from "../features/auth/authSlice";
-import { Button, Stack, TextField, Paper, Grid } from "@mui/material";
+import { Button, Stack, TextField, Paper, Grid, Box } from "@mui/material";
 import { positions } from '@mui/system'
 
 const Signup = () => {
@@ -27,6 +27,27 @@ const Signup = () => {
   };
 
   return (
+    <Box  sx={{
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      float: "center",
+    }}>
+    <Box
+    sx={{
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      float: "center",
+      width: 250,
+      padding: 2,
+      borderRadius: 1,
+      boxShadow: 1,
+      backgroundColor: "#f5f5f5",
+    }}
+    >
     <Grid container spacing={6}>
       <Grid container item xs={2} direction="column">
         <form id="signup-form" className="form" onSubmit={handleSignup}>
@@ -67,6 +88,8 @@ const Signup = () => {
         </form>
       </Grid>
     </Grid>
+    </Box>
+    </Box>
   );
 };
 

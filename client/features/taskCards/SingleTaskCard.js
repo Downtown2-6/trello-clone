@@ -101,7 +101,7 @@ const SingleTaskCard = (props) => {
                   />
                 </IconButton>
               ) : null}
-              {taskCard.comments ? (
+              {taskCard.comments && taskCard.comments.length ? (
                 <IconButton
                   aria-label="comments-included"
                   sx={{

@@ -9,6 +9,7 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Diversity2Icon from "@mui/icons-material/Diversity2";
+import LocalPizzaIcon from '@mui/icons-material/LocalPizza';
 import { logout } from "../auth/authSlice";
 
 const Navbar = () => {
@@ -35,7 +36,7 @@ const Navbar = () => {
               aria-label="menu"
               sx={{ mr: 2 }}
             >
-              <Diversity2Icon />
+              <LocalPizzaIcon />
             </IconButton>
             <Typography
               variant="h5"
@@ -63,7 +64,7 @@ const Navbar = () => {
               aria-label="menu"
               sx={{ mr: 2 }}
             >
-              <Diversity2Icon />
+              <LocalPizzaIcon />
             </IconButton>
             <Typography
               variant="h6"
