@@ -46,6 +46,10 @@ const theme = createTheme({
       main: '#64748B',
       contrastText: '#fff',
     },
+    lighter: {
+      main: '#ced3db',
+      contrastText: '#fff'
+    }
   }
 })
 
@@ -370,15 +374,19 @@ const SingleBoard = () => {
                       <TextField
                       placeholder="Enter list title..."
                       size="small"
+                      color="neutral"
                       onChange={(evt) => setListName(evt.target.value)}
                       />
                       <Box>
-                        <Button style={{ justifyContent: 'flex-start', textTransform: 'none' }} 
+                        <Button 
+                        color="neutral"
+                        variant="contained"
+                        style={{ justifyContent: 'flex-start', textTransform: 'none' }} 
                         onClick={handleSubmitList}
                         >
                           Add List
                         </Button>
-                        <Button onClick={cancelAddList}>
+                        <Button color="neutral" onClick={cancelAddList}>
                           X
                         </Button>
                       </Box>
@@ -390,6 +398,9 @@ const SingleBoard = () => {
                   style={{ minWidth: '200px'}}>
                     <Button 
                     className="add-list-button" 
+                    color="neutral"
+                    variant="contained"
+                    fullWidth
                     style={{ justifyContent: 'flex-start', textTransform: 'none' }} 
                     onClick={() => setAddingList(true)}
                     >

@@ -39,9 +39,19 @@ const SingleTaskCard = (props) => {
         {...provided.dragHandleProps}
         isDragging={snapshot.isDragging}
       >
-        <div className='taskCard-draggable' onClick={handleOpen}>
+        <Box 
+        // className='taskCard-draggable' 
+        sx={{
+          bgcolor: "neutral.main", 
+          padding: 1, 
+          marginBottom: 1, 
+          borderRadius: 1,
+          color: "neutral.contrastText",
+          boxShadow: 2
+        }}
+        onClick={handleOpen}>
           {taskCard.title}
-        </div>
+        </Box>
 
         <Modal
           open={open}

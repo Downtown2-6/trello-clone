@@ -62,20 +62,24 @@ const SingleList = (props) => {
   };
 
   return (
-    <Box className="list-container-content"
+    <Box 
+    className="list-container-content"
     sx={{
       display: "flex",
       flexDirection: "column",
-      padding: 2, 
+      paddingTop: 2, 
+      paddingRight: 1,
+      paddingLeft: 1,
       borderRadius: 1,
-     
+      bgcolor: "lighter.main",
+      boxShadow: 1
     }}>
       <Box
       sx={{
         display: "flex",
         flexDirection: "row",
         paddingBottom: 1,
-       
+        
       }}>
        
         {/* <Input id="list-name" defaultValue={list.listName} sx={{}} />
@@ -90,7 +94,11 @@ const SingleList = (props) => {
           // onChange={}
           // onBlur={}
         /> */}
-        <Typography variant="h5">{list.listName}</Typography>
+        <Typography 
+        variant="h5" 
+        sx={{paddingLeft: 1, paddingRight: 1}}>
+          {list.listName}
+        </Typography>
         <IconButton
           aria-label="delete"
           onClick={handleDeleteList}
@@ -136,6 +144,7 @@ const SingleList = (props) => {
         <Box className="list-bottom-container">
           <TextField
           className="taskCard-title"
+          color="neutral"
           placeholder="Enter a title for this card..."
           size="small"
           multiline
@@ -143,12 +152,14 @@ const SingleList = (props) => {
           />
           <Box>
             <Button 
+            color="neutral"
+            variant="contained"
             style={{ justifyContent: 'flex-start', textTransform: 'none' }} 
             onClick={handleSubmitTaskCard}
             >
               Add card
             </Button>
-            <Button onClick={cancelAddCard}>
+            <Button color="neutral" onClick={cancelAddCard}>
               X
             </Button>
           </Box>
@@ -157,8 +168,9 @@ const SingleList = (props) => {
         <Box className="add-card-container">
           <Button 
           className="add-card-button" 
+          color="neutral"
           fullWidth
-          style={{ justifyContent: 'flex-start', textTransform: 'none', textColor: 'black' }}
+          style={{ justifyContent: 'flex-start', textTransform: 'none' }}
           onClick={() => setAddingTaskCard(true)}
           >
             + Add a card
