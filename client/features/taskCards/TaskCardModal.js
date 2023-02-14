@@ -79,7 +79,6 @@ const TaskCardModal = (props) => {
   }, [date]);
 
   const handleTaskCardUpdate = async () => {
-    // console.log("This is date in the handleTaskCardUpdate", date);
     const updatedTaskCard = await dispatch(
       updateTaskCard({
         boardId,
@@ -120,12 +119,6 @@ const TaskCardModal = (props) => {
   return (
     <>
       <Box sx={{ marginBottom: "1em" }}>
-        <button
-          style={{ float: "right" }}
-          onClick={() => handleDeleteSingleTaskCard(taskCard.id)}
-        >
-          X
-        </button>
         <Typography variant="h5">
           <EditableTaskCard
             text={title}
@@ -167,6 +160,12 @@ const TaskCardModal = (props) => {
             size="small"
           />
         </LocalizationProvider>
+        <button
+          style={{ float: "right" }}
+          onClick={() => handleDeleteSingleTaskCard(taskCard.id)}
+        >
+          X
+        </button>
       </Box>
       <br />
       <Box sx={{ marginBottom: "1em" }}>

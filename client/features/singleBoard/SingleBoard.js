@@ -342,17 +342,17 @@ const SingleBoard = () => {
               )) : null}
 
               {addingList ? (
-                <Box className="list-container">
+                <Box className="list-container" style={{ minWidth: '200px'}}>
                   <Typography variant="h5">
                     <TextField
-                    className="list-title"
-                    placeholder="Add another list"
+                    placeholder="Enter list title..."
                     size="small"
-                    multiline
                     onChange={(evt) => setListName(evt.target.value)}
                     />
                     <Box>
-                      <Button onClick={handleSubmitList}>
+                      <Button style={{ justifyContent: 'flex-start', textTransform: 'none' }} 
+                      onClick={handleSubmitList}
+                      >
                         Add List
                       </Button>
                       <Button onClick={cancelAddList}>
@@ -362,9 +362,10 @@ const SingleBoard = () => {
                   </Typography>
                 </Box>
               ) : (
-                <Box className="list-container">
+                <Box className="list-container" style={{ minWidth: '200px'}}>
                   <Button 
                   className="add-list-button" 
+                  style={{ justifyContent: 'flex-start', textTransform: 'none' }} 
                   onClick={() => setAddingList(true)}
                   >
                     + Add another list

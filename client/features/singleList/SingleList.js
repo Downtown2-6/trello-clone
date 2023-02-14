@@ -10,7 +10,8 @@ import SingleTaskCard from "../taskCards/SingleTaskCard";
 import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import io from "socket.io-client";
-import { Box, Typography, IconButton, TextField, FormControl, Input, InputLabel } from "@mui/material";
+import { Box, Typography, IconButton, TextField, Button } from "@mui/material";
+import { ClickAwayListener } from "@mui/base";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 const socket = io();
@@ -26,6 +27,7 @@ const SingleList = (props) => {
   const dispatch = useDispatch();
 
   const [taskCardTitle, setTaskCardTitle] = useState("");
+  const [addingTaskCard, setAddingTaskCard] = useState(false);
 
   useEffect(() => {
     socket.off('add-taskCard').on('add-taskCard', (newTaskCard) => {
@@ -33,8 +35,7 @@ const SingleList = (props) => {
     });
   }, [dispatch]);
 
-  const handleSubmitTaskCard = async (evt) => {
-    evt.preventDefault();
+  const handleSubmitTaskCard = async () => {
     if (taskCardTitle.length) {
       const newTaskCard = await dispatch(
         addTaskCard({
@@ -45,8 +46,14 @@ const SingleList = (props) => {
         })
       );
       socket.emit('add-taskCard', newTaskCard.payload);
+      setAddingTaskCard(false);
       setTaskCardTitle("");
     }
+  };
+
+  const cancelAddCard = () => {
+    setAddingTaskCard(false);
+    setTaskCardTitle("");
   };
 
   const handleDeleteList = async (evt) => {
@@ -125,21 +132,39 @@ const SingleList = (props) => {
           </ListContainer>
         )}
       </Droppable>
-      <div className="list-bottom-container">
-        <form className="add-taskCard-form" onSubmit={handleSubmitTaskCard}>
-          <input
-            className="add-taskCard"
-            name="title"
-            type="text"
-            value={taskCardTitle}
-            onChange={(evt) => setTaskCardTitle(evt.target.value)}
+      {addingTaskCard ? (
+        <Box className="list-bottom-container">
+          <TextField
+          className="taskCard-title"
+          placeholder="Enter a title for this card..."
+          size="small"
+          multiline
+          onChange={(evt) => setTaskCardTitle(evt.target.value)}
           />
-          <button className="add-taskCard-button" type="submit">
-            Add card
-          </button>
-        </form>
-      </div>
-
+          <Box>
+            <Button 
+            style={{ justifyContent: 'flex-start', textTransform: 'none' }} 
+            onClick={handleSubmitTaskCard}
+            >
+              Add card
+            </Button>
+            <Button onClick={cancelAddCard}>
+              X
+            </Button>
+          </Box>
+        </Box>
+      ) : (
+        <Box className="add-card-container">
+          <Button 
+          className="add-card-button" 
+          fullWidth
+          style={{ justifyContent: 'flex-start', textTransform: 'none', textColor: 'black' }}
+          onClick={() => setAddingTaskCard(true)}
+          >
+            + Add a card
+          </Button>
+        </Box>
+      )}
                       
     </Box>
   );
