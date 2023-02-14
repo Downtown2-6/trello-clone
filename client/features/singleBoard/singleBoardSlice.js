@@ -353,8 +353,10 @@ const singleBoardSlice = createSlice({
     });
 
     builder.addCase(reorderLists.fulfilled, (state, action) => {
-      state.lists[action.payload.list.position] = action.payload.list;
-      state.lists[action.payload.otherList.position] = action.payload.otherList;
+      const listIdx = state.lists.findIndex((list) => list.id === action.payload.list.id);
+      const otherListIdx = state.lists.findIndex((list) => list.id === action.payload.otherList.id);
+      state.lists[listIdx] = action.payload.otherList;
+      state.lists[otherListIdx] = action.payload.list;
     });
 
     builder.addCase(deleteThisTaskCard.fulfilled, (state, action) => {
@@ -378,8 +380,7 @@ const singleBoardSlice = createSlice({
     });
 
     builder.addCase(deleteThisList.fulfilled, (state, action) => {
-      const listIdx = state.lists.findIndex((list) => list.id === action.payload.id);
-      state.lists.splice(listIdx, 1);
+      state.lists = state.lists.filter((list) => list.id !== action.payload.id);
     });
 
     builder.addCase(deleteListSocket.fulfilled, (state, action) => {
