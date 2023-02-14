@@ -3,6 +3,10 @@
   font-family: 'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
+html {
+  background-color: #fffcf2;
+}
+
 #header {
   align-items: center;
   display: flex;
