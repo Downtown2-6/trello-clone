@@ -85,14 +85,14 @@ const SingleList = (props) => {
 
   return (
     <Box
-      className="list-container-content"
       sx={{
         display: "flex",
         flexDirection: "column",
+        minWidth: "250px",
+        margin: 0.5,
         padding: 2,
         borderRadius: 1,
         boxShadow: 1,
-        // backgroundColor: "#f5f5f5",
         bgcolor: "lighter.main",
       }}
     >

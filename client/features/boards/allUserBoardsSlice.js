@@ -4,9 +4,7 @@ import axios from "axios";
 export const fetchAllUserBoards = createAsyncThunk(
   "userBoard/fetch",
   async (userId) => {
-    console.log("fetchAllUserBoards\n userId", userId);
     const response = await axios.get(`/api/users/allBoards/${userId}`);
-    console.log("fetchAllUserBoards thunk", response.data);
     return response.data;
   }
 );
@@ -15,9 +13,7 @@ export const createUserBoard = createAsyncThunk(
   "userBoard/add",
   async (parameter) => {
     try {
-      console.log("this is userboard in the add thunk", parameter);
       const response = await axios.post("/api/boards", parameter);
-      console.log("This is the Data at the CreateUserBoard", response.data);
       return response.data;
     } catch (error) {
       console.log(error);
