@@ -93,10 +93,11 @@ const TaskCardModal = (props) => {
     socket.emit('update-taskCard', updatedTaskCard.payload);
   };
 
-  const handleDeleteSingleTaskCard = async (taskCardId) => {
+  const handleDeleteSingleTaskCard = async () => {
+    console.log("clicked handleDeleteSingleTaskCard")
     const deletedTaskCard = await dispatch(
       deleteThisTaskCard({
-        taskCardId,
+        taskCardId: taskCard.id,
         userId: userId,
         boardId: boardId,
       })
@@ -178,12 +179,12 @@ const TaskCardModal = (props) => {
             renderInput={(params) => <TextField {...params} />}
           />
         </LocalizationProvider>
-        <button
+        {/* <button
           style={{ float: "right" }}
           onClick={() => handleDeleteSingleTaskCard(taskCard.id)}
         >
           X
-        </button>
+        </button> */}
       </Box>
       <br />
       <Box sx={{ marginBottom: "1em" }}>
@@ -232,7 +233,7 @@ const TaskCardModal = (props) => {
           placeholder="Write a comment..."
           multiline
           size="small"
-          fullWidth
+          // fullWidth
           color="neutral"
           inputProps={{ style: { fontSize: 14 }}}
           value={comment}
@@ -244,27 +245,28 @@ const TaskCardModal = (props) => {
       </Box>
       <IconButton
           aria-label="delete"
-          oonClick={() => handleDeleteSingleTaskCard(taskCard.id)}
+          onClick={handleDeleteSingleTaskCard}
           sx={{
-            fontSize: 12,
-            color: (theme) => theme.palette.grey[500],
+            fontSize: 14,
             float: "right",
+            color: (theme) => theme.palette.grey[500],
             "&:hover": { fontSize: 20 },
             display: "flex",
             flexDirection: "row",
-            alignItems: "end",
-            justifyContent: "right",
+            // alignItems: "end",
+            // justifyContent: "right",
+            height: 45,
+            width: 45
           }}
         >
           <DeleteIcon
             sx={{
-              fontSize: 14,
+              // fontSize: 14,
               color: (theme) => theme.palette.grey[500],
               display: "flex",
                 flexDirection: "row",
                 alignItems: "end",
-                justifyContent: "right",
-              "&:hover": { fontSize: 20 },
+                justifyContent: "start",
             }}
           />
         </IconButton>

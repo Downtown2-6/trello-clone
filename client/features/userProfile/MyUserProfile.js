@@ -18,20 +18,9 @@ function UserProfile() {
 
   const handleImageUpdate = (event) => {
     event.preventDefault();
-    console.log(
-      `***
-    ***
-    ***
-    Logging:this is handleimageUpdate
-    ***
-    ***
-    ***
-    `,
-      profilePicture
-    );
     const userId = user.id;
 
-    axios.patch(`api/users/uploadProfilePicture/userId/${userId}`, {
+    axios.patch(`/api/users/uploadProfilePicture/userId/${userId}`, {
       url: profilePicture,
     });
   };
@@ -80,10 +69,10 @@ function UserProfile() {
           borderRadius: "50%",
         }}
       >
-        <img style={{ width: "100%" }} src={profilePicture} />
+        <img style={{ width: "100%", height: "100%" }} src={profilePicture} />
       </div>{" "}
       <br />
-      <form onSubmit={handleImageUpdate}>
+      <form onSubmit={(evt) => handleImageUpdate(evt)}>
         <input
           type="text"
           placeholder="profile image url"

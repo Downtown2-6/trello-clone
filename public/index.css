@@ -43,10 +43,10 @@ nav {
   font-size: 36px;
 } */
 
-.list-container-content {
+/* .list-container-content {
   margin: 0.5em;
-  /* border: 1px solid purple; */
-}
+  border: 1px solid purple;
+} */
 
 /* .taskCard {
   display: flex;
@@ -58,8 +58,7 @@ nav {
 } */
 
 .listName {
-  /* background-color: #ced3db; */
-  background-color: #f5f5f5;
+  background: none;
   font-size: 1em;
   padding: 2px;
   border-style: hidden;
@@ -68,6 +67,8 @@ nav {
 .listName.editable:focus {
   padding: 2px;
   margin: 0;
+  outline: 2px solid black;
+  border-radius: 0.1rem;
 }
 
 .taskCard-draggable {
@@ -77,7 +78,7 @@ nav {
 
 .taskCard-modal-title {
   font-weight: bold;
-  background-color: gainsboro;
+  background: none;
   font-size: 1.5em;
   padding: 5px;
   border-style: hidden;

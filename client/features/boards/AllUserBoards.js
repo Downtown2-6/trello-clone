@@ -4,7 +4,6 @@ import { fetchAllUserBoards, selectUserBoards } from "./allUserBoardsSlice";
 import { useParams, useNavigate } from "react-router-dom";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import {
   CardActionArea,
   Box,
@@ -14,12 +13,11 @@ import {
 } from "@mui/material";
 import CreateBoardFormMUI from "../createBoardForm/createMUIBoardForm";
 
-const UserBoards = () => {
+const UserBoards = ({theme}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const allUserBoards = useSelector(selectUserBoards);
   const userId = useSelector((state) => state.auth.me.id);
-  console.log("This is allUserBoards", allUserBoards);
 
   useEffect(() => {
     dispatch(fetchAllUserBoards(userId));
@@ -33,15 +31,17 @@ const UserBoards = () => {
       <Grid container spacing={1}>
         {allUserBoards && allUserBoards.length
           ? allUserBoards.map(({ board }, index) => {
-              console.log("Individual Boards", board);
-              //will need to fix navigate when we have more than one board
               return (
-                <Grid item xs={4} key={index}>
-                  <Card key={index} sx={{height: 100, width: 200, minWidth: 200}}>
+                <Grid item xs={4} key={`board#${index}`}>
+                  <Card sx={{height: 100, width: 200, minWidth: 200}}>
                     <CardActionArea
                       onClick={() => navigate(`/board/${board.id}`)}
                     >
-                      <CardContent>
+                      <CardContent sx={{
+                        height: 100, 
+                        bgcolor: theme.palette.neutral.main,
+                        color: theme.palette.neutral.contrastText
+                      }}>
                         <Typography gutterBottom variant="h6" component="div">
                           {board.boardName}
                         </Typography>
@@ -53,7 +53,7 @@ const UserBoards = () => {
             })
           : null}
         <Grid item xs={2} >
-          <CreateBoardFormMUI />
+          <CreateBoardFormMUI theme={theme} />
         </Grid>
       </Grid>
     </Container>

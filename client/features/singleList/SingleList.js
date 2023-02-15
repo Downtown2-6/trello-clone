@@ -1,25 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addTaskCard,
   deleteThisTaskCard,
   deleteThisList,
   addTaskCardSocket,
+  updateList
 } from "../singleBoard/singleBoardSlice";
 import SingleTaskCard from "../taskCards/SingleTaskCard";
+import EditableList from "./EditableList";
 import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import io from "socket.io-client";
-import {
-  Box,
-  Typography,
-  IconButton,
-  TextField,
-  FormControl,
-  Input,
-  InputLabel,
-  Button,
-} from "@mui/material";
+import { Box, Typography, IconButton, TextField, Button } from "@mui/material";
+import { ClickAwayListener } from "@mui/base";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 const socket = io();
@@ -33,8 +27,11 @@ const SingleList = (props) => {
   const numTaskCards = list.taskcards ? list.taskcards.length + 1 : 1;
 
   const dispatch = useDispatch();
+  const inputRef = useRef();
 
+  const [listName, setListName] = useState(list.listName);
   const [taskCardTitle, setTaskCardTitle] = useState("");
+  const [addingTaskCard, setAddingTaskCard] = useState(false);
 
   useEffect(() => {
     socket.off("add-taskCard").on("add-taskCard", (newTaskCard) => {
@@ -42,8 +39,25 @@ const SingleList = (props) => {
     });
   }, [dispatch]);
 
-  const handleSubmitTaskCard = async (evt) => {
-    evt.preventDefault();
+  useEffect(() => {
+    socket.off('update-list-state').on('update-list-state', 
+    (updatedList) => {
+      setListName(list.listName);
+    });
+  }, [list]);
+
+  const handleListUpdate = async () => {
+    const updatedList = await dispatch(
+      updateList({
+        boardId,
+        listId,
+        listName
+      })
+    );
+    socket.emit('update-list', updatedList.payload);
+  };
+
+  const handleSubmitTaskCard = async () => {
     if (taskCardTitle.length) {
       const newTaskCard = await dispatch(
         addTaskCard({
@@ -53,9 +67,15 @@ const SingleList = (props) => {
           position: numTaskCards,
         })
       );
-      socket.emit("add-taskCard", newTaskCard.payload);
+      socket.emit('add-taskCard', newTaskCard.payload);
+      setAddingTaskCard(false);
       setTaskCardTitle("");
     }
+  };
+
+  const cancelAddCard = () => {
+    setAddingTaskCard(false);
+    setTaskCardTitle("");
   };
 
   const handleDeleteList = async (evt) => {
@@ -65,47 +85,78 @@ const SingleList = (props) => {
 
   return (
     <Box
-      className="list-container-content"
       sx={{
         display: "flex",
         flexDirection: "column",
+        minWidth: "250px",
+        margin: 0.5,
         padding: 2,
         borderRadius: 1,
         boxShadow: 1,
-        backgroundColor: "#f5f5f5",
+        bgcolor: "lighter.main",
       }}
     >
       <Box
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        paddingBottom: 1,
+        boxShadow: 0,
+        justifyContent: "space-between",
+      }}>
+        <Typography 
+        variant="h5" 
+        sx={{paddingLeft: 1, paddingRight: 1}}>
+          <EditableList
+            text={listName}
+            childRef={inputRef}
+            type="input"
+            handleListUpdate={handleListUpdate}
+          >
+            <textarea
+              className="listName editable"
+              ref={inputRef}
+              type="text"
+              name="listName"
+              value={listName}
+              onChange={(evt) => setListName(evt.target.value)}
+              onBlur={(evt) =>
+                !listName.length ? setListName(list.listName) : null
+              }
+            />
+          </EditableList>
+        </Typography>
+        <Box
         sx={{
           display: "flex",
-          flexDirection: "row",
-          paddingBottom: 1,
-          boxShadow: 0,
-          justifyContent: "space-between",
-        }}
-      >
-<Typography variant="h5">{list.listName}</Typography>
-<IconButton
-                        aria-label="delete"
-                        onClick={() => handleDeleteList(list.id)}
-                        sx={{
-                          fontSize: 12,
-                          color: (theme) => theme.palette.grey[500],
-                          // float: 'right',
-                        }}
-                      >
-                        <DeleteIcon
-                          sx={{
-                            fontSize: 12,
-                            color: (theme) => theme.palette.grey[500],
-                            // float: 'right',
-                          }}
-                        />
-                      </IconButton>
-                      </Box>
+          flexDirection: "column",
+          justifyContent: "top"
+        }}>
+          <IconButton
+            aria-label="delete"
+            onClick={() => handleDeleteList(list.id)}
+            sx={{
+              fontSize: 12,
+              color: (theme) => theme.palette.grey[500],
+              float: "right",
+              "&:hover": { fontSize: 20 },
+            }}
+          >
+            <DeleteIcon
+              sx={{
+                fontSize: 12,
+                color: (theme) => theme.palette.grey[500],
+                float: "right",
+                "&:hover": { fontSize: 20 },
+              }}
+            />
+          </IconButton>
+        </Box>
+      </Box>
       <Droppable droppableId={listId.toString()}>
         {(provided) => (
           <ListContainer
+            // className='list-container-content'
             innerRef={provided.innerRef}
             ref={provided.innerRef}
             {...provided.droppableProps}
@@ -125,27 +176,46 @@ const SingleList = (props) => {
           </ListContainer>
         )}
       </Droppable>
-      <div className="list-bottom-container">
-        <form className="add-taskCard-form" onSubmit={handleSubmitTaskCard}>
-          <input
-            className="add-taskCard"
-            name="title"
-            type="text"
-            value={taskCardTitle}
-            onChange={(evt) => setTaskCardTitle(evt.target.value)}
-          />
-          <button className="add-taskCard-button" type="submit">
-            Add card
-          </button>
-        </form>
-        <Button
-          variant="outlined"
+      {addingTaskCard ? (
+        <Box className="list-bottom-container">
+          <TextField
+          className="taskCard-title"
+          color="neutral"
+          placeholder="Enter a title for this card..."
           size="small"
-          onClick={() => navigate(`/calendar`)}
-        >
-          Add card
-        </Button>
-      </div>
+          multiline
+          fullWidth
+          inputProps={{ style: { fontSize: 14 }}}
+          onChange={(evt) => setTaskCardTitle(evt.target.value)}
+          />
+          <Box sx={{ marginTop: 0.5 }}>
+            <Button 
+            color="neutral"
+            variant="contained"
+            style={{ justifyContent: 'flex-start', textTransform: 'none' }} 
+            onClick={handleSubmitTaskCard}
+            >
+              Add card
+            </Button>
+            <Button color="neutral" onClick={cancelAddCard}>
+              X
+            </Button>
+          </Box>
+        </Box>
+      ) : (
+        <Box className="add-card-container">
+          <Button 
+          className="add-card-button" 
+          color="neutral"
+          fullWidth
+          style={{ justifyContent: 'flex-start', textTransform: 'none' }}
+          onClick={() => setAddingTaskCard(true)}
+          >
+            + Add a card
+          </Button>
+        </Box>
+      )}
+                      
     </Box>
   );
 };

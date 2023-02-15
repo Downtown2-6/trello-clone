@@ -9,10 +9,7 @@ const CreateBoardForm = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("this is the handleSubmit", e);
-    console.log("and\n this\n is\n the\n me", loggedInUserId);
     dispatch(createUserBoard({ boardName, loggedInUserId }));
-    
   };
 
   return (
