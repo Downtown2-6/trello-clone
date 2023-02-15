@@ -74,23 +74,22 @@ router.put("/changeUser/:userId", async (req, res, next) => {
   }
 });
 
-// PATCH // api/users/uploadProfilePicture/userId/:userId
+// PUT /api/users/updateTheme/:userId
+router.put("/updateTheme/:userId", async (req, res, next) => {
+  try {
+    const user = await User.findOne({ where: { id: req.params.userId } });
+    await user.update(req.body);
+    res.status(201).json(req.body.theme);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// PATCH /api/users/uploadProfilePicture/userId/:userId
 router.patch("/uploadProfilePicture/userId/:userId", async (req, res, next) => {
   try {
     const { userId } = req.params;
     const { url } = req.body;
-    console.log(
-      `***
-    ***
-    ***
-    Logging:in the api
-    ***
-    ***
-    ***
-    `,
-      userId,
-      url
-    );
     if (!userId || !url)
       return res
         .status(422)

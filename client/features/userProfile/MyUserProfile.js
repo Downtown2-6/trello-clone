@@ -26,14 +26,12 @@ function UserProfile() {
   const user = useSelector((state) => state.auth.me);
   const dispatch = useDispatch();
 
-  // console.log("displayPic image", displayPic);
 
   const handleImageUpdate = () => {
-    // event.preventDefault();
     console.log("handleImageUpdate has been clicked", profilePicture);
     const userId = user.id;
 
-    axios.patch(`api/users/uploadProfilePicture/userId/${userId}`, {
+    axios.patch(`/api/users/uploadProfilePicture/userId/${userId}`, {
       url: profilePicture,
     });
     setAddImage(false)

@@ -38,8 +38,6 @@ const CreateBoardFormMUI = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("this is the handleSubmit", e);
-    console.log("and\n this\n is\n the\n me", loggedInUserId);
     if (!boardName || boardName === "null" || boardName == null)
       return alert("Please enter a board name.");
     dispatch(createUserBoard({ boardName, loggedInUserId }));
@@ -54,7 +52,11 @@ const CreateBoardFormMUI = (props) => {
           onClick={handleClickOpen}
         >
           <CardActionArea>
-            <CardContent>
+            <CardContent sx={{
+              height: 100, 
+              bgcolor: props.theme.palette.lighter.main,
+              color: props.theme.palette.lighter.contrastText
+            }}>
               <Typography gutterBottom variant="h6" component="div">
                 Create new board
               </Typography>

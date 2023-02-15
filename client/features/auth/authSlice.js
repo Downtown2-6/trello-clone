@@ -48,6 +48,20 @@ export const authenticate = createAsyncThunk(
   }
 );
 
+export const updateTheme = createAsyncThunk(
+  "auth/me/updateTheme",
+  async ({userId, theme}) => {
+    try {
+      const {data} = await axios.put(`/api/users/updateTheme/${userId}`, {
+        theme
+      });
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
+
 /**
  * SLICE
  */
@@ -74,6 +88,10 @@ export const authSlice = createSlice({
 
     builder.addCase(authenticate.rejected, (state, action) => {
       state.error = action.payload;
+    });
+
+    builder.addCase(updateTheme.fulfilled, (state, action) => {
+      state.me.theme = action.payload;
     });
   },
 });
