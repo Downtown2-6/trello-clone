@@ -26,7 +26,7 @@ function UserProfile() {
   const user = useSelector((state) => state.auth.me);
   const dispatch = useDispatch();
 
-  console.log("profile image", profilePicture);
+  // console.log("displayPic image", displayPic);
 
   const handleImageUpdate = () => {
     // event.preventDefault();
@@ -36,6 +36,7 @@ function UserProfile() {
     axios.patch(`api/users/uploadProfilePicture/userId/${userId}`, {
       url: profilePicture,
     });
+    setAddImage(false)
     setProfilePicture("")
   };
 
@@ -52,19 +53,15 @@ function UserProfile() {
       alert("You need a password and it needs to match!");
       return null;
     }
-    if (!email || !emailVerify || email != emailVerify) {
-      alert("Your emails need to match!");
-      return null;
-    }
+    // if (!email || !emailVerify || email != emailVerify) {
+    //   alert("Your emails need to match!");
+    //   return null;
+    // }
 
     axios.put(`/api/users/changeUser/${user.id}`, data);
   };
 
   useEffect(() => {
-    // window.addEventListener("paste", function (e) {
-    //   e.preventDefault();
-    //   alert("Please don't just copy paste. \n What if you made a mistake?");
-    // });
     setProfilePicture(user.imageUrl);
     setFirstName(user.firstName);
     setLastName(user.lastName);
@@ -111,7 +108,10 @@ function UserProfile() {
       )}
       <br />
       {addImage ? (
-        <>
+        <Box
+        sx={{
+          marginBottom: 5
+        }}>
           <TextField
             placeholder="Link to jpg or png"
             size="small"
@@ -126,17 +126,61 @@ function UserProfile() {
           >
             Set Photo
           </Button>
-        </>
+        </Box>
       ) : null}
-      <br></br>
-      <br></br>
-      <br></br>{" "}
-      {user.firstName ? (
-        <h1>Welcome to your profile, {user.firstName}</h1>
-      ) : (
-        <h1>So, what's your name?</h1>
-      )}
-      <p>First Name</p>
+
+        <Typography variant="h4">Welcome to your profile, {user.firstName}</Typography>
+
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            width: 250,
+            // padding: 5
+          }}
+        >
+      <TextField
+            defaultValue={user.firstName}
+            size="small"
+            onChange={(event) => setFirstName(event.target.value)}
+            sx={{backgroundColor: "white", margin: 1,}}
+          />
+          <TextField
+            defaultValue={user.lastName}
+            size="small"
+            onChange={(event) => setLastName(event.target.value)}
+            sx={{backgroundColor: "white", margin: 1}}
+          />
+          <TextField
+            defaultValue={user.email}
+            size="small"
+            onChange={(event) => setEmail(event.target.value)}
+            sx={{backgroundColor: "white", margin: 1}}
+          />
+          <TextField
+          type="password"
+          label="password"
+            placeholder="Password"
+            size="small"
+            onChange={(event) => setPassword(event.target.value)}
+            sx={{backgroundColor: "white", margin: 1}}
+          />
+          <TextField
+          type="password"
+          label="password"
+            placeholder="Password Verify"
+            size="small"
+            onChange={(event) => setPasswordVerify(event.target.value)}
+            sx={{backgroundColor: "white", margin: 1}}
+          />
+          <Button
+          onClick={handleSubmit}
+          variant="outlined"
+          sx={{margin: 1}}
+          >
+            Update</Button>
+          </Box>
+      {/* <p>First Name</p>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -186,7 +230,7 @@ function UserProfile() {
         <br />
 
         <button type="submit">Update</button>
-      </form>
+      </form> */}
     </>
   );
 }
