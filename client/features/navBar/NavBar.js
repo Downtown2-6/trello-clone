@@ -27,7 +27,7 @@ const Navbar = () => {
   return (
     <>
       {isLoggedIn ? (
-        <AppBar position="fixed" color="blue">
+        <AppBar position="fixed" color="daring">
           <Toolbar>
             <IconButton
               size="large"
@@ -46,6 +46,9 @@ const Navbar = () => {
             >
               Trell-O
             </Typography>
+            <Button color="inherit" onClick={() => navigate('/themes')}>
+              Themes
+            </Button>
             <Button color="inherit" onClick={() => navigate(`/myProfile`)}>
               My Profile
             </Button>
@@ -55,7 +58,7 @@ const Navbar = () => {
           </Toolbar>
         </AppBar>
       ) : (
-        <AppBar position="static" color="blue">
+        <AppBar position="static" color="daring">
           <Toolbar>
             <IconButton
               size="large"

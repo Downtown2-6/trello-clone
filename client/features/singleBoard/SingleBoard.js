@@ -23,12 +23,9 @@ import { DragDropContext } from "react-beautiful-dnd";
 import SingleBoardUsers from "../singleBoardUsers/singleBoardUsers";
 import io from "socket.io-client";
 import {
-  Modal,
   Box,
   TextField,
   Typography,
-  Input,
-  Dialog,
   IconButton,
   Button
 } from "@mui/material";

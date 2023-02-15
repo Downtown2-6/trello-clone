@@ -7,14 +7,14 @@ import CreateBoardFormMUI from "../features/createBoardForm/createMUIBoardForm";
 import AllUserBoardsSlice from "../features/boards/allUserBoardsSlice";
 import { Container, Typography, Grid } from "@mui/material";
 
-const Home = () => {
+const Home = ({theme}) => {
   const username = useSelector((state) => state.auth.me.username);
 
   return (
     <>
       <Container sx={{ paddingTop: 5 }}>
         <Typography variant="h4">Welcome!</Typography>
-          <UserBoards />
+          <UserBoards theme={theme} />
           {/* <CreateBoardForm />
           <CreateBoardFormMUI/> */}
       </Container>
