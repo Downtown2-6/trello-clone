@@ -40,6 +40,7 @@ const socket = io();
 const SingleBoard = () => {
   const [listName, setListName] = useState("");
   const [addingList, setAddingList] = useState(false);
+  const [arrowsShown, setArrowsShown] = useState("");
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -332,39 +333,70 @@ const SingleBoard = () => {
 
           <DragDropContext onDragEnd={onDragEnd}>
             <Box className="board-lists-container">
-              {board.lists && board.lists.length
-              ? board.lists.map((list) => (
+              
+              {board.lists && board.lists.length ?
+              board.lists.map((list) => (
                 <Box 
                 key={`list#${list.id}`} 
-                className="list-container" 
-                style={{ minWidth: '250px'}}>
-                  <span>
-                  {list.position > board.lists[0].position ? (
+                style={{ 
+                  display: "flex", 
+                  flexDirection: "row"
+                }}
+                onMouseEnter={() => setArrowsShown(`list#${list.id}`)}
+                onMouseLeave={() => setArrowsShown("")}
+                >
+                  
+                  <Box sx={{
+                    display: "flex", 
+                    flexDirection: "column", 
+                    justifyContent: "center"
+                  }}>
+                  {list.position > board.lists[0].position && 
+                  arrowsShown === `list#${list.id}` ? (
                     <IconButton
                       variant="outlined"
                       onClick={() => moveList("moveLeft", list)}
                       sx={{
-                        fontSize: "xs",
+                        width: "20px",
+                        height: "20px",
+                        marginLeft: 1,
                       }}
                     >
-                      <ArrowBackIosIcon />
+                      <ArrowBackIosIcon sx={{marginLeft: 1}} />
                     </IconButton>
                   ) : null}
-                  {list.position < board.lists[board.lists.length - 1].position ? (
+                  </Box>
+
+                  <SingleList boardId={board.id} list={list} />
+                  
+                  <Box sx={{
+                    display: "flex", 
+                    flexDirection: "column", 
+                    justifyContent: "center"
+                  }}>
+                  {list.position < board.lists[board.lists.length - 1].position && 
+                  arrowsShown === `list#${list.id}`? (
                     <IconButton
                       variant="outlined"
                       onClick={() => moveList("moveRight", list)}
+                      sx={{
+                        width: "20px",
+                        height: "20px",
+                        marginRight: 1,
+                      }}
                     >
                       <ArrowForwardIosIcon />
                     </IconButton>
                   ) : null}
-                  </span>
-                  <SingleList boardId={board.id} list={list} />
+                  </Box>
                 </Box>
               )) : null}
 
               {addingList ? (
-                <Box className="list-container" style={{ minWidth: '200px'}}>
+                <Box 
+                className="list-container" 
+                style={{ minWidth: '200px', margin: "0.5em"}}
+                >
                   <Typography variant="h5">
                     <TextField
                     placeholder="Enter list title..."
@@ -391,7 +423,8 @@ const SingleBoard = () => {
               ) : (
                 <Box 
                 className="list-container" 
-                style={{ minWidth: '200px'}}>
+                style={{ minWidth: '200px', margin: "0.5em"}}
+                >
                   <Button 
                   className="add-list-button" 
                   color="neutral"
