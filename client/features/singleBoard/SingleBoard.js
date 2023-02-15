@@ -359,7 +359,7 @@ const SingleBoard = () => {
                       sx={{
                         width: "20px",
                         height: "20px",
-                        marginLeft: 1,
+                        marginLeft: 0.5,
                       }}
                     >
                       <ArrowBackIosIcon sx={{marginLeft: 1}} />
@@ -382,7 +382,7 @@ const SingleBoard = () => {
                       sx={{
                         width: "20px",
                         height: "20px",
-                        marginRight: 1,
+                        marginRight: 0.5,
                       }}
                     >
                       <ArrowForwardIosIcon />

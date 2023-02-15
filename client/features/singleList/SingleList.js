@@ -89,7 +89,7 @@ const SingleList = (props) => {
         display: "flex",
         flexDirection: "column",
         minWidth: "250px",
-        margin: 1,
+        margin: 0.5,
         padding: 2,
         borderRadius: 1,
         boxShadow: 1,
