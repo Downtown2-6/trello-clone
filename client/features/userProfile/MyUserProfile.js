@@ -2,10 +2,20 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { updateMyProfileImage } from "../singleBoard/singleBoardSlice";
+import {
+  Avatar,
+  Box,
+  IconButton,
+  TextField,
+  Button,
+  Typography,
+} from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 
 // If page is self-contained it doesn't need to be sent to the store.
 
 function UserProfile() {
+  const [addImage, setAddImage] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -16,24 +26,17 @@ function UserProfile() {
   const user = useSelector((state) => state.auth.me);
   const dispatch = useDispatch();
 
-  const handleImageUpdate = (event) => {
-    event.preventDefault();
-    console.log(
-      `***
-    ***
-    ***
-    Logging:this is handleimageUpdate
-    ***
-    ***
-    ***
-    `,
-      profilePicture
-    );
+  console.log("profile image", profilePicture);
+
+  const handleImageUpdate = () => {
+    // event.preventDefault();
+    console.log("handleImageUpdate has been clicked", profilePicture);
     const userId = user.id;
 
     axios.patch(`api/users/uploadProfilePicture/userId/${userId}`, {
       url: profilePicture,
     });
+    setProfilePicture("")
   };
 
   const handleSubmit = (event) => {
@@ -72,26 +75,59 @@ function UserProfile() {
     <>
       <br />
       <br />
-      <div
-        style={{
-          width: "100px",
-          height: "100px",
-          overflow: "hidden",
-          borderRadius: "50%",
-        }}
-      >
-        <img style={{ width: "100%", height: "100%" }} src={profilePicture} />
-      </div>{" "}
+      {user.imageUrl ? (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+          }}
+        >
+          <Avatar
+            alt={user.firstName}
+            src={user.imageUrl}
+            sx={{ width: 100, height: 100 }}
+          />
+          <IconButton
+            aria-label="edit-profile-pic"
+            onClick={() => setAddImage(true)}
+            sx={{
+              fontSize: 12,
+              color: (theme) => theme.palette.grey[500],
+              "&:hover": { fontSize: 20 },
+              height: 20,
+              width: 20,
+            }}
+          >
+            <EditIcon
+              sx={{
+                color: "grey",
+                width: 15,
+              }}
+            />
+          </IconButton>
+        </Box>
+      ) : (
+        <Button onClick={() => setAddImage(true)}>Add Profile Pic</Button>
+      )}
       <br />
-      <form onSubmit={handleImageUpdate}>
-        <input
-          type="text"
-          placeholder="profile image url"
-          value={profilePicture}
-          onChange={(event) => setProfilePicture(event.target.value)}
-        />
-        <button type="submit">Set As Profile Picture</button>
-      </form>
+      {addImage ? (
+        <>
+          <TextField
+            placeholder="Link to jpg or png"
+            size="small"
+            onChange={(event) => setProfilePicture(event.target.value)}
+            sx={{backgroundColor: "white"}}
+          />
+          <Button
+            color="neutral"
+            variant="contained"
+            style={{ justifyContent: "flex-start", textTransform: "none" }}
+            onClick={handleImageUpdate}
+          >
+            Set Photo
+          </Button>
+        </>
+      ) : null}
       <br></br>
       <br></br>
       <br></br>{" "}
